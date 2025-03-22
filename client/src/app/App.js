@@ -1,5 +1,4 @@
-import './App.css';
-import Landing from './components/Landing.js'
+import Landing from '../components/Landing.js'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 function App() {
