@@ -2,4 +2,45 @@
     background-color: #76BED0 !important;
     border-color: #76BED0 !important;
   }
-  
+
+.special-text {
+    color: #F7CB15;
+}
+
+.banner {
+    background-color: white;
+    padding: 50px;
+    border-radius: 10px;
+}
+
+.divider {
+  width: 90%;
+  height: 1px;
+  background-color: #D3D3D3;
+  margin: 0 auto;
+}
+
+.make-account-btn {
+  background-color: #F53D3E !important;
+  border: none;
+  border-radius: 50px;
+  padding: 30px 30px;
+}
+
+.banner {
+  display: flex;
+}
+
+.banner div {
+  flex: 2 1 auto;
+  margin-left: 50px;
+}
+
+.banner p {
+  padding-top: 30px;
+}
+
+.banner button {
+  margin-right: 50px;
+  font-size: 25px;
+}
