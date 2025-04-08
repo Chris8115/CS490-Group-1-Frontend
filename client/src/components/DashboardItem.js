@@ -4,7 +4,7 @@ function DashboardItem(props) {
     return <>
     <a href={props.href}>
         <div style = {{ display: 'flex', flexDirection: "row", alignContent: "flex-start"}}>
-            <img src={  require( '../assets/DashboardTestIcon.png' )    } />
+            <img src={  require( '../assets/' + props.icon + '.png' )    } />
 
             <div style={{ display: 'flex', flexDirection: "column", justifyContent: "center" }}>
                 <h2>{props.itemName}</h2>
