@@ -115,5 +115,12 @@ p {
   border: none;
 }
 
+.login-btn {
+  background-color: #F53D3E !important;
+  border: none;
+}
 
+.login-title {
+  margin-bottom: 50px;
+}
 
