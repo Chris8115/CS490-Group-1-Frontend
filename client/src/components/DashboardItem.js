@@ -1,5 +1,9 @@
 import './DashboardItem.css'
 
+// itemName: The big bold text
+// itemDescription: The expanded text
+// icon: The asset in the ./assets/ folder used
+// href: The page the DashboardItem links to
 function DashboardItem(props) {
     return <>
     <a href={props.href}>
