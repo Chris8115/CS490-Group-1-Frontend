@@ -9,10 +9,13 @@ function PatientLayout() {
     return <>
         <BetterUNavbar/>
 
-        <Routes >
+        <div style={{margin: 'auto', width: '50%', padding: '1%'}}>
+
+        <Routes>
             <Route path="dashboard" element={<PatientDashboard />} />
             <Route path="/" element={<PatientDashboard />} />
         </Routes>
+        </div>
 
         <Divider />
         <Footer />
