@@ -1,6 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Testing from './routes/Testing.js';
 import Landing from './routes/Landing.js';
+import PatientLayout from './routes/Patient/PatientLayout.js';
 import Registration from './routes/Registration.js';
 import Login from './routes/Login.js';
 import React from 'react';
@@ -13,6 +14,9 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Landing/>}/>
+          <Route path="/testing" element={<Testing/>}/>
+          <Route path="/patient/*" element={<PatientLayout />} />
+          
           <Route path="/home" element={<Landing/>}/>
           <Route path="/sign-up" element={<Registration/>}/>
           <Route path="/log-in" element={<Login/>}></Route>
