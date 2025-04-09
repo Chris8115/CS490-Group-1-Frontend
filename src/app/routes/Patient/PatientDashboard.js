@@ -9,7 +9,7 @@ function PatientDashboard() {
     const [patientAppointments, setPatientAppointments] = useState([]);
 
     const getPatientAppointments = async() => {
-        axios.get("http://localhost:5000/appointments", {
+        axios.get("/appointments", {
             params: {
                 "patient_id": 26
             }
@@ -44,9 +44,11 @@ function PatientDashboard() {
         
         <h1>Appointments</h1>
         <br/>
-        {patientAppointments.map((appointment, index) => (
-            PatientAppointmentCard(appointment)
-        ))}
+        <div style={{display: 'flex'}}>
+            {patientAppointments.map((appointment, index) => (
+                PatientAppointmentCard(appointment)
+            ))}
+        </div>
 
     </>
 }
