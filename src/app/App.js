@@ -4,6 +4,7 @@ import Landing from './routes/Landing.js';
 import PatientLayout from './routes/Patient/PatientLayout.js';
 import React from 'react';
 import { BrowserRouter, Router, Route, Link, Routes } from 'react-router-dom';
+import { Axios } from 'axios';
 
 function App() {
   return (
