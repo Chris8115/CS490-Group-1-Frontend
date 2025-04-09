@@ -5,6 +5,7 @@ import Registration from './routes/Registration.js';
 import Login from './routes/Login.js';
 import React from 'react';
 import { BrowserRouter, Router, Route, Link, Routes } from 'react-router-dom';
+import { Axios } from 'axios';
 
 function App() {
   return (
