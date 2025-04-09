@@ -12,6 +12,7 @@ function Landing() {
     console.log("hello world");
 
     return <>
+        
         <BetterUNavbar/>
 
         <div className="banner">

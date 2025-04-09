@@ -115,5 +115,48 @@ p {
   border: none;
 }
 
+.login-btn {
+  background-color: #F53D3E !important;
+  border: none;
+}
+
+.login-title {
+  margin-bottom: 50px;
+}
+
+/* Registration Form CSS */
+
+.switch-registration {
+  margin: 40px 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+}
+
+.switch-registration p {
+  text-align: center;
+  font-size: 26px;
+}
+
+.switch-registration .form-btn {
+  background-color: white;
+  padding: 20px;
+  border: none;
+  width: 200px;
+}
+
+.switch-registration .form-btn:hover {
+  font-weight: bold;
+}
+
+.patient-form {
+  padding: 30px 100px;
+}
+
+.patient-form h2 {
+  margin-bottom: 40px;
+}
 
 
