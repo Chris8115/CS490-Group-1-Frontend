@@ -1,7 +1,8 @@
-import { Outlet } from "react-router-dom";
+//import { Outlet } from "react-router-dom";
 import PatientDashboard from "./PatientDashboard";
+import PatientAppointmentBooking from "./PatientAppointmentBooking";
 import BetterUNavbar from "../../../components/BetterUNavbar";
-import { BrowserRouter, Router, Route, Link, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import Divider from "../../../components/Divider";
 import Footer from "../../../components/Footer";
 
@@ -14,6 +15,7 @@ function PatientLayout() {
         <Routes>
             <Route path="dashboard" element={<PatientDashboard />} />
             <Route path="/" element={<PatientDashboard />} />
+            <Route path="book-appointment" element={<PatientAppointmentBooking />} />
         </Routes>
         </div>
 

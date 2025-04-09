@@ -30,6 +30,10 @@ function appointmentStatus(status) {
             statusDisplay = "Canceled";
             textColor = "red";
             break;
+        case "rejected":
+            statusDisplay = "Rejected";
+            textColor = "red";
+            break;
         case "accepted":
             statusDisplay = "Accepted";
             textColor = "green";
@@ -37,6 +41,8 @@ function appointmentStatus(status) {
         case "pending":
             statusDisplay = "Pending";
             textColor = "DarkOrange"
+            break;
+        default:
             break;
     }
     return <h5 className="card-subtitle mb-2" style={{color: textColor, fontWeight: 'bold'}}>{statusDisplay}</h5>;

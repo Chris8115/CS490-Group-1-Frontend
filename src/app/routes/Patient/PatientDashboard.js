@@ -11,7 +11,7 @@ function PatientDashboard() {
     const getPatientAppointments = async() => {
         axios.get("http://localhost:5000/appointments", {
             params: {
-                "patient_id": 11
+                "patient_id": 26
             }
         })
         .then((response) => {
