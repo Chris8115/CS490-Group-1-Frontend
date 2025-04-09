@@ -9,7 +9,7 @@ function BetterUNavbar() {
     <>
       <Navbar expand="lg" className="bg-body-tertiary navbar">
         <Container>
-          <Navbar.Brand href="#home">BetterU</Navbar.Brand>
+          <Navbar.Brand href="/">BetterU</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav float-center">
             <Nav className="ms-auto">
