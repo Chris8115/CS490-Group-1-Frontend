@@ -3,6 +3,7 @@ import { useState } from "react";
 import { getDoctorLastName, getPatientDoctorId, getUserData } from "../../../utils/UserDataUtils";
 import DatePicker from "react-datepicker";
 import axios from "axios";
+import Divider from "../../../components/Divider";
 
 function PatientAppointmentBooking() {
     const [appointmentData, setAppointmentData] = useState({
@@ -13,6 +14,8 @@ function PatientAppointmentBooking() {
         doctor_id: 0 
     });
 
+    const [requestMade, setRequestMade] = useState(false);
+
     const [doctorName, setDoctorName] = useState("");
 
     const handleSubmit = async (e) => {
@@ -20,8 +23,7 @@ function PatientAppointmentBooking() {
 
         const startTime = `${appointmentData.date} ${appointmentData.time}:00`;
         const endTime = `${appointmentData.date} ${getEndTime(startTime)}`;
-        console.log(startTime);
-        console.log(endTime);
+
         try {
             const response = await axios.put("/appointments", {
                 "doctor_id": appointmentData.doctor_id,
@@ -32,6 +34,11 @@ function PatientAppointmentBooking() {
                 "start_time": startTime,
                 "status": "pending",
             })
+            
+            if (response.status == 201) {
+                setRequestMade(true);
+            }
+
         } catch (error) {
             console.log(error);
         }
@@ -79,6 +86,12 @@ function PatientAppointmentBooking() {
         getDoctor();
         
     }, [])
+
+    if (requestMade) {
+        return <>
+        <h1>Appointment Requested</h1>
+        </>
+    }
 
     return <>
     
