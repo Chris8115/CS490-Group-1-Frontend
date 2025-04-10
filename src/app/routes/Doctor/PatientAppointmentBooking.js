@@ -83,7 +83,7 @@ function PatientAppointmentBooking() {
     return <>
     
     <h1>Book Appointment</h1>
-    <hr/>
+    <Divider/>
     <h3>Dr. {doctorName}</h3>
 
     <form onSubmit={handleSubmit}>

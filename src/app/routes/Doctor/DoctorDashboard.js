@@ -4,9 +4,10 @@ import DashboardItem from "../../../components/DashboardItem";
 import axios from "axios";
 import PatientAppointmentCard from "../../../components/PatientAppointmentCard";
 import Divider from '../../../components/Divider.js';
-import '../../../css/doctor_dashboard.css';
 
 function DoctorDashboard() {
+            <div className="dashboard-features">
+            </div>
     const [patientAppointments, setPatientAppointments] = useState([]);
 
     const getPatientAppointments = async() => {
@@ -33,7 +34,7 @@ function DoctorDashboard() {
 
     return (
 
-        <div className='dashboard'>
+        <div>
             <h1>Dashboard</h1>
             <Divider />
             
@@ -44,8 +45,6 @@ function DoctorDashboard() {
                 </div>
             </div>
             
-
-
             <div>
                 <h2>Pending Appointments</h2>
                 <div className='Appointments'>
