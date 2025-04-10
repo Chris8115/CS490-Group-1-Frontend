@@ -2,6 +2,7 @@
 import PatientDashboard from "./PatientDashboard";
 import PatientAppointmentBooking from "./PatientAppointmentBooking";
 import PatientReview from "./PatientReview";
+import PatientProgress from "./PatientProgress";
 import BetterUNavbar from "../../../components/BetterUNavbar";
 import { Route, Routes } from 'react-router-dom';
 import Divider from "../../../components/Divider";
@@ -18,6 +19,7 @@ function PatientLayout() {
                     <Route path="/" element={<PatientDashboard />} />
                     <Route path="book-appointment" element={<PatientAppointmentBooking />} />
                     <Route path="review" element={<PatientReview />} />
+                    <Route path="progress" element={<PatientProgress />} />
                 </Routes>
         </div>
 
