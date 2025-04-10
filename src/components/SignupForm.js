@@ -22,9 +22,18 @@ function SignupForm() {
 
                 <p>Register as</p>
                 <div className='form-btns'>
-                    <button className="form-btn" onClick={setFormToPatient}>Patient</button>
-                    <button className="form-btn" onClick={setFormToDoctor}>Doctor</button>
+                    <button
+                        className={`form-btn ${formState === 'patient' ? 'active-form-btn' : ''}`}
+                        onClick={setFormToPatient} >
+                        Patient
+                    </button>
+                    <button
+                        className={`form-btn ${formState === 'doctor' ? 'active-form-btn' : ''}`}
+                        onClick={setFormToDoctor} >
+                        Doctor
+                    </button>
                 </div>
+
                 
             </div>
 
