@@ -4,6 +4,7 @@ import { getDoctorLastName, getPatientDoctorId, getUserData } from "../../../uti
 import DatePicker from "react-datepicker";
 import axios from "axios";
 import Divider from "../../../components/Divider";
+import '../../../css/dashboard.css';
 
 function PatientAppointmentBooking() {
     const [appointmentData, setAppointmentData] = useState({
@@ -96,19 +97,19 @@ function PatientAppointmentBooking() {
     return <>
     
     <h1>Book Appointment</h1>
-    <hr/>
-    <h3>Dr. {doctorName}</h3>
+    <Divider/>
+
+    <div className="dashboard-features">
+    <h2>Dr. {doctorName}</h2>
+    <br/>
 
     <form onSubmit={handleSubmit}>
-
         <div className="mb-3">
             <label htmlFor="appointmentReason" className="form-label">Reason for Appointment</label>
             <input type="text" className="form-control" id="appointmentReason" name="reason" onChange={handleChange} required/>
 
-            <br/>
 
             <label htmlFor="appointmentDate" className="form-label">Appointment Date</label>
-            <br/>
 
             <input
             type="date"
@@ -119,8 +120,7 @@ function PatientAppointmentBooking() {
             onChange={handleChange}
             required />
 
-<           label htmlFor="appointmentHour" className="form-label">Appointment Time</label>
-            <br/>
+            <label htmlFor="appointmentHour" className="form-label">Appointment Time</label>
             <input
             type="time"
             name="time"
@@ -136,6 +136,8 @@ function PatientAppointmentBooking() {
         <button type="submit" className="btn btn-primary">Request Appointment</button>
 
     </form>
+    </div>  
+
     </>
 }
 

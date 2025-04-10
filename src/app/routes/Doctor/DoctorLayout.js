@@ -4,13 +4,16 @@ import BetterUNavbar from "../../../components/BetterUNavbar";
 import { Route, Routes } from 'react-router-dom';
 import Divider from "../../../components/Divider";
 import Footer from "../../../components/Footer";
+import '../../../css/dashboard.css';
 
 function DoctorLayout() {
     return (
         <>
             <BetterUNavbar/>
             
-            <DoctorDashboard />
+            <div className="dashboard">
+                <DoctorDashboard />
+            </div>
 
             <Divider />
             <Footer />
