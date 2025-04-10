@@ -126,6 +126,12 @@ p {
 
 /* Registration Form CSS */
 
+.active-form-btn {
+  font-weight: bold;
+  color: black;
+  text-decoration: underline; 
+}
+
 .switch-registration {
   margin: 40px 0px;
   display: flex;
@@ -152,11 +158,34 @@ p {
 }
 
 .patient-form {
-  padding: 30px 100px;
+  padding: 30px 200px;
 }
 
 .patient-form h2 {
   margin-bottom: 40px;
 }
 
+.patient-form .step {
+  margin-top: 20px;
+}
 
+.patient-form .step-descrip {
+  margin-top: 20px;
+  font-size: 16px;
+}
+
+.dropbox {
+  border: 1px solid lightgray;
+  border-radius: 10px;
+  text-align: center;
+  padding: 50px;
+}
+
+.dropbox:hover {
+  cursor: pointer;
+}
+
+.dropbox img {
+  width: 50px;
+  height: auto;
+}

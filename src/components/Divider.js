@@ -7,4 +7,4 @@ function Divider() {
   );
 }
   
-  export default Divider;
+export default Divider;

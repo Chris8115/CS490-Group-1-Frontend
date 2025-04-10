@@ -15,8 +15,10 @@ function LoginForm() {
 
         <h1 className='login-title'>Sign into your account</h1>
 
-        <MDBInput wrapperClass='mb-4' label='Email address' id='form1' type='email'/>
-        <MDBInput wrapperClass='mb-4' label='Password' id='form2' type='password'/>
+        <label>Email Address</label>
+        <MDBInput wrapperClass='mb-4' label='' id='form1' type='email'/>
+        <label>Password</label>
+        <MDBInput wrapperClass='mb-4' label='' id='form2' type='password'/>
 
         <div className="d-flex justify-content-between mx-3 mb-4">
             <MDBCheckbox name='flexCheck' value='' id='flexCheckDefault' label='Remember me' />
