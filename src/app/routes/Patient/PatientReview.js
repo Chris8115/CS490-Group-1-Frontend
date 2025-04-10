@@ -99,8 +99,8 @@ function PatientReview() {
             <textarea className="form-control" id="reviewText" rows="3" required onChange={onChangeReviewText} />
         </div>
 
+        <br/>
         <button type="submit" className="btn btn-primary">Submit Review</button>
-        
     </form>
     </div>
     </>

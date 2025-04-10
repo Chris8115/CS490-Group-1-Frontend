@@ -44,8 +44,7 @@ function PatientDashboard() {
         <br/>
         
         <h1>Appointments</h1>
-        <br/>
-        <div style={{display: 'flex', flexDirection: 'column', gap: '1rem'}}>
+        <div className="dashboard-features" style={{display: 'flex', flexDirection: 'column', gap: '1rem'}}>
             {patientAppointments.map((appointment, index) => (
                 PatientAppointmentCard(appointment)
             ))}
