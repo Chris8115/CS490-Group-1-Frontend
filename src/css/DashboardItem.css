@@ -1,0 +1,50 @@
+a {
+    color:black;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    width: 150px;
+    height: 150px;
+}
+
+.dashboard-item-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.dashboard-item {
+    width: 100%;
+    background-color: white; /* light gray */
+    padding: 20px 100px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: background-color 0.2s ease;
+}
+
+.dashboard-item:hover {
+    background-color: #e0e0e0;
+}
+
+.dashboard-icon {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+}
+
+.dashboard-text h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.dashboard-text p {
+    margin: 0;
+    color: #555;
+    font-size: 0.95rem;
+}
