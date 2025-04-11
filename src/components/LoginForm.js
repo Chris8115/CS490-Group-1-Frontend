@@ -25,7 +25,7 @@ function LoginForm() {
         
         try {
 
-            const response = await fetch(`http://localhost:5000/login?email=${email}&password=${password}`, {
+            const response = await fetch(`http://localhost:5000/login`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ function LoginForm() {
       
       useEffect(() => {
         if (loggedIn === 'success') { 
-          navigate('/dashboard_redirect');
+          navigate('/dashboard');
         }
         else if (loggedIn === 'failed') {
           setFailedLogin(true);
