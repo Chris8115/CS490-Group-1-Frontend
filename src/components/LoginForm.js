@@ -19,6 +19,11 @@ function LoginForm() {
 
     const navigate = useNavigate();
 
+    const sessionExists = () => {
+      const sessionData = sessionStorage.getItem('user_info');
+      return !!sessionData;
+    };
+
     const handleSubmit = async (event) => {
 
         event.preventDefault();
@@ -64,6 +69,11 @@ function LoginForm() {
           setFailedLogin(true);
         }
       }, [loggedIn])
+
+      /*
+      if (sessionExists) {
+        navigate('/dashboard');
+      }*/
 
     return (
 
