@@ -1,0 +1,74 @@
+.content {
+    margin: 50px 100px;
+}
+
+.posts-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 40px 100px;
+  }
+  
+  .post-card {
+    background-color: white;
+    padding: 1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s ease;
+  }
+
+  .post-card:hover {
+    background-color: #D9D9D9;
+    cursor: pointer;
+  }
+  
+  .post-title {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+  
+  .post-type {
+    margin: 0 0 0.5rem 0;
+    font-style: italic;
+    color: #333;
+  }
+  
+  .post-content {
+    margin: 0 0 0.5rem 0;
+  }
+  
+  .post-date {
+    color: #555;
+    font-size: 0.9rem;
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin: 2rem 0;
+    gap: 0.5rem;
+    list-style: none;
+    padding: 0;
+  }
+  
+  .page-item {
+    border-radius: 5px;
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s;
+  }
+  
+  .page-item:hover {
+    background-color: #D9D9D9;
+  }
+  
+  .page-link {
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  .active {
+    background-color: #F53D3E;
+  }
+  

@@ -78,8 +78,9 @@ function PatientReview() {
     return <>
     
     <h1>Write Review</h1>
-    <hr/>
+    <Divider/>
 
+    <div className="dashboard-features">
     <form onSubmit={handleSubmitReview}>
         <label>Doctor</label>
         <select className="form-select" aria-label="Doctor Selection" onChange={onSelectDoctor}>
@@ -97,11 +98,11 @@ function PatientReview() {
             <label htmlFor="reviewText">Review</label>
             <textarea className="form-control" id="reviewText" rows="3" required onChange={onChangeReviewText} />
         </div>
-        <br/>
 
+        <br/>
         <button type="submit" className="btn btn-primary">Submit Review</button>
-        
     </form>
+    </div>
     </>
 }
 
