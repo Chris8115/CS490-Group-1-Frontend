@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, sessionStorage } from "react";
 import DashboardItem from "../../../components/DashboardItem";
 import axios from "axios";
 import PatientAppointmentCard from "../../../components/PatientAppointmentCard";
@@ -8,7 +8,7 @@ import '../../../css/doctor_dashboard.css';
 
 function DoctorDashboard() {
     const [patientAppointments, setPatientAppointments] = useState([]);
-
+    
     const getPatientAppointments = async() => {
         axios.get("/appointments", {
             params: {
