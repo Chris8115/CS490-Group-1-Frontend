@@ -1,4 +1,4 @@
-import React from 'react';
+import { React } from 'react';
 import BetterUNavbar from '../../components/BetterUNavbar';
 import Footer from '../../components/Footer';
 import LoginForm from '../../components/LoginForm';

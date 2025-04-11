@@ -6,6 +6,7 @@ import DoctorLayout from './routes/Doctor/DoctorLayout.js';
 import Registration from './routes/Registration.js';
 import Login from './routes/Login.js';
 import React from 'react';
+import DashboardRedirect from './routes/DashboardRedirect.js';
 import { BrowserRouter, Router, Route, Link, Routes } from 'react-router-dom';
 import { Axios } from 'axios';
 
@@ -22,6 +23,7 @@ function App() {
           <Route path="/home" element={<Landing/>}/>
           <Route path="/sign-up" element={<Registration/>}/>
           <Route path="/log-in" element={<Login/>}></Route>
+          <Route path="/dashboard_redirect" element={<DashboardRedirect/>}/>
         </Routes>
       </BrowserRouter>
       

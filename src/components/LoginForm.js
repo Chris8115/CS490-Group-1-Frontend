@@ -37,14 +37,17 @@ function LoginForm() {
             if (!response.ok) throw new Error('Login failed');
             
             const data = await response.json();
-            
-            localStorage.setItem('email', data.email);
-            localStorage.setItem('user_id', data.user_id);
-            localStorage.setItem('role', data.role);
+            const user_info = {
+              'user_id': data.user_id,
+              'email': data.email,
+              'role': data.role,
+            }
+
+            sessionStorage.setItem('user_info', JSON.stringify(user_info));
             
             setLoggedIn('success');
             setResponseMessage(data.message);
-            console.log(data);
+
         }
         catch (err) {
           console.error(err);
