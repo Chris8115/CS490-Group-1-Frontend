@@ -118,6 +118,10 @@ p {
 .login-btn {
   background-color: #F53D3E !important;
   border: none;
+  border-radius: 5px;
+  color: white;
+  padding: 10px;
+  margin-bottom: 10px;
 }
 
 .login-title {
