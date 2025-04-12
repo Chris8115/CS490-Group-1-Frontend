@@ -6,6 +6,28 @@ import '../css/custom.css';
 
 function BetterUNavbar() {
 
+  const isLoggedIn = !!sessionStorage.getItem('user_info');
+
+  let buttons;
+
+  if (!isLoggedIn) {
+    buttons = (
+                <>
+                  <Nav.Link href="/home">Home</Nav.Link>
+                  <Nav.Link href="/sign-up">Sign Up</Nav.Link>
+                  <Nav.Link href="/log-in">Log In</Nav.Link>
+                </>
+                )
+  }
+  else {
+    buttons = (
+      <>
+        <Nav.Link href="/dashboard">Dashboard</Nav.Link>
+        <Nav.Link href="/forums">Discussion Forums</Nav.Link>
+      </>
+      )
+  }
+
   return (
     <>
       <Navbar expand="lg" className="bg-body-tertiary navbar">
@@ -14,9 +36,7 @@ function BetterUNavbar() {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav float-center">
             <Nav className="ms-auto">
-              <Nav.Link href="/home">Home</Nav.Link>
-              <Nav.Link href="/sign-up">Sign Up</Nav.Link>
-              <Nav.Link href="/log-in">Log In</Nav.Link>
+              {buttons}
             </Nav>
           </Navbar.Collapse>
         </Container>
