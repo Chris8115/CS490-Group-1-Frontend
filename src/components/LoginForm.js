@@ -51,6 +51,7 @@ function LoginForm() {
               }
 
               sessionStorage.setItem('user_info', JSON.stringify(user_info));
+              
               navigate('/dashboard');
             }
 

@@ -9,7 +9,6 @@ function DashboardRedirect() {
     const user_info = JSON.parse(sessionStorage.getItem('user_info'));
     let display;
     
-    
     useEffect(() => {
 
         const isLoggedIn = !!sessionStorage.getItem('user_info');

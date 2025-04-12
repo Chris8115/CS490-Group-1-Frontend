@@ -1,28 +1,35 @@
 
-import { useState, useEffect, sessionStorage } from "react";
+import { useState, useEffect } from "react";
 import DashboardItem from "../../../components/DashboardItem";
-import axios from "axios";
-import PatientAppointmentCard from "../../../components/PatientAppointmentCard";
 import Divider from '../../../components/Divider.js';
+import { useNavigate } from 'react-router-dom';
 
 function DoctorDashboard() {
-            
 
+    const navigate = useNavigate();
     const [doctorAppointments, setDoctorAppointments] = useState([]);
-    
-    
-    // const user_info = JSON.parse(sessionStorage.getItem('user_info'));
-    // console.log(user_info);
+    const [userInfo, setUserInfo] = useState({});
+
+    useEffect(() => {
+        const user_info = JSON.parse(sessionStorage.getItem('user_info'));
+        setUserInfo(user_info);
+
+        getDoctorAppointments();
+
+        
+    }, [])
+
 
     const getDoctorAppointments = async (event) => {
         
         try {
 
-            const response = await fetch(`http://localhost:5000/appointments?doctor_id=31`, {
+            const response = await fetch(`http://localhost:5000/appointments?doctor_id=${userInfo.user_id}`, {
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',
-              }
+              },
+              credentials: 'include'
 
             });
     
@@ -31,29 +38,16 @@ function DoctorDashboard() {
             const data = await response.json();
             
             console.log(data)
-            /*const user_info = {
-              'user_id': data.user_id,
-              'email': data.email,
-              'role': data.role,
-            }
-
-            sessionStorage.setItem('user_info', JSON.stringify(user_info));
             
-            setLoggedIn('success');
-            setResponseMessage(data.message);
-            */
         }
         catch (err) {
           console.error(err);
         }
         
       };
-
     
 
-    useEffect(() => {
-        getDoctorAppointments();
-    }, [])
+    
 
     return (
 

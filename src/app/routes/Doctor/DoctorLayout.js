@@ -7,6 +7,7 @@ import Footer from "../../../components/Footer";
 import '../../../css/dashboard.css';
 
 function DoctorLayout() {
+
     return (
         <>
             <BetterUNavbar/>
