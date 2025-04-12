@@ -15,7 +15,6 @@ function DoctorDashboard() {
         setUserInfo(user_info);
 
         getDoctorAppointments();
-
         
     }, [])
 
@@ -45,9 +44,6 @@ function DoctorDashboard() {
         }
         
       };
-    
-
-    
 
     return (
 
