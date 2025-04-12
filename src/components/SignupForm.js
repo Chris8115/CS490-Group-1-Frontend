@@ -17,7 +17,6 @@ function SignupForm() {
       }
     }, []);
 
-
     function setFormToDoctor() {
         setFormState('doctor');
     }
