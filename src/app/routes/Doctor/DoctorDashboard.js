@@ -1,36 +1,49 @@
 
-import { useState, useEffect, sessionStorage } from "react";
+import { useState, useEffect } from "react";
 import DashboardItem from "../../../components/DashboardItem";
-import axios from "axios";
-import PatientAppointmentCard from "../../../components/PatientAppointmentCard";
 import Divider from '../../../components/Divider.js';
+import { useNavigate } from 'react-router-dom';
 
 function DoctorDashboard() {
-            <div className="dashboard-features">
-            </div>
-    const [patientAppointments, setPatientAppointments] = useState([]);
-    
-    const getPatientAppointments = async() => {
-        axios.get("/appointments", {
-            params: {
-                "patient_id": 26
-            }
-        })
-        .then((response) => {
-            let appointments = response.data.appointments;
-            setPatientAppointments(appointments);
-        })
-        .catch((error) => {
-            console.log(error);
-        })
-        .finally(() => {
 
-        })
-    }
+    const navigate = useNavigate();
+    const [doctorAppointments, setDoctorAppointments] = useState([]);
+    const [userInfo, setUserInfo] = useState({});
 
     useEffect(() => {
-        getPatientAppointments();
+        const user_info = JSON.parse(sessionStorage.getItem('user_info'));
+        setUserInfo(user_info);
+
+        getDoctorAppointments();
+        
     }, [])
+
+
+    const getDoctorAppointments = async (event) => {
+        
+        try {
+
+            const response = await fetch(`http://localhost:5000/appointments?doctor_id=${userInfo.user_id}`, {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              credentials: 'include'
+
+            });
+    
+            if (!response.ok) throw new Error('Appointment Request Failed');
+            
+            const data = await response.json();
+            
+            console.log(data)
+            
+        }
+        catch (err) {
+          console.error(err);
+        }
+        
+      };
 
     return (
 

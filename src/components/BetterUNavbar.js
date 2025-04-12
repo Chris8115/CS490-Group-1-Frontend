@@ -5,6 +5,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import '../css/custom.css';
 
 function BetterUNavbar() {
+
   return (
     <>
       <Navbar expand="lg" className="bg-body-tertiary navbar">

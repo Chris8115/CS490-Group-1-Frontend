@@ -13,16 +13,17 @@ function LoginForm() {
     
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [responseMessage, setResponseMessage] = useState('');
-    const [loggedIn, setLoggedIn] = useState('first-time');
+    // const [responseMessage, setResponseMessage] = useState('');
     const [failedLogin, setFailedLogin] = useState(false);
 
     const navigate = useNavigate();
+    const isLoggedIn = !!sessionStorage.getItem('user_info');
 
-    const sessionExists = () => {
-      const sessionData = sessionStorage.getItem('user_info');
-      return !!sessionData;
-    };
+    useEffect(() => {
+      if (isLoggedIn) {
+        navigate('/dashboard');
+      }
+    }, []);
 
     const handleSubmit = async (event) => {
 
@@ -40,40 +41,27 @@ function LoginForm() {
             });
     
             if (!response.ok) throw new Error('Login failed');
-            
-            const data = await response.json();
-            const user_info = {
-              'user_id': data.user_id,
-              'email': data.email,
-              'role': data.role,
-            }
+            else {
 
-            sessionStorage.setItem('user_info', JSON.stringify(user_info));
-            
-            setLoggedIn('success');
-            setResponseMessage(data.message);
+              const data = await response.json();
+              const user_info = {
+                'user_id': data.user_id,
+                'email': data.email,
+                'role': data.role,
+              }
+
+              sessionStorage.setItem('user_info', JSON.stringify(user_info));
+              
+              navigate('/dashboard');
+            }
 
         }
         catch (err) {
           console.error(err);
-          setLoggedIn('failed');
+          setFailedLogin(true);
         }
         
       };
-      
-      useEffect(() => {
-        if (loggedIn === 'success') { 
-          navigate('/dashboard');
-        }
-        else if (loggedIn === 'failed') {
-          setFailedLogin(true);
-        }
-      }, [loggedIn])
-
-      /*
-      if (sessionExists) {
-        navigate('/dashboard');
-      }*/
 
     return (
 

@@ -18,8 +18,6 @@ function App() {
         <Routes>
           <Route path="/" element={<Landing/>}/>
           <Route path="/testing" element={<Testing/>}/>
-          <Route path="/patient/*" element={<PatientLayout />} />
-          <Route path="/doctor/*" element={<DoctorLayout />} />
           
           <Route path="/home" element={<Landing/>}/>
           <Route path="/sign-up" element={<Registration/>}/>
