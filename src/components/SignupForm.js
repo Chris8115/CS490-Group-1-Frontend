@@ -1,12 +1,22 @@
-import React from 'react';
-import { useState } from 'react';
+import { React, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import PatientForm from './PatientForm';
 import DoctorForm from './DoctorForm';
 import '../css/custom.css';
 import Divider from './Divider';
 
 function SignupForm() {
+
     const [formState, setFormState] = useState('patient');
+    const navigate = useNavigate();
+    const isLoggedIn = !!sessionStorage.getItem('user_info');
+
+    useEffect(() => {
+      if (isLoggedIn) {
+        navigate('/dashboard');
+      }
+    }, []);
+
 
     function setFormToDoctor() {
         setFormState('doctor');

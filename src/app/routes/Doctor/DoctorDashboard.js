@@ -6,30 +6,53 @@ import PatientAppointmentCard from "../../../components/PatientAppointmentCard";
 import Divider from '../../../components/Divider.js';
 
 function DoctorDashboard() {
-            <div className="dashboard-features">
-            </div>
-    const [patientAppointments, setPatientAppointments] = useState([]);
-    
-    const getPatientAppointments = async() => {
-        axios.get("/appointments", {
-            params: {
-                "patient_id": 26
-            }
-        })
-        .then((response) => {
-            let appointments = response.data.appointments;
-            setPatientAppointments(appointments);
-        })
-        .catch((error) => {
-            console.log(error);
-        })
-        .finally(() => {
+            
 
-        })
-    }
+    const [doctorAppointments, setDoctorAppointments] = useState([]);
+    
+    
+    // const user_info = JSON.parse(sessionStorage.getItem('user_info'));
+    // console.log(user_info);
+
+    const getDoctorAppointments = async (event) => {
+        
+        try {
+
+            const response = await fetch(`http://localhost:5000/appointments?doctor_id=31`, {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+              }
+
+            });
+    
+            if (!response.ok) throw new Error('Appointment Request Failed');
+            
+            const data = await response.json();
+            
+            console.log(data)
+            /*const user_info = {
+              'user_id': data.user_id,
+              'email': data.email,
+              'role': data.role,
+            }
+
+            sessionStorage.setItem('user_info', JSON.stringify(user_info));
+            
+            setLoggedIn('success');
+            setResponseMessage(data.message);
+            */
+        }
+        catch (err) {
+          console.error(err);
+        }
+        
+      };
+
+    
 
     useEffect(() => {
-        getPatientAppointments();
+        getDoctorAppointments();
     }, [])
 
     return (
