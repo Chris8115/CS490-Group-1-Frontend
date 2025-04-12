@@ -10,6 +10,8 @@ import React from 'react';
 import Dashboard from './routes/Dashboard.js';
 import { BrowserRouter, Router, Route, Link, Routes } from 'react-router-dom';
 import { Axios } from 'axios';
+import DoctorPatientView from './routes/Doctor/DoctorPatientView.js';
+import DoctorSettings from './routes/Doctor/DoctorSettings.js';
 
 function App() {
   return (
@@ -22,8 +24,12 @@ function App() {
           <Route path="/home" element={<Landing/>}/>
           <Route path="/sign-up" element={<Registration/>}/>
           <Route path="/log-in" element={<Login/>}></Route>
+
           <Route path="/dashboard" element={<Dashboard/>}/>
           <Route path="/forums" element={<Forums/>}></Route>
+
+          <Route path="/view-patients" element={<DoctorPatientView />} />
+        <Route path="/settings" element={<DoctorSettings />} />
         </Routes>
       </BrowserRouter>
       
