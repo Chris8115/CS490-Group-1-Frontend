@@ -3,18 +3,18 @@ import { useState } from "react";
 import { getDoctorLastName, getPatientDoctorId, getUserData } from "../../../utils/UserDataUtils";
 import DatePicker from "react-datepicker";
 import axios from "axios";
+import BetterUNavbar from "../../../components/BetterUNavbar";
+import Footer from "../../../components/Footer";
+import { Divider } from "@mui/material";
 
-function PatientAppointmentBooking() {
-    const [appointmentData, setAppointmentData] = useState({
-        date: "",
-        time: "",
-        reason: "",
-        patient_id: 26,
-        doctor_id: 0 
-    });
+function DoctorSettings() {
 
-    const [doctorName, setDoctorName] = useState("");
+    const [location, setLocation] = useState("");
 
+    useEffect(() => {
+        const response = fetch('http://localhost:3000/appointments')
+    }, []);
+    /*
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -79,51 +79,17 @@ function PatientAppointmentBooking() {
         getDoctor();
         
     }, [])
-
-    return <>
+   */
+    return ( 
+    <>
     
-    <h1>Book Appointment</h1>
-    <Divider/>
-    <h3>Dr. {doctorName}</h3>
+        <BetterUNavbar />
 
-    <form onSubmit={handleSubmit}>
+        <Divider />
+        <Footer />
+        </>
+    )
 
-        <div className="mb-3">
-            <label htmlFor="appointmentReason" className="form-label">Reason for Appointment</label>
-            <input type="text" className="form-control" id="appointmentReason" name="reason" onChange={handleChange} required/>
-
-            <br/>
-
-            <label htmlFor="appointmentDate" className="form-label">Appointment Date</label>
-            <br/>
-
-            <input
-            type="date"
-            id="appointmentDate"
-            className="form-control"
-            name="date"
-            min={getTomorrow()}
-            onChange={handleChange}
-            required />
-
-<           label htmlFor="appointmentHour" className="form-label">Appointment Time</label>
-            <br/>
-            <input
-            type="time"
-            name="time"
-            id="appointmentTime"
-            className="form-control"
-            step="3600"
-            min="00:00:00"
-            onChange={handleChange}
-            required />
-        </div>
-        
-
-        <button type="submit" className="btn btn-primary">Request Appointment</button>
-
-    </form>
-    </>
 }
 
-export default PatientAppointmentBooking;
+export default DoctorSettings;
