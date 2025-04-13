@@ -25,11 +25,11 @@ function App() {
           <Route path="/sign-up" element={<Registration/>}/>
           <Route path="/log-in" element={<Login/>}></Route>
 
-          <Route path="/dashboard" element={<Dashboard/>}/>
+          <Route path="/dashboard" element={<Dashboard/>}></Route>
           <Route path="/forums" element={<Forums/>}></Route>
 
-          <Route path="/view-patients" element={<DoctorPatientView />} />
-        <Route path="/settings" element={<DoctorSettings />} />
+          <Route path="/view_patients" element={<DoctorPatientView />} />
+          <Route path="/settings" element={<DoctorSettings />} />
         </Routes>
       </BrowserRouter>
       
