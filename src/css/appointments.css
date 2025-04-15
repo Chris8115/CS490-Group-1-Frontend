@@ -1,0 +1,42 @@
+.appointments-scroll-box {
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .appointment-item {
+    padding: 0.6rem;
+    background-color: #f4f4f4;
+    transition: border-left-color 0.2s ease, transform 0.2s ease;
+    border-left: 2px solid transparent;
+  }
+  
+  .appointment-item:hover {
+    border-left-color: red;
+
+  }
+  
+  .appointment-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.25rem;
+  }
+  
+  .patient-name {
+    font-weight: 700;
+    font-size: 1rem;
+  }
+  
+  .time {
+    font-size: 0.85rem;
+    color: #666;
+  }
+  
+  .patient-request {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #444;
+  }
+  
