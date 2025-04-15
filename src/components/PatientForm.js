@@ -1,24 +1,48 @@
-import { React, useState } from 'react';
+import React, { useState } from 'react';
 import {
     MDBInput,
     MDBCol,
     MDBRow,
-    MDBCheckbox,
-    MDBBtn,
-    MDBIcon
+    MDBBtn
 } from 'mdb-react-ui-kit';
-import FileDropbox from './FileDropbox.js';
-import Eula from './Eula.js';
+import FileDropbox from './FileDropbox';
+import Eula from './Eula';
 
 function PatientForm() {
 
-    const [appointmentData, setAppointmentData] = useState({
-            date: "",
-            time: "",
-            reason: "",
-            patient_id: 26,
-            doctor_id: 0 
-        });
+    const [userData, setUserData] = useState({
+        first_name: '',
+        last_name: '',
+        email: '',
+        phone_number: '',
+        password: ''
+    });
+
+    const [addressData, setAddressData] = useState({
+        address: '',
+        address2: '',
+        city: '',
+        state: '',
+        country: '',
+        zip: ''
+    });
+
+    const [creditCardData, setCreditCardData] = useState({
+        cardnumber: '',
+        cvv: '',
+        exp_date: ''
+    });
+
+    const [patientData, setPatientData] = useState({
+        ssn: '',
+        medical_history: ''
+    });
+
+    const [formMeta, setFormMeta] = useState({
+        date: '',
+        eulaName: '',
+        identificationFile: null
+    });
 
     const getTomorrow = () => {
         const tomorrow = new Date();
@@ -26,101 +50,154 @@ function PatientForm() {
         const year = tomorrow.getFullYear();
         const month = String(tomorrow.getMonth() + 1).padStart(2, '0');
         const day = String(tomorrow.getDate()).padStart(2, '0');
-        
-        const date = `${year}-${month}-${day}`;
-        return String(date);
-    }
+        return `${year}-${month}-${day}`;
+    };
 
-    const handleChange = (e) => {
-        const {name, value} = e.target;
-        setAppointmentData(prev => ({
+    const handleChange = (e, stateSetter) => {
+        const { name, value } = e.target;
+        stateSetter(prev => ({ ...prev, [name]: value }));
+    };
+
+    const handleFileChange = (e) => {
+        setFormMeta(prev => ({
             ...prev,
-            [name]: value
-        }))
-    }
+            identificationFile: e.target.files[0]
+        }));
+    };
 
-    
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData();
+        formData.append('user', JSON.stringify({
+            ...userData,
+            role: 'patient'
+        }));
+        formData.append('address', JSON.stringify(addressData));
+        formData.append('credit_card', JSON.stringify(creditCardData));
+        formData.append('patient', JSON.stringify(patientData));
+        formData.append('doctor', ''); // empty for patients
+        formData.append('pharmacist', ''); // empty for patients
+
+        if (formMeta.identificationFile) {
+            formData.append('identification', formMeta.identificationFile);
+        }
+
+        try {
+            const res = await fetch('http://localhost:5000/users/patient', {
+                method: 'PUT',
+                body: formData
+            });
+
+            const result = await res.json();
+            alert(result.message || 'Patient registered!');
+        } catch (err) {
+            console.error(err);
+            alert('Registration failed.');
+        }
+    };
 
     return (
         <div className='patient-form'>
             <h2>Register as a patient</h2>
-            <form>
+            <form onSubmit={handleSubmit}>
 
                 <p className='step'>Step 1: Basic Information</p>
                 <MDBRow className='mb-4'>
                     <MDBCol>
-                    <label>First name</label>
-                    <MDBInput id='form3Example1' label='' />
+                        <label>First name</label>
+                        <MDBInput name="first_name" value={userData.first_name} onChange={e => handleChange(e, setUserData)} />
                     </MDBCol>
                     <MDBCol>
-                    <label>Last name</label>   
-                    <MDBInput id='form3Example2' label='' />
+                        <label>Last name</label>
+                        <MDBInput name="last_name" value={userData.last_name} onChange={e => handleChange(e, setUserData)} />
                     </MDBCol>
                 </MDBRow>
                 <MDBRow className='mb-4'>
                     <MDBCol>
-                    <label>Email Address</label>
-                    <MDBInput id='form3Example1' type='email' label='' />
+                        <label>Email Address</label>
+                        <MDBInput name="email" type='email' value={userData.email} onChange={e => handleChange(e, setUserData)} />
                     </MDBCol>
                     <MDBCol>
-                    <label>Phone Number</label>
-                    <MDBInput id='form3Example2' label='' type='number' />
+                        <label>Phone Number</label>
+                        <MDBInput name="phone_number" type='text' value={userData.phone_number} onChange={e => handleChange(e, setUserData)} />
                     </MDBCol>
                 </MDBRow>
                 <label>Password</label>
-                <MDBInput className='mb-4' type='password' id='form3Example4' label='' />
+                <MDBInput className='mb-4' name="password" type='password' value={userData.password} onChange={e => handleChange(e, setUserData)} />
                 <label>Confirm Password</label>
-                <MDBInput className='mb-4' type='password' id='form3Example4' label='' />
-                
-                
-                
+                <MDBInput className='mb-4' type='password' />
 
-                <p className='step'>Step 2: Identification & Medical History</p>
-                
-                <label class="form-label" for="customFile">Upload Identification (Driver's License, Passport, or other government-issued photo ID)</label>
-                <input type="file" class="form-control" id="customFile" />
+                <p className='step'>Step 2: Identification, Address & Payment Info</p>
 
-                <p className='step-descrip'>For security, compliance, and billing purposes, we are legally obligated to record the social security numbers of all patients. All sensitive information is stored in compliance with <a href='https://www.cdc.gov/phlp/php/resources/health-insurance-portability-and-accountability-act-of-1996-hipaa.html#:~:text=At%20a%20glance,Rule%20to%20implement%20HIPAA%20requirements.'>HIPAA</a> standards. If you have other concerns, please contact support@betteru.com for more information.</p>
+                <label className="form-label">Upload Identification</label>
+                <input type="file" className="form-control mb-3" onChange={handleFileChange} />
+
                 <label>Social Security Number</label>
-                <MDBInput className='mb-4' type='number' id='form3Example4' label='' />
+                <MDBInput className='mb-4' type='text' name='ssn' value={patientData.ssn} onChange={e => handleChange(e, setPatientData)} />
+
+                <h5>Address Information</h5>
+                <MDBInput className='mb-4' label='Address' name='address' value={addressData.address} onChange={e => handleChange(e, setAddressData)} />
+                <MDBInput className='mb-4' label='Address 2' name='address2' value={addressData.address2} onChange={e => handleChange(e, setAddressData)} />
+                <MDBRow className='mb-4'>
+                    <MDBCol>
+                        <MDBInput label='City' name='city' value={addressData.city} onChange={e => handleChange(e, setAddressData)} />
+                    </MDBCol>
+                    <MDBCol>
+                        <MDBInput label='State' name='state' value={addressData.state} onChange={e => handleChange(e, setAddressData)} />
+                    </MDBCol>
+                </MDBRow>
+                <MDBRow className='mb-4'>
+                    <MDBCol>
+                        <MDBInput label='Country' name='country' value={addressData.country} onChange={e => handleChange(e, setAddressData)} />
+                    </MDBCol>
+                    <MDBCol>
+                        <MDBInput label='Zip Code' name='zip' value={addressData.zip} onChange={e => handleChange(e, setAddressData)} />
+                    </MDBCol>
+                </MDBRow>
+
+                <h5>Credit Card Information</h5>
+                <MDBInput className='mb-4' label='Card Number' name='cardnumber' value={creditCardData.cardnumber} onChange={e => handleChange(e, setCreditCardData)} />
+                <MDBRow className='mb-4'>
+                    <MDBCol>
+                        <MDBInput label='CVV' name='cvv' value={creditCardData.cvv} onChange={e => handleChange(e, setCreditCardData)} />
+                    </MDBCol>
+                    <MDBCol>
+                        <MDBInput label='Expiration Date (YYY-MM-DD)' name='exp_date' value={creditCardData.exp_date} onChange={e => handleChange(e, setCreditCardData)} />
+                    </MDBCol>
+                </MDBRow>
 
                 <p className='step-descrip'>Upload Existing Medical History (you can do this later)</p>
-                <FileDropbox/>
+                <FileDropbox />
 
                 <p className='step'>Step 3: Acknowledgement and Compliance Forms</p>
-
-                <p className='step-descrip'>BetterU™ requires all patients to sign the following agreement regarding use of services, compliance, and safety. Please read the following document and give your digital signature upon completion.</p>
-                
                 <Eula />
 
                 <MDBRow className='mb-4'>
                     <MDBCol>
-                    <label>Name</label>
-                    <MDBInput id='form3Example1' label='' />
+                        <label>Name</label>
+                        <MDBInput name='eulaName' value={formMeta.eulaName} onChange={e => handleChange(e, setFormMeta)} />
                     </MDBCol>
                     <MDBCol>
-                    <label>Today's Date</label>
-                    <input
-                        type="date"
-                        id="appointmentDate"
-                        className="form-control"
-                        name="date"
-                        min={getTomorrow()}
-                        onChange={handleChange}
-                        required />
-
-                          
+                        <label>Today's Date</label>
+                        <input
+                            type="date"
+                            className="form-control"
+                            name="date"
+                            value={formMeta.date}
+                            min={getTomorrow()}
+                            onChange={e => handleChange(e, setFormMeta)}
+                            required />
                     </MDBCol>
                 </MDBRow>
 
-                <MDBBtn type='submit' style={{backgroundColor: '#F53D3E', border: 'none'}} className='mb-4' block>
+                <MDBBtn type='submit' style={{ backgroundColor: '#F53D3E', border: 'none' }} className='mb-4' block>
                     Register
                 </MDBBtn>
-                
 
-                </form>
+            </form>
         </div>
-    )
+    );
 }
 
 export default PatientForm;
