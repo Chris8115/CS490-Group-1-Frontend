@@ -9,14 +9,18 @@ import 'react-calendar/dist/Calendar.css';
 import '../../../css/doctor_dashboard.css';
 import DoctorSettings from "./DoctorSettings.js";
 import DoctorPatientView from "./DoctorPatientView.js";
+import Appointments from "./Appointments.js";
+import PendingAppointments from "./PendingAppointments.js";
 
 function DoctorDashboard() {
 
     const navigate = useNavigate();
     const [doctorAppointments, setDoctorAppointments] = useState([]);
     const [userInfo, setUserInfo] = useState({});
-
     const [date, setDate] = useState(new Date());
+
+    const [pendingAppointments, setPendingAppointments] = useState([]);
+    let displayAppointments;
 
     const handleChange = (newDate) => {
         setDate(newDate);
@@ -29,8 +33,24 @@ function DoctorDashboard() {
         setUserInfo(user_info);
 
         getDoctorAppointments();
+
+        setDoctorAppointments([1, 2, 3]);
         
+
     }, [])
+
+    useEffect(() => {
+
+        if (doctorAppointments.length === 0) {
+            displayAppointments = (
+                <p>No appointments for today.</p>
+            )
+        }
+        else {
+            displayAppointments = <Appointments />
+        }
+
+    }, [doctorAppointments]);
 
 
     const getDoctorAppointments = async (event) => {
@@ -61,26 +81,27 @@ function DoctorDashboard() {
 
     return (
 
-        <div>
+        <div >
 
             <h1>Dashboard</h1>
             <Divider />
             
-            <div>
-                <h2>View Appointments</h2>
-                <div className='appointments'>
-                    <Calendar onChange={handleChange} value={date} />
-                    <p>No appointments for today.</p>
+            <h2>View Appointments</h2>
+            <div className="appointments-container">
+                <div className="calendar-panel">
+                        <Calendar onChange={handleChange} value={date} />
+                </div>
+                <div className="appointments-panel">
+                        <Appointments className="appointment-cards" />
                 </div>
             </div>
             
             <div>
                 <h2>Pending Appointments</h2>
-                <div className=''>
-                    <p>No pending appointments.</p>
-                </div>
-            </div>
+                <PendingAppointments />
 
+            </div>
+            <Divider />
             <div className='doctor-features'>
                 <DashboardItem itemName="View Patients" itemDescription="View current patients" href="/view_patients" icon="user_icon" />
                 <DashboardItem itemName="Account and Appointment Settings" itemDescription="Set public account details and appointment settings" href="/settings" icon="gear" />

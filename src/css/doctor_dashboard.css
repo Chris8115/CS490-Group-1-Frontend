@@ -1,4 +1,21 @@
-.appointments {
-    margin: 0 100px 50px 100px;
-    display: flex;
+.appointment-item {
+    transition: background-color 0.2s ease;
 }
+
+
+.appointments-container {
+    display: flex;
+    align-items: flex-start; /* top-align both calendar and appointments */
+    gap: 100px; /* spacing between them */
+    padding: 50px 0;
+    margin: 0 100px;
+}
+
+.calendar-panel {
+    flex: 0 0 auto; /* don't stretch */
+}
+
+.appointments-panel {
+    flex: 1;
+}
+  
