@@ -85,7 +85,7 @@ function PatientForm() {
 
         try {
             const res = await fetch('http://localhost:5000/users/patient', {
-                method: 'PUT',
+                method: 'POST',
                 body: formData
             });
 
@@ -163,7 +163,7 @@ function PatientForm() {
                         <MDBInput label='CVV' name='cvv' value={creditCardData.cvv} onChange={e => handleChange(e, setCreditCardData)} />
                     </MDBCol>
                     <MDBCol>
-                        <MDBInput label='Expiration Date (YYY-MM-DD)' name='exp_date' value={creditCardData.exp_date} onChange={e => handleChange(e, setCreditCardData)} />
+                        <MDBInput label='Expiration Date (YYYY-MM-DD)' name='exp_date' value={creditCardData.exp_date} onChange={e => handleChange(e, setCreditCardData)} />
                     </MDBCol>
                 </MDBRow>
 
