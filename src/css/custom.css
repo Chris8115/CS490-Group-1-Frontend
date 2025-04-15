@@ -2,6 +2,11 @@ body {
   font-family: 'Inter', 'Roboto';
 }
 
+.content-wrapper {
+  margin-left: 100px;
+  margin-right: 100px;
+}
+
 h1 {
   font-size: 50px;
 }
@@ -31,7 +36,7 @@ p {
 
 .divider {
   width: 90%;
-  height: 1px;
+  height: 2px;
   background-color: #D3D3D3;
   margin: 0 auto;
 }

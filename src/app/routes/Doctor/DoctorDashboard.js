@@ -10,6 +10,7 @@ import '../../../css/doctor_dashboard.css';
 import DoctorSettings from "./DoctorSettings.js";
 import DoctorPatientView from "./DoctorPatientView.js";
 import Appointments from "./Appointments.js";
+import PendingAppointments from "./PendingAppointments.js";
 
 function DoctorDashboard() {
 
@@ -51,8 +52,6 @@ function DoctorDashboard() {
 
     }, [doctorAppointments]);
 
-    
-
 
     const getDoctorAppointments = async (event) => {
         
@@ -82,7 +81,7 @@ function DoctorDashboard() {
 
     return (
 
-        <div>
+        <div >
 
             <h1>Dashboard</h1>
             <Divider />
@@ -99,9 +98,8 @@ function DoctorDashboard() {
             
             <div>
                 <h2>Pending Appointments</h2>
-                <div className=''>
-                    
-                </div>
+                <PendingAppointments />
+
             </div>
             <Divider />
             <div className='doctor-features'>
