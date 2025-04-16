@@ -3,7 +3,7 @@ import '../../css/forums.css';
 import BetterUNavbar from '../../components/BetterUNavbar';
 import { Divider } from '@mui/material';
 import Footer from '../../components/Footer';
-import ForumPosts from '../../components/ForumPosts.js';
+import ForumPosts from './Forums/ForumPosts.js';
 
 function Forums() {
     return (
