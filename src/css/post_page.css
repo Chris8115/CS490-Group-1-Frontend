@@ -55,12 +55,12 @@
   }
   
   .reply-input:focus {
-    border-color: #4f46e5;
+    border-color: black;
   }
   
   .reply-button {
     padding: 10px 16px;
-    background-color: #4f46e5; /* Indigo-600 */
+    background-color: #F53D3E; /* Indigo-600 */
     color: white;
     border: none;
     border-radius: 8px;
@@ -71,7 +71,7 @@
   }
   
   .reply-button:hover {
-    background-color: #4338ca; /* Indigo-700 */
+    background-color: #FF5354; /* Indigo-700 */
   }
   
 

@@ -3,6 +3,7 @@ import { useEffect, useState, useRef } from 'react';
 import BetterUNavbar from '../../../components/BetterUNavbar';
 import Divider from '../../../components/Divider';
 import Footer from '../../../components/Footer';
+import BackToForumsButton from './BackToForumsButton';
 import '../../../css/post_page.css';
 
 function PostPage() {
@@ -96,9 +97,18 @@ function PostPage() {
         <>
             <BetterUNavbar />
 
+            
+
             <main className="p-6 max-w-3xl mx-auto post-page">
-                {loading && <p>Loading post...</p>}
-                {error && <p className="text-red-500">Error: {error}</p>}
+                
+                <BackToForumsButton />
+                
+                {loading && <p style={{
+                                margin: '100px'
+                            }}>Loading post...</p>}
+                {error && <p className="text-red-500" style={{
+                                margin: '100px'
+                            }}>Error: {error}</p>}
 
                 {post && (
                     <article className="post-header bg-white shadow-md rounded-lg p-6 mb-8 border border-gray-200">
@@ -130,7 +140,7 @@ function PostPage() {
                                 className="border-l-4 border-gray-300 pl-4 py-3 bg-gray-50 rounded-md"
                             >
                                 <div className="text-sm text-gray-600 mb-1">
-                                    {comment.first_name || ''} {comment.last_name || 'Anonymous'} •{' '}
+                                    <b>{comment.first_name || ''} {comment.last_name || 'Anonymous'} </b> •{' '}
                                     {new Date(comment.created_at).toLocaleString()}
                                 </div>
                                 <div className="text-gray-800">{comment.comment_text}</div>
@@ -140,7 +150,9 @@ function PostPage() {
                 )}
 
                 {comments.length === 0 && !loading && (
-                    <p className="text-gray-500 italic mt-6">No comments yet. Be the first to comment!</p>
+                    <p style={{
+                        margin: '50px'
+                    }} className="text-gray-500 italic mt-6">No comments yet. Be the first to comment!</p>
                 )}
             </main>
 

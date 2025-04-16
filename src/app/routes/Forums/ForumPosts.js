@@ -41,16 +41,18 @@ function ForumPosts() {
   const pageCount = Math.ceil(posts.length / postsPerPage);
 
   function displayPosts() {
-    if (loading) return <p>Loading forum posts...</p>;
-    if (error) return <p>Error: {error}</p>;
+    if (loading) return <p style={{
+                                margin: '100px'
+                            }} >Loading forum posts...</p>;
+    if (error) return <p style={{
+                              margin: '100px'
+                          }}>Error: {error}</p>;
 
     return (
       <>
         <div className="posts-container">
           {currentPosts.map((post) => (
             <Post post={post} />
-            
-            
           ))}
         </div>
 
