@@ -5,8 +5,9 @@ import {
     MDBRow,
     MDBBtn
 } from 'mdb-react-ui-kit';
-import FileDropbox from './FileDropbox';
 import Eula from './Eula';
+import Checkbox from '@mui/material/Checkbox';
+
 
 function PatientForm() {
 
@@ -97,6 +98,37 @@ function PatientForm() {
         }
     };
 
+    const [medicalConditions, setMedicalConditions] = useState({
+        smoker: false,
+        heartDisease: false,
+        diabetes: false,
+        highBloodPressure: false,
+        asthma: false,
+    });
+
+    const handleConditionChange = (event) => {
+        const { name, checked } = event.target;
+        const updatedConditions = {
+            ...medicalConditions,
+            [name]: checked
+        };
+        setMedicalConditions(updatedConditions);
+    
+        const selected = Object.entries(updatedConditions)
+            .filter(([_, value]) => value)
+            .map(([key]) =>
+                key
+                    .replace(/([A-Z])/g, ' $1')
+                    .replace(/^./, str => str.toUpperCase())
+            )
+            .join(', ');
+    
+        setPatientData(prev => ({
+            ...prev,
+            medical_history: selected
+        }));
+    };
+
     return (
         <div className='patient-form'>
             <h2>Register as a patient</h2>
@@ -167,9 +199,23 @@ function PatientForm() {
                     </MDBCol>
                 </MDBRow>
 
-                <p className='step-descrip'>Upload Existing Medical History (you can do this later)</p>
-                <FileDropbox />
-
+                <p className='step-descrip'>Upload Existing Medical History</p>
+                <div className='mb-3'>
+                    {Object.entries(medicalConditions).map(([key, value]) => (
+                        <div key={key}>
+                            <label>
+                                <Checkbox
+                                    name={key}
+                                    checked={value}
+                                    onChange={handleConditionChange}
+                                />
+                                {key
+                                    .replace(/([A-Z])/g, ' $1')
+                                    .replace(/^./, str => str.toUpperCase())}
+                            </label>
+                        </div>
+                    ))}
+                </div>
                 <p className='step'>Step 3: Acknowledgement and Compliance Forms</p>
                 <Eula />
 
