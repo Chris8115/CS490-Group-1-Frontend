@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useFetcher, useNavigate } from 'react-router-dom';
 import {
     MDBContainer,
     MDBInput,
@@ -62,7 +62,45 @@ function LoginForm() {
         }
         
       };
-
+    async function ClickForgotPassword(){
+      let email = prompt("Enter your email address.", "Email");
+      let Emaildata = null;
+      if(email){
+        await fetch(`/users?email=${encodeURI(email)}`)
+        .then(data => {
+          /**/
+          console.log(data);
+          return data;
+          //console.log(requestOptions);
+        })
+        .then(resp => resp.json())
+        .then(Emaildata => {
+          if(Emaildata.users.length == 0){
+            throw new Error('Invalid email')
+          }
+          return Emaildata.users[0]
+        })
+        .then(userData => {
+          const requestOptions = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+              'email_body': 'Your password reset link: NULL\n If you did not request this, you can ignore. Someone may have typed your email by mistake.',
+              'email_subject': 'BetterU Password Reset request.'
+            })
+          };
+          fetch(`/mail/${userData['user_id']}`, requestOptions)
+          .then(response => response.json())
+          .then(data => {
+            console.log(data);
+            alert(data.message);
+          })
+        })
+        .catch(error => {
+          alert("Invalid Email.");
+        })
+      }
+    }
     return (
 
         <MDBContainer className="p-3 my-5 d-flex flex-column w-50">
@@ -80,7 +118,7 @@ function LoginForm() {
 
             <div className="d-flex justify-content-between mx-3 mb-4">
                 <MDBCheckbox name='flexCheck' value='' id='flexCheckDefault' label='Remember me' />
-                <a href="!#">Forgot password?</a>
+                <a style={{'cursor': 'pointer'}} onClick={ClickForgotPassword}>Forgot password?</a>
             </div>
 
             <button type='submit' className="login-btn" href=''>Sign in</button>
