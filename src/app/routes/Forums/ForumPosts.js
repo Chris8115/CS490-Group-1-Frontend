@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import Divider from './Divider';
+import Divider from '../../../components/Divider';
 import ReactPaginate from 'react-paginate';
-import '../css/forums.css';
+import '../../../css/forums.css';
+import Post from './Post.js';
 
 function ForumPosts() {
   const [posts, setPosts] = useState([]);
@@ -22,6 +23,7 @@ function ForumPosts() {
       })
       .then((data) => {
         setPosts(data.forum_posts); // updated to store the array directly
+        console.log(posts);
         setLoading(false);
       })
       .catch((err) => {
@@ -46,14 +48,9 @@ function ForumPosts() {
       <>
         <div className="posts-container">
           {currentPosts.map((post) => (
-            <div key={post.post_id} className="post-card">
-              <h3 className="post-title">{post.title}</h3>
-              <p className="post-type">{post.post_type}</p>
-              <p className="post-content">{post.content}</p>
-              <small className="post-date">
-                Posted on {new Date(post.created_at).toLocaleDateString()}
-              </small>
-            </div>
+            <Post post={post} />
+            
+            
           ))}
         </div>
 
