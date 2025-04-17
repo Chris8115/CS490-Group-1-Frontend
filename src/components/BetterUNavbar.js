@@ -3,12 +3,32 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import '../css/custom.css';
+import { useNavigate } from 'react-router-dom';
 
 function BetterUNavbar() {
 
+  const navigate = useNavigate();
   const isLoggedIn = !!sessionStorage.getItem('user_info');
 
   let buttons;
+
+  const handleLogout = async () => {
+    try {
+        const response = await fetch('http://localhost:5000/logout', {
+            method: 'GET',
+            credentials: 'include',
+        });
+
+        if (response.ok) {
+            sessionStorage.clear();
+            navigate('/log-in');
+        } else {
+            console.error('Logout failed');
+        }
+    } catch (err) {
+        console.error('Error during logout:', err);
+    }
+};
 
   if (!isLoggedIn) {
     buttons = (
@@ -24,6 +44,7 @@ function BetterUNavbar() {
       <>
         <Nav.Link href="/dashboard">Dashboard</Nav.Link>
         <Nav.Link href="/forums">Discussion Forums</Nav.Link>
+        <Nav.Link onClick={handleLogout} >Logout</Nav.Link>
       </>
       )
   }

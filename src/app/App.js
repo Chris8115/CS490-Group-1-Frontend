@@ -13,6 +13,7 @@ import { Axios } from 'axios';
 import DoctorPatientView from './routes/Doctor/DoctorPatientView.js';
 import DoctorSettings from './routes/Doctor/DoctorSettings.js';
 import ResetPassword from '../components/ResetPassword.js';
+import PostPage from './routes/Forums/PostPage.js';
 
 function App() {
   return (
@@ -26,6 +27,8 @@ function App() {
           <Route path="/sign-up" element={<Registration/>}/>
           <Route path="/log-in" element={<Login/>}></Route>
           <Route path="/resetpassword" element={<ResetPassword/>}></Route>
+          <Route path="/log-in" element={<Login/>} ></Route>
+          <Route path="/post/:postId" element={<PostPage />} ></Route>
 
           <Route path="/dashboard" element={<Dashboard/>}></Route>
           <Route path="/forums" element={<Forums/>}></Route>

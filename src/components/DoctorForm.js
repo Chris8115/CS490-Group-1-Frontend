@@ -1,24 +1,38 @@
-import { React, useState } from 'react';
+import React, { useState } from 'react';
 import {
     MDBInput,
     MDBCol,
     MDBRow,
-    MDBCheckbox,
-    MDBBtn,
-    MDBIcon
+    MDBBtn
 } from 'mdb-react-ui-kit';
-import FileDropbox from './FileDropbox.js';
-import Eula from './Eula.js';
+import Eula from './Eula';
 
 function DoctorForm() {
 
-    const [appointmentData, setAppointmentData] = useState({
-            date: "",
-            time: "",
-            reason: "",
-            patient_id: 26,
-            doctor_id: 0 
+    const [userData, setUserData] = useState({
+            first_name: '',
+            last_name: '',
+            email: '',
+            phone_number: '',
+            password: ''
         });
+    const handleFileChange = (e) => {
+        setFormMeta(prev => ({
+            ...prev,
+            identificationFile: e.target.files[0]
+        }));
+    };
+    const [formMeta, setFormMeta] = useState({
+            date: '',
+            eulaName: '',
+            identificationFile: null
+        });
+    const [doctorsData, setDoctorsData] = useState({
+        license_number: '',
+        specialization: '',
+        profile: ''
+    });
+    
 
     const getTomorrow = () => {
         const tomorrow = new Date();
@@ -31,98 +45,117 @@ function DoctorForm() {
         return String(date);
     }
 
-    const handleChange = (e) => {
-        const {name, value} = e.target;
-        setAppointmentData(prev => ({
-            ...prev,
-            [name]: value
-        }))
-    }
+    const handleChange = (e, stateSetter) => {
+        const { name, value } = e.target;
+        stateSetter(prev => ({ ...prev, [name]: value }));
+    };
 
-    
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData();
+        formData.append('user', JSON.stringify({
+            ...userData,
+            role: 'doctor'
+        }));
+        
+        formData.append('doctor', JSON.stringify(doctorsData));
+        formData.append('patient', ''); // empty for patients
+        formData.append('pharmacist', ''); // empty for patients
+
+        if (formMeta.identificationFile) {
+            formData.append('identification', formMeta.identificationFile);
+        }
+
+        try {
+            const res = await fetch('http://localhost:5000/users/doctor', {
+                method: 'POST',
+                body: formData
+            });
+
+            const result = await res.json();
+            alert(result.message || 'Doctor registered!');
+        } catch (err) {
+            console.error(err);
+            alert('Registration failed.');
+        }
+    };
 
     return (
         <div className='patient-form'>
             <h2>Register as a doctor</h2>
-            <form>
-
+            <form onSubmit={handleSubmit}>
                 <p className='step'>Step 1: Basic Information</p>
-                <MDBRow className='mb-4'>
-                    <MDBCol>
-                    <label>First name</label>
-                    <MDBInput id='form3Example1' label='' />
-                    </MDBCol>
-                    <MDBCol>
-                    <label>Last name</label>   
-                    <MDBInput id='form3Example2' label='' />
-                    </MDBCol>
-                </MDBRow>
-                <MDBRow className='mb-4'>
-                    <MDBCol>
-                    <label>Email Address</label>
-                    <MDBInput id='form3Example1' label='' />
-                    </MDBCol>
-                    <MDBCol>
-                    <label>Phone Number</label>
-                    <MDBInput id='form3Example2' label='' />
-                    </MDBCol>
-                </MDBRow>
-                <label>Password</label>
-                <MDBInput className='mb-4' type='password' id='form3Example4' label='' />
-                <label>Confirm Password</label>
-                <MDBInput className='mb-4' type='password' id='form3Example4' label='' />
+                    <MDBRow className='mb-4'>
+                        <MDBCol>
+                            <label>First name</label>
+                            <MDBInput name="first_name" value={userData.first_name} onChange={e => handleChange(e, setUserData)} />
+                        </MDBCol>
+                        <MDBCol>
+                            <label>Last name</label>
+                            <MDBInput name="last_name" value={userData.last_name} onChange={e => handleChange(e, setUserData)} />
+                        </MDBCol>
+                        </MDBRow>
+                        <MDBRow className='mb-4'>
+                            <MDBCol>
+                                <label>Email Address</label>
+                                <MDBInput name="email" type='email' value={userData.email} onChange={e => handleChange(e, setUserData)} />
+                            </MDBCol>
+                            <MDBCol>
+                                <label>Phone Number</label>
+                                <MDBInput name="phone_number" type='text' value={userData.phone_number} onChange={e => handleChange(e, setUserData)} />
+                            </MDBCol>
+                        </MDBRow>
+                            <label>Password</label>
+                            <MDBInput className='mb-4' name="password" type='password' value={userData.password} onChange={e => handleChange(e, setUserData)} />
+                            <label>Confirm Password</label>
+                            <MDBInput className='mb-4' type='password' />
 
-                <label>Write a short bio of your experience in medical practice. This will be publicly displayed on your profile. You may change this later.</label>
-                <MDBInput className='mb-4' type='' id='form3Example4' label='' />
+                    <label>Write a short bio of your experience in medical practice. This will be publicly displayed on your profile. You may change this later.</label>
+                    <MDBInput className='mb-4' type='text' name='profile' value={doctorsData.profile} onChange={e => handleChange(e, setDoctorsData)} />
 
-                <label>Please enter your medical specialization(s) below.</label>
-                <MDBInput className='mb-4' type='' id='form3Example4' label='' />
+                    <label>Please enter your medical specialization(s) below.</label>
+                    <MDBInput className='mb-4' type='text' name='specialization' value={doctorsData.specialization} onChange={e => handleChange(e, setDoctorsData)} />
 
-                <p className='step'>Step 2: Identification</p>
-                
-                <label class="form-label" for="customFile">Upload Identification (Driver's License, Passport, or other government-issued photo ID)</label>
-                <input type="file" class="form-control" id="customFile" />
+                    <p className='step'>Step 2: Identification, Address & Payment Info</p>
 
-                <br></br>
-                <label class="form-label" for="customFile">Enter Medical License Code</label>
-                <MDBInput className='mb-4' type='number' id='form3Example4' label='' />
+                    <label className="form-label">Upload Identification</label>
+                    <input type="file" className="form-control mb-3" onChange={handleFileChange} />
 
-                
+                    <br></br>
+                    <label class="form-label" for="customFile">Enter Medical License Code</label>
+                    <MDBInput className='mb-4' type='text' name='license_number' value={doctorsData.license_number} onChange={e => handleChange(e, setDoctorsData)} />
+                    
 
-                <p className='step'>Step 3: Acknowledgement and Compliance Forms</p>
+                    <p className='step'>Step 3: Acknowledgement and Compliance Forms</p>
+                    <Eula />
 
-                <p className='step-descrip'>BetterU™ requires all doctors to sign the following agreement regarding use of services, compliance, and safety. Please read the following document and give your digital signature upon completion.</p>
-                
-                <Eula />
+                    <MDBRow className='mb-4'>
+                        <MDBCol>
+                            <label>Name</label>
+                            <MDBInput name='eulaName' value={formMeta.eulaName} onChange={e => handleChange(e, setFormMeta)} />
+                        </MDBCol>
+                        <MDBCol>
+                            <label>Today's Date</label>
+                            <input
+                                type="date"
+                                className="form-control"
+                                name="date"
+                                value={formMeta.date}
+                                min={getTomorrow()}
+                                onChange={e => handleChange(e, setFormMeta)}
+                                required />
+                        </MDBCol>
+                    </MDBRow>
 
-                <MDBRow className='mb-4'>
-                    <MDBCol>
-                    <label>Name</label>
-                    <MDBInput id='form3Example1' label='' />
-                    </MDBCol>
-                    <MDBCol>
-                    <label>Today's Date</label>
-                    <input
-                        type="date"
-                        id="appointmentDate"
-                        className="form-control"
-                        name="date"
-                        min={getTomorrow()}
-                        onChange={handleChange}
-                        required />
-
-                          
-                    </MDBCol>
-                </MDBRow>
-
-                <MDBBtn type='submit' style={{backgroundColor: '#F53D3E', border: 'none'}} className='mb-4' block>
-                    Register
-                </MDBBtn>
+                    <MDBBtn type='submit' style={{ backgroundColor: '#F53D3E', border: 'none' }} className='mb-4' block>
+                        Register
+                    </MDBBtn>
                 
 
-                </form>
+            </form>
         </div>
-    )
+    );
 }
 
 export default DoctorForm;

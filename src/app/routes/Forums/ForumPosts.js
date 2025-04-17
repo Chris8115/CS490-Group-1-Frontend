@@ -1,12 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import Divider from './Divider';
+import Divider from '../../../components/Divider';
 import ReactPaginate from 'react-paginate';
-import '../css/forums.css';
+import '../../../css/forums.css';
+import Post from './Post.js';
+import AddPost from './AddPost';
+import SavedPosts from './SavedPosts.js';
 
 function ForumPosts() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const userId = JSON.parse(sessionStorage.getItem('user_info')).user_id;
+  const role = JSON.parse(sessionStorage.getItem('user_info')).role;
+
+  const [showModal, setShowModal] = useState(false);
+  const [newPostTitle, setNewPostTitle] = useState('');
+  const [newPostText, setNewPostText] = useState('');
 
   // pagination state
   const [currentPage, setCurrentPage] = useState(0);
@@ -22,6 +32,7 @@ function ForumPosts() {
       })
       .then((data) => {
         setPosts(data.forum_posts); // updated to store the array directly
+        console.log(posts);
         setLoading(false);
       })
       .catch((err) => {
@@ -39,22 +50,19 @@ function ForumPosts() {
   const pageCount = Math.ceil(posts.length / postsPerPage);
 
   function displayPosts() {
-    if (loading) return <p>Loading forum posts...</p>;
-    if (error) return <p>Error: {error}</p>;
+    if (loading) return <p style={{
+                                margin: '100px'
+                            }} >Loading forum posts...</p>;
+    if (error) return <p style={{
+                              margin: '100px'
+                          }}>Error: {error}</p>;
 
     return (
       <>
         <div className="posts-container">
-          {currentPosts.map((post) => (
-            <div key={post.post_id} className="post-card">
-              <h3 className="post-title">{post.title}</h3>
-              <p className="post-type">{post.post_type}</p>
-              <p className="post-content">{post.content}</p>
-              <small className="post-date">
-                Posted on {new Date(post.created_at).toLocaleDateString()}
-              </small>
-            </div>
-          ))}
+        {currentPosts.map((post) => (
+          <Post key={post.id} post={post} userId={userId} role={role} />
+        ))}
         </div>
 
         <ReactPaginate
@@ -86,6 +94,7 @@ function ForumPosts() {
         <h1>Discussion Forums</h1>
       </div>
 
+      {role === 'doctor' ? <AddPost userId={userId} /> : <SavedPosts />}
       <Divider />
 
       {displayPosts()}
