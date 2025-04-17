@@ -27,12 +27,12 @@ function PatientAppointmentBooking() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const startTime = `${appointmentData.date} ${appointmentData.time}:00`;
-        const endTime = `${appointmentData.date} ${getEndTime(startTime)}`;
-
+        
         try {
-            const response = await axios.post("/appointments",
-                {
+            const startTime = `${appointmentData.date} ${appointmentData.time}:00`;
+            const endTime = `${appointmentData.date} ${getEndTime(startTime)}`;
+                
+            const data = {
                 "doctor_id": appointmentData.doctor_id,
                 "end_time": endTime,
                 "location": "100 Test Rd",
@@ -40,15 +40,24 @@ function PatientAppointmentBooking() {
                 "reason": appointmentData.reason,
                 "start_time": startTime,
                 "status": "pending",
-            },
-            {
-                withCredentials: true
             }
-        )
             
-            if (response.status == 201) {
-                setRequestMade(true);
-            }
+            
+                const res = await fetch('/patient_progress', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await res.json();
+                console.log(result);
+        
+                if (res.status == 201) {
+                    setRequestMade(true);
+                }
 
         } catch (error) {
             console.log(error);
@@ -83,6 +92,8 @@ function PatientAppointmentBooking() {
     }
 
     useEffect(() => {
+        if (!userInfo?.user_id) return; 
+
         // get request to get doctorId based on patient/doctor relation
         const getDoctor = async () => {
             let doctorId = await getPatientDoctorId(userInfo.user_id);
@@ -96,7 +107,7 @@ function PatientAppointmentBooking() {
         }
         getDoctor();
         
-    }, [])
+    }, [userInfo])
 
     if (requestMade) {
         return <>

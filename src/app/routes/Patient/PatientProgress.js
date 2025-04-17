@@ -36,7 +36,8 @@ function PatientProgress() {
     const [chartData, setChartData] = useState({});
     const [progressData, setProgressData] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [exerciseAssignment, setExerciseAssignment] = useState([]);
+    const [exerciseAssignments, setExerciseAssignments] = useState([]);
+    const [exercises, setExercises] = useState([]);
     const [surveySubmitted, setSurveySubmitted] = useState(false);
 
     useEffect(() => {
@@ -98,12 +99,41 @@ function PatientProgress() {
                 
                 console.log(data)
 
-                setExerciseAssignment(
-                    data.patient_exercise_assignments.map(item => item.instructions)
-                );
+                const assignments = data.patient_exercise_assignments;
+                setExerciseAssignments(assignments);
+                await getExercises(assignments);
 
             } catch (e) {
-                console.log(e);
+                console.error(e);
+            }
+        }
+
+        const getExercises = async (assignments) => {
+            try {
+                const exerciseIds = assignments.map(item => item.exercise_id);
+
+                const fetches = exerciseIds.map(id => 
+                    fetch(`/exercise_plans?exercise_id=${id}`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        credentials: 'include'
+                    })
+                    .then(res => {
+                        if (!res.ok) {
+                            console.error(res);
+                        } else {
+                            return res.json();
+                        }
+                    })
+                )
+
+                const results = await Promise.all(fetches);
+                setExercises(results.map(res => res.exercise_plans[0]));
+
+            } catch (e) {
+                console.error(e);
             }
         }
 
@@ -160,7 +190,7 @@ function PatientProgress() {
     
     <br/>
     
-        <h2><strong>GOAL:</strong> {progressData[0].weight_goal} lbs</h2>
+        <h3><strong>GOAL:</strong> {progressData[0].weight_goal} lbs</h3>
         <h3><strong>Last recorded weight:</strong> {progressData[0].weight} lbs</h3>
         
         <Line data={chartData} />
@@ -168,11 +198,18 @@ function PatientProgress() {
         <br/>
 
         <h2>Exercises</h2>
-        <ul>
-            {exerciseAssignment.map((text, idx) => (
-                <h4><li key={idx}>{text}</li></h4>
+
+        <div>
+            {exercises[0] && exerciseAssignments.map((assignment, idx) => (
+                <div key={idx}>
+                    <hr />
+                    <h3>{exercises[idx].title}</h3>
+                    <h4>{exercises[idx].description}</h4>
+                </div>
             ))}
-        </ul>
+        </div>
+
+        <br/>
 
         <h2>Weekly Survey</h2>
 
@@ -205,12 +242,13 @@ function PatientProgress() {
 
 const surveyCheck = (dateString) => {
     const inputDate = new Date(dateString);
+    inputDate.setHours(inputDate.getHours() - 4);
     const now = new Date();
   
     const oneWeekAgo = new Date();
     oneWeekAgo.setDate(now.getDate() - 7);
   
     return inputDate >= oneWeekAgo && inputDate <= now;
-  };
+};
 
 export default PatientProgress;

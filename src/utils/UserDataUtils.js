@@ -9,7 +9,10 @@ export async function getPatientDoctorId(user_id) {
         },
         credentials: 'include'
     })
-    let id = response.data.doctor_patient_relationship[0].doctor_id;
+
+    const data = await response.json();
+
+    let id = data.doctor_patient_relationship[0].doctor_id;
     return id;
 }
 

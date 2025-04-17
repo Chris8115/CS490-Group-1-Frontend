@@ -48,7 +48,7 @@ function PatientPrescriptions() {
 
         <ul>
             {patientPrescriptions.map((prescription, idx) => (
-                <PatientPrescriptionEntry prescription={prescription}/>
+                <PatientPrescriptionEntry prescription={prescription} key={prescription.prescription_id} />
             ))}
         </ul>
         
