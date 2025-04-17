@@ -27,7 +27,6 @@ function DoctorDashboard() {
         console.log('Selected date:', newDate);
       };
 
-
     useEffect(() => {
         const user_info = JSON.parse(sessionStorage.getItem('user_info'));
         setUserInfo(user_info);

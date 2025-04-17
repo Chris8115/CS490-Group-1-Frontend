@@ -3,6 +3,8 @@ import axios from "axios";
 import Divider from "../../../components/Divider";
 import { getDoctorLastName, getUserData } from "../../../utils/UserDataUtils";
 import StarRating from "../../../components/StarRating";
+import Footer from "../../../components/Footer";
+import BetterUNavbar from "../../../components/BetterUNavbar";
 
 function PatientReview() {
     // All previous doctors that the patient has had
@@ -76,7 +78,11 @@ function PatientReview() {
     }
 
     return <>
-    
+
+    <BetterUNavbar />
+
+    <div className="patient_pages">
+
     <h1>Write Review</h1>
     <Divider/>
 
@@ -102,7 +108,13 @@ function PatientReview() {
         <br/>
         <button type="submit" className="btn btn-primary">Submit Review</button>
     </form>
+
     </div>
+    
+
+    </div>
+    <Divider />
+    <Footer />
     </>
 }
 

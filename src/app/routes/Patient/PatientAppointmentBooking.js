@@ -5,6 +5,8 @@ import DatePicker from "react-datepicker";
 import axios from "axios";
 import Divider from "../../../components/Divider";
 import '../../../css/dashboard.css';
+import BetterUNavbar from "../../../components/BetterUNavbar";
+import Footer from "../../../components/Footer";
 
 function PatientAppointmentBooking() {
     const [appointmentData, setAppointmentData] = useState({
@@ -26,7 +28,7 @@ function PatientAppointmentBooking() {
         const endTime = `${appointmentData.date} ${getEndTime(startTime)}`;
 
         try {
-            const response = await axios.put("/appointments", {
+            const response = await axios.post("/appointments", {
                 "doctor_id": appointmentData.doctor_id,
                 "end_time": endTime,
                 "location": "100 Test Rd",
@@ -90,12 +92,28 @@ function PatientAppointmentBooking() {
 
     if (requestMade) {
         return <>
+
+        <BetterUNavbar />
+
+        <div className="patient_pages">
+
         <h1>Appointment Requested</h1>
+
+        </div>
+        <Divider />
+        <Footer />
+
         </>
     }
 
     return <>
     
+    
+    <BetterUNavbar />
+
+    <div className="patient_pages">
+
+
     <h1>Book Appointment</h1>
     <Divider/>
 
@@ -137,6 +155,10 @@ function PatientAppointmentBooking() {
 
     </form>
     </div>  
+
+    </div>
+    <Divider />
+    <Footer />
 
     </>
 }

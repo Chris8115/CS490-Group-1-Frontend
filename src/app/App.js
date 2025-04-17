@@ -13,6 +13,10 @@ import { Axios } from 'axios';
 import DoctorPatientView from './routes/Doctor/DoctorPatientView.js';
 import DoctorSettings from './routes/Doctor/DoctorSettings.js';
 import PostPage from './routes/Forums/PostPage.js';
+import PatientAppointmentBooking from './routes/Patient/PatientAppointmentBooking.js';
+import PatientReview from './routes/Patient/PatientReview.js';
+import PatientProgress from './routes/Patient/PatientProgress.js';
+import '../css/patient_pages.css'
 
 function App() {
   return (
@@ -32,6 +36,10 @@ function App() {
 
           <Route path="/view_patients" element={<DoctorPatientView />} />
           <Route path="/settings" element={<DoctorSettings />} />
+        
+          <Route path="/patient-book-appointment" element={<PatientAppointmentBooking />} />
+          <Route path="/patient-review" element={<PatientReview />} />
+          <Route path="/patient-progress" element={<PatientProgress />} />
         </Routes>
       </BrowserRouter>
       

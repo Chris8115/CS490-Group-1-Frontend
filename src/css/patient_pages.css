@@ -1,0 +1,21 @@
+.patient_pages {
+    margin: 0px 8.0em;
+}
+
+.patient_pages h1 {
+    margin: 50px 100px 30px 100px;
+}
+
+
+.patient_pages p {
+    font-size: 1.em;
+    margin: 20px 100px 30px 100px;
+}
+
+.patient_pages-features {
+    margin: 20px 100px;
+}
+
+.patient_pages-features h2 {
+    margin: 0px;
+}
