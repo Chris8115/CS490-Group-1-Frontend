@@ -16,11 +16,10 @@ function BetterUNavbar() {
     try {
         const response = await fetch('http://localhost:5000/logout', {
             method: 'GET',
-            credentials: 'include', // include if using cookies/session
+            credentials: 'include',
         });
 
         if (response.ok) {
-            // Redirect or update state as needed
             sessionStorage.clear();
             navigate('/log-in');
         } else {
