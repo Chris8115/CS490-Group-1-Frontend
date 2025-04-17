@@ -5,19 +5,23 @@ import Divider from '../../../components/Divider';
 import Footer from '../../../components/Footer';
 import BackToForumsButton from './BackToForumsButton';
 import '../../../css/post_page.css';
+import SavePostButton from './SavePostButton';
+import { useParams } from 'react-router-dom';
 
 function PostPage() {
-    const location = useLocation();
-    const postId = location.state?.postId;
+    const { postId } = useParams()
     const userId = JSON.parse(sessionStorage.getItem('user_info')).user_id;
+    const role = JSON.parse(sessionStorage.getItem('user_info')).role;
 
     const [post, setPost] = useState(null);
     const [comments, setComments] = useState([]);
     const [loading, setLoading] = useState(true);
+
     const [error, setError] = useState(null);
     const [commentText, setCommentText] = useState('');
 
     const hasFetchedOnce = useRef(false); // prevents infinite loop in useEffect below
+
 
     const handleSubmit = async () => {
         if (!commentText.trim()) return;
@@ -101,7 +105,10 @@ function PostPage() {
 
             <main className="p-6 max-w-3xl mx-auto post-page">
                 
+            <div className="post-header-buttons">
                 <BackToForumsButton />
+                {role === 'patient' && <SavePostButton userId={userId} postId={postId} />}
+            </div>
                 
                 {loading && <p style={{
                                 margin: '100px'

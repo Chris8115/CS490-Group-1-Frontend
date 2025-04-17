@@ -4,7 +4,7 @@ import ReactPaginate from 'react-paginate';
 import '../../../css/forums.css';
 import Post from './Post.js';
 import AddPost from './AddPost';
-
+import SavedPosts from './SavedPosts.js';
 
 function ForumPosts() {
   const [posts, setPosts] = useState([]);
@@ -60,9 +60,9 @@ function ForumPosts() {
     return (
       <>
         <div className="posts-container">
-          {currentPosts.map((post) => (
-            <Post post={post} />
-          ))}
+        {currentPosts.map((post) => (
+          <Post key={post.id} post={post} userId={userId} role={role} />
+        ))}
         </div>
 
         <ReactPaginate
@@ -94,7 +94,7 @@ function ForumPosts() {
         <h1>Discussion Forums</h1>
       </div>
 
-      {role === 'doctor' ? <AddPost userId={userId} /> : <></>}
+      {role === 'doctor' ? <AddPost userId={userId} /> : <SavedPosts />}
       <Divider />
 
       {displayPosts()}

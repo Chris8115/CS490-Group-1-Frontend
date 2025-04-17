@@ -5,7 +5,7 @@ function Post({ post }) {
     const navigate = useNavigate();
 
     const handleClick = () => {
-        navigate(`/post/${post.post_id}`, { state: { postId: post.post_id } });
+        navigate(`/post/${post.post_id}`);
     };
 
     return (
