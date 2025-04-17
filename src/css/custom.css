@@ -139,6 +139,39 @@ p {
 
 /* Registration Form CSS */
 
+.form-input {
+  background-color: #e8f0fe; /* light blue */
+  border: none;
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 16px;
+  outline: none;
+  transition: box-shadow 0.2s ease;
+}
+
+.form-input:focus {
+  box-shadow: 0 0 0 2px #c3dafe; /* subtle blue focus */
+}
+
+.register-btn {
+  background-color: #f44336; /* red */
+  color: white;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.register-btn:hover {
+  background-color: #d32f2f; /* darker red on hover */
+}
+
 .active-form-btn {
   font-weight: bold;
   color: black;
