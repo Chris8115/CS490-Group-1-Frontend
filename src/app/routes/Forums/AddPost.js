@@ -6,7 +6,7 @@ function CreatePostButton({ userId }) {
     const [showModal, setShowModal] = useState(false);
     const [newPostTitle, setNewPostTitle] = useState('');
     const [newPostText, setNewPostText] = useState('');
-    const [postType, setPostType] = useState('Discussion'); // New state
+    const [postType, setPostType] = useState('Discussion');
     const [newPostId, setNewPostId] = useState();
     const navigate = useNavigate();
 
@@ -33,20 +33,18 @@ function CreatePostButton({ userId }) {
             });
 
             if (!res.ok) {
-                console.log(res);
                 throw new Error('Failed to create post');
-                
             }
 
             const data = await res.json();
-            console.log('Post created:', data);
 
-            // Reset fields and close modal
             setShowModal(false);
             setNewPostTitle('');
             setNewPostText('');
             setPostType('Discussion');
+
             navigate(`/post/${data.id}`, { state: { postId: data.id } });
+
         } catch (err) {
             console.error('Error:', err);
         }

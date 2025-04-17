@@ -94,7 +94,7 @@ function ForumPosts() {
         <h1>Discussion Forums</h1>
       </div>
 
-      <AddPost userId={userId} />
+      {role === 'doctor' ? <AddPost userId={userId} /> : <></>}
       <Divider />
 
       {displayPosts()}
