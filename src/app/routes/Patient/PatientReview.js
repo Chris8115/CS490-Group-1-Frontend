@@ -22,7 +22,8 @@ function PatientReview() {
                 const response = await axios.get("/doctor_patient_relationship", {
                 params: {
                     "patient_id": userInfo.user_id
-                }
+                }, 
+                withCredentials: true
                 })
     
                 let doctorRelationships = response.data.doctor_patient_relationship;

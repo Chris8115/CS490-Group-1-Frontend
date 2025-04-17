@@ -31,7 +31,8 @@ function PatientAppointmentBooking() {
         const endTime = `${appointmentData.date} ${getEndTime(startTime)}`;
 
         try {
-            const response = await axios.post("/appointments", {
+            const response = await axios.post("/appointments",
+                {
                 "doctor_id": appointmentData.doctor_id,
                 "end_time": endTime,
                 "location": "100 Test Rd",
@@ -39,7 +40,11 @@ function PatientAppointmentBooking() {
                 "reason": appointmentData.reason,
                 "start_time": startTime,
                 "status": "pending",
-            })
+            },
+            {
+                withCredentials: true
+            }
+        )
             
             if (response.status == 201) {
                 setRequestMade(true);

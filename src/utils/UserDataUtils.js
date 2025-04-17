@@ -6,7 +6,8 @@ export async function getPatientDoctorId(user_id) {
         params: {
             "patient_id": user_id,
             "status": "active"
-        }
+        },
+        withCredentials: true
     })
     let id = response.data.doctor_patient_relationship[0].doctor_id;
     return id;
@@ -21,7 +22,8 @@ export async function getUserData(id) {
     const response = await axios.get("/users", {
         params: {
             "user_id": id
-        }
+        },
+        withCredentials: true
     })
     return response.data.users[0];
 }
