@@ -10,6 +10,7 @@ import { useUser } from "../../UserContext";
 function PatientDashboard() {
     const [patientAppointments, setPatientAppointments] = useState([]);
     const { userInfo } = useUser();
+    const [patientHasDoctor, setPatientHasDoctor] = useState(true);
 
 
     const getPatientAppointments = async() => {
@@ -31,8 +32,39 @@ function PatientDashboard() {
     }
 
     useEffect(() => {
+
+        if (!userInfo?.user_id) return; 
+
+        const checkIfHasDoctor = async () => {
+            try {
+                const response = await fetch(`/doctor_patient_relationship?patient_id=${userInfo.user_id}&status=active`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                console.log(data);
+                setPatientHasDoctor(data.doctor_patient_relationship.length > 0);
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+
+        checkIfHasDoctor();
         getPatientAppointments();
-    }, [])
+    }, [userInfo])
+
+    if (!patientHasDoctor) {
+        return <>
+        
+        <h1>Please Select a Doctor</h1>
+        No doctor
+        
+        </>
+    }
 
     return <>
         <h1>Dashboard</h1>

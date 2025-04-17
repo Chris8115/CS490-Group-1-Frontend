@@ -18,6 +18,7 @@ import PatientReview from './routes/Patient/PatientReview.js';
 import PatientProgress from './routes/Patient/PatientProgress.js';
 import '../css/patient_pages.css'
 import PatientDashboard from './routes/Patient/PatientDashboard.js';
+import PatientPrescriptions from "./routes/Patient/PatientPrescriptions.js"
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
             <Route path="book-appointment" element={<PatientAppointmentBooking />} />
             <Route path="review" element={<PatientReview />} />
             <Route path="progress" element={<PatientProgress />} />
+            <Route path="prescriptions" element={<PatientPrescriptions />} />
           </Route>
 
           <Route path="/doctor" element={<PatientLayout />}>
