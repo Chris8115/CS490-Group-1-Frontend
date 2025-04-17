@@ -102,8 +102,8 @@ function DoctorDashboard() {
             </div>
             <Divider />
             <div className='doctor-features'>
-                <DashboardItem itemName="View Patients" itemDescription="View current patients" href="/view_patients" icon="user_icon" />
-                <DashboardItem itemName="Account and Appointment Settings" itemDescription="Set public account details and appointment settings" href="/settings" icon="gear" />
+                <DashboardItem itemName="View Patients" itemDescription="View current patients" href="/doctor/view-patients" icon="user_icon" />
+                <DashboardItem itemName="Account and Appointment Settings" itemDescription="Set public account details and appointment settings" href="/doctor/settings" icon="gear" />
 
             
             </div>

@@ -3,6 +3,7 @@ import '../../../css/dashboard.css';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Line } from 'react-chartjs-2';
+import { useUser } from '../../UserContext';
 
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
@@ -23,6 +24,7 @@ const chartTemplate = {
   };
 
 function PatientProgress() {
+    const { userInfo } = useUser();
     const [chartData, setChartData] = useState({});
     const [progressData, setProgressData] = useState([]);
 
@@ -31,7 +33,7 @@ function PatientProgress() {
             try {
                 const response = await axios.get("/patient_progress", {
                     params: {
-                        "patient_id": 26
+                        "patient_id": userInfo.user_id
                     }
                 })
 
@@ -62,14 +64,12 @@ function PatientProgress() {
     <Divider />
 
 
-    <div className="dashboard-features">
     
         <h2><strong>GOAL:</strong> 199 lbs</h2>
         <h3><strong>Last recorded weight:</strong> {progressData[0].weight} lbs</h3>
         
         <Line data={chartData} />
     
-    </div>
     
     </>
 }

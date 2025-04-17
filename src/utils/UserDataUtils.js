@@ -1,10 +1,10 @@
 import axios from "axios";
 import { ResponsiveEmbed } from "react-bootstrap";
 
-export async function getPatientDoctorId() {
+export async function getPatientDoctorId(user_id) {
     const response = await axios.get("/doctor_patient_relationship", {
         params: {
-            "patient_id": 26,
+            "patient_id": user_id,
             "status": "active"
         }
     })

@@ -5,8 +5,10 @@ import { getDoctorLastName, getUserData } from "../../../utils/UserDataUtils";
 import StarRating from "../../../components/StarRating";
 import Footer from "../../../components/Footer";
 import BetterUNavbar from "../../../components/BetterUNavbar";
+import { useUser } from "../../UserContext";
 
 function PatientReview() {
+    const { userInfo } = useUser();
     // All previous doctors that the patient has had
     const [allDoctors, setAllDoctors] = useState([]);
     const [doctorData, setDoctorData] = useState([]);
@@ -19,7 +21,7 @@ function PatientReview() {
             try {
                 const response = await axios.get("/doctor_patient_relationship", {
                 params: {
-                    "patient_id": 26
+                    "patient_id": userInfo.user_id
                 }
                 })
     
@@ -55,7 +57,7 @@ function PatientReview() {
         } else {
             try {
                 axios.post("/reviews", {
-                    "patient_id": 26,
+                    "patient_id": userInfo.user_id,
                     "doctor_id": selectedDoctor,
                     "rating": rating,
                     "review_text": reviewText
@@ -79,14 +81,10 @@ function PatientReview() {
 
     return <>
 
-    <BetterUNavbar />
 
-    <div className="patient_pages">
 
     <h1>Write Review</h1>
-    <Divider/>
 
-    <div className="dashboard-features">
     <form onSubmit={handleSubmitReview}>
         <label>Doctor</label>
         <select className="form-select" aria-label="Doctor Selection" onChange={onSelectDoctor}>
@@ -109,12 +107,7 @@ function PatientReview() {
         <button type="submit" className="btn btn-primary">Submit Review</button>
     </form>
 
-    </div>
     
-
-    </div>
-    <Divider />
-    <Footer />
     </>
 }
 

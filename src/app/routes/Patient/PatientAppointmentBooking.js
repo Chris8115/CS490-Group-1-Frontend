@@ -7,13 +7,16 @@ import Divider from "../../../components/Divider";
 import '../../../css/dashboard.css';
 import BetterUNavbar from "../../../components/BetterUNavbar";
 import Footer from "../../../components/Footer";
+import { useUser } from "../../UserContext";
 
 function PatientAppointmentBooking() {
+    const { userInfo } = useUser();
+    
     const [appointmentData, setAppointmentData] = useState({
         date: "",
         time: "",
         reason: "",
-        patient_id: 26,
+        patient_id: userInfo.user_id,
         doctor_id: 0 
     });
 
@@ -32,7 +35,7 @@ function PatientAppointmentBooking() {
                 "doctor_id": appointmentData.doctor_id,
                 "end_time": endTime,
                 "location": "100 Test Rd",
-                "patient_id": 26,
+                "patient_id": userInfo.user_id,
                 "reason": appointmentData.reason,
                 "start_time": startTime,
                 "status": "pending",
@@ -77,7 +80,7 @@ function PatientAppointmentBooking() {
     useEffect(() => {
         // get request to get doctorId based on patient/doctor relation
         const getDoctor = async () => {
-            let doctorId = await getPatientDoctorId();
+            let doctorId = await getPatientDoctorId(userInfo.user_id);
             setAppointmentData(prev => ({
                 ...prev,
                 doctor_id: doctorId
@@ -107,17 +110,10 @@ function PatientAppointmentBooking() {
     }
 
     return <>
-    
-    
-    <BetterUNavbar />
-
-    <div className="patient_pages">
-
 
     <h1>Book Appointment</h1>
     <Divider/>
 
-    <div className="dashboard-features">
     <h2>Dr. {doctorName}</h2>
     <br/>
 
@@ -154,11 +150,7 @@ function PatientAppointmentBooking() {
         <button type="submit" className="btn btn-primary">Request Appointment</button>
 
     </form>
-    </div>  
 
-    </div>
-    <Divider />
-    <Footer />
 
     </>
 }

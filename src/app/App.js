@@ -17,6 +17,7 @@ import PatientAppointmentBooking from './routes/Patient/PatientAppointmentBookin
 import PatientReview from './routes/Patient/PatientReview.js';
 import PatientProgress from './routes/Patient/PatientProgress.js';
 import '../css/patient_pages.css'
+import PatientDashboard from './routes/Patient/PatientDashboard.js';
 
 function App() {
   return (
@@ -37,9 +38,18 @@ function App() {
           <Route path="/view_patients" element={<DoctorPatientView />} />
           <Route path="/settings" element={<DoctorSettings />} />
         
-          <Route path="/patient-book-appointment" element={<PatientAppointmentBooking />} />
-          <Route path="/patient-review" element={<PatientReview />} />
-          <Route path="/patient-progress" element={<PatientProgress />} />
+          <Route path="/patient" element={<PatientLayout />}>
+            <Route path="dashboard" element={<PatientDashboard />} />
+            <Route path="book-appointment" element={<PatientAppointmentBooking />} />
+            <Route path="review" element={<PatientReview />} />
+            <Route path="progress" element={<PatientProgress />} />
+          </Route>
+
+          <Route path="/doctor" element={<PatientLayout />}>
+            <Route path="view-patients" element={<DoctorPatientView />} />
+            <Route path="settings" element={<DoctorSettings />} />
+          </Route>
+
         </Routes>
       </BrowserRouter>
       
