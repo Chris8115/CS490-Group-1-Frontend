@@ -3,11 +3,20 @@ import Divider from '../../../components/Divider';
 import ReactPaginate from 'react-paginate';
 import '../../../css/forums.css';
 import Post from './Post.js';
+import AddPost from './AddPost';
+
 
 function ForumPosts() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const userId = JSON.parse(sessionStorage.getItem('user_info')).user_id;
+  const role = JSON.parse(sessionStorage.getItem('user_info')).role;
+
+  const [showModal, setShowModal] = useState(false);
+  const [newPostTitle, setNewPostTitle] = useState('');
+  const [newPostText, setNewPostText] = useState('');
 
   // pagination state
   const [currentPage, setCurrentPage] = useState(0);
@@ -85,6 +94,7 @@ function ForumPosts() {
         <h1>Discussion Forums</h1>
       </div>
 
+      <AddPost userId={userId} />
       <Divider />
 
       {displayPosts()}
