@@ -32,13 +32,7 @@ function DoctorForm() {
         specialization: '',
         profile: ''
     });
-    const [appointmentData, setAppointmentData] = useState({
-            date: "",
-            time: "",
-            reason: "",
-            patient_id: 26,
-            doctor_id: 0 
-        });
+    
 
     const getTomorrow = () => {
         const tomorrow = new Date();
