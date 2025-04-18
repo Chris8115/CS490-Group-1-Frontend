@@ -1,42 +1,26 @@
-import { React, useState, useEffect } from 'react';
-import PatientLayout from './Patient/PatientLayout';
-import DoctorLayout from './Doctor/DoctorLayout';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function DashboardRedirect() {
+  const navigate = useNavigate();
+  const user_info = JSON.parse(sessionStorage.getItem('user_info'));
 
-    const navigate = useNavigate();
-    const user_info = JSON.parse(sessionStorage.getItem('user_info'));
-    let display;
-    
-    useEffect(() => {
-
-        const isLoggedIn = !!sessionStorage.getItem('user_info');
-
-        if (!isLoggedIn) {
-            navigate('/log-in');
-        }
-    }, []);
-
-    if (user_info?.role === 'patient') {
-        display = <PatientLayout />;
-    }
-    else if (user_info?.role === 'doctor') {
-        display = <DoctorLayout />;
-    }
-    else if (user_info?.role === 'pharmacist') {
-        display = <p>Pharmacist dashboard</p>;
-    }
-    else {
+  useEffect(() => {
+    if (!user_info) {
+      navigate('/log-in');
+    } else {
+      // Redirect to the appropriate dashboard based on the user's role
+      if (user_info.role === 'patient') {
+        navigate('/patient/dashboard');
+      } else if (user_info.role === 'doctor') {
+        navigate('/doctor/dashboard');
+      } else {
         navigate('/log-in');
-        display = <p>An error has occurred. Please try logging in again.</p>;
+      }
     }
+  }, [user_info, navigate]);
 
-    return (
-        <>
-            {display}
-        </>
-    )
+  return null; // Nothing to render, just redirect
 }
 
 export default DashboardRedirect;

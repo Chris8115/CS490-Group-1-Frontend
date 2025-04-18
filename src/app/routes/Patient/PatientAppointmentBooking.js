@@ -5,13 +5,18 @@ import DatePicker from "react-datepicker";
 import axios from "axios";
 import Divider from "../../../components/Divider";
 import '../../../css/dashboard.css';
+import BetterUNavbar from "../../../components/BetterUNavbar";
+import Footer from "../../../components/Footer";
+import { useUser } from "../../UserContext";
 
 function PatientAppointmentBooking() {
+    const { userInfo } = useUser();
+    
     const [appointmentData, setAppointmentData] = useState({
         date: "",
         time: "",
         reason: "",
-        patient_id: 26,
+        patient_id: userInfo.user_id,
         doctor_id: 0 
     });
 
@@ -22,23 +27,37 @@ function PatientAppointmentBooking() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const startTime = `${appointmentData.date} ${appointmentData.time}:00`;
-        const endTime = `${appointmentData.date} ${getEndTime(startTime)}`;
-
+        
         try {
-            const response = await axios.put("/appointments", {
+            const startTime = `${appointmentData.date} ${appointmentData.time}:00`;
+            const endTime = `${appointmentData.date} ${getEndTime(startTime)}`;
+                
+            const data = {
                 "doctor_id": appointmentData.doctor_id,
                 "end_time": endTime,
                 "location": "100 Test Rd",
-                "patient_id": 26,
+                "patient_id": userInfo.user_id,
                 "reason": appointmentData.reason,
                 "start_time": startTime,
                 "status": "pending",
-            })
-            
-            if (response.status == 201) {
-                setRequestMade(true);
             }
+            
+            
+                const res = await fetch('/patient_progress', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await res.json();
+                console.log(result);
+        
+                if (res.status == 201) {
+                    setRequestMade(true);
+                }
 
         } catch (error) {
             console.log(error);
@@ -73,9 +92,11 @@ function PatientAppointmentBooking() {
     }
 
     useEffect(() => {
+        if (!userInfo?.user_id) return; 
+
         // get request to get doctorId based on patient/doctor relation
         const getDoctor = async () => {
-            let doctorId = await getPatientDoctorId();
+            let doctorId = await getPatientDoctorId(userInfo.user_id);
             setAppointmentData(prev => ({
                 ...prev,
                 doctor_id: doctorId
@@ -86,20 +107,29 @@ function PatientAppointmentBooking() {
         }
         getDoctor();
         
-    }, [])
+    }, [userInfo])
 
     if (requestMade) {
         return <>
+
+        <BetterUNavbar />
+
+        <div className="patient_pages">
+
         <h1>Appointment Requested</h1>
+
+        </div>
+        <Divider />
+        <Footer />
+
         </>
     }
 
     return <>
-    
+
     <h1>Book Appointment</h1>
     <Divider/>
 
-    <div className="dashboard-features">
     <h2>Dr. {doctorName}</h2>
     <br/>
 
@@ -136,7 +166,7 @@ function PatientAppointmentBooking() {
         <button type="submit" className="btn btn-primary">Request Appointment</button>
 
     </form>
-    </div>  
+
 
     </>
 }

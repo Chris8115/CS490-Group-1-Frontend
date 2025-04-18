@@ -80,7 +80,6 @@ function DoctorPatientView() {
 
     return (
         <>
-            <BetterUNavbar />
             <div className='patient-view-display'>
               <h1 style={{margin: '50px 100px'}}>View Patients</h1>
               <Divider />
@@ -89,9 +88,7 @@ function DoctorPatientView() {
               </div>
             </div>
             
-            <Divider />
-            <Footer />
-
+            
         </>
     )
 }

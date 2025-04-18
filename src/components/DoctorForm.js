@@ -35,7 +35,7 @@ function DoctorForm() {
         specialization: '',
         profile: ''
     });
-    
+
 
     const getTomorrow = () => {
         const tomorrow = new Date();
