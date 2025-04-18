@@ -11,6 +11,7 @@ import DoctorSettings from "./DoctorSettings.js";
 import DoctorPatientView from "./DoctorPatientView.js";
 import Appointments from "./Appointments.js";
 import PendingAppointments from "./PendingAppointments.js";
+import '../../../css/appointments.css';
 
 function DoctorDashboard() {
 
@@ -22,41 +23,47 @@ function DoctorDashboard() {
     const [pendingAppointments, setPendingAppointments] = useState([]);
     let displayAppointments;
 
-    const handleChange = (newDate) => {
+    const handleChange = async (newDate) => {
+        const user_info = JSON.parse(sessionStorage.getItem('user_info'));
+
         setDate(newDate);
-        console.log('Selected date:', newDate);
+        // console.log('Selected date:', newDate);
+      
+        const formattedDate = newDate.toISOString().split('T')[0]; // get actual date
+      
+        try {
+          const response = await fetch(`/appointments?doctor_id=${user_info.user_id}&start_time=${formattedDate}&status=accepted`);
+          if (!response.ok) throw new Error('Failed to fetch appointments');
+      
+          const appointments = await response.json();
+          setDoctorAppointments(appointments);
+          // console.log(doctorAppointments);
+
+        } catch (error) {
+          console.error('Error fetching appointments:', error);
+        }
       };
 
     useEffect(() => {
+
         const user_info = JSON.parse(sessionStorage.getItem('user_info'));
         setUserInfo(user_info);
 
-        getDoctorAppointments();
+        handleChange(date); // Get initial doctor appointments, render them
 
-        setDoctorAppointments([1, 2, 3]);
+        displayAppointments = <Appointments appointments={doctorAppointments} className="appointment-cards" />
+
+    }, []);
+
+
+    const getDoctorAppointments = async () => {
         
+        // sconst formattedDate = date.toISOString().split('T')[0];
+        // console.log(formattedDate);
 
-    }, [])
-
-    useEffect(() => {
-
-        if (doctorAppointments.length === 0) {
-            displayAppointments = (
-                <p>No appointments for today.</p>
-            )
-        }
-        else {
-            displayAppointments = <Appointments />
-        }
-
-    }, [doctorAppointments]);
-
-
-    const getDoctorAppointments = async (event) => {
-        
         try {
 
-            const response = await fetch(`http://localhost:5000/appointments?doctor_id=${userInfo.user_id}`, {
+            const response = await fetch(`http://localhost:5000/appointments?doctor_id=${userInfo.user_id}&start_time=${1}&status=accepted`, {
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',
@@ -68,9 +75,9 @@ function DoctorDashboard() {
             if (!response.ok) throw new Error('Appointment Request Failed');
             
             const data = await response.json();
-            
-            console.log(data)
-            
+            setDoctorAppointments(data);
+            // console.log(data);
+                        
         }
         catch (err) {
           console.error(err);
@@ -91,7 +98,10 @@ function DoctorDashboard() {
                         <Calendar onChange={handleChange} value={date} />
                 </div>
                 <div className="appointments-panel">
-                        <Appointments className="appointment-cards" />
+                        {doctorAppointments.appointments === 0 ? 
+                            <p>No appointments for today.</p> :
+                            <Appointments appointments={doctorAppointments.appointments} className="appointment-cards" />
+                        }
                 </div>
             </div>
             
