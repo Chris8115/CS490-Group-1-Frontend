@@ -19,10 +19,25 @@ function DoctorForm() {
             phone_number: '',
             password: ''
         });
+
+    const [addressData, setAddressData] = useState({
+            address: '',
+            address2: '',
+            city: '',
+            state: '',
+            country: '',
+            zip: ''
+        });
     const handleFileChange = (e) => {
         setFormMeta(prev => ({
             ...prev,
             identificationFile: e.target.files[0]
+        }));
+    };
+    const handleFileChange2 = (e) => {
+        setFormMeta(prev => ({
+            ...prev,
+            profileFile: e.target.files[0]
         }));
     };
     const [formMeta, setFormMeta] = useState({
@@ -62,12 +77,16 @@ function DoctorForm() {
             role: 'doctor'
         }));
         
+        formData.append('address', JSON.stringify(addressData));
         formData.append('doctor', JSON.stringify(doctorsData));
         formData.append('patient', ''); // empty for patients
         formData.append('pharmacist', ''); // empty for patients
 
         if (formMeta.identificationFile) {
             formData.append('identification', formMeta.identificationFile);
+        }
+        if (formMeta.profileFile) {
+            formData.append('profile_pic', formMeta.profileFile);
         }
 
         try {
@@ -117,6 +136,9 @@ function DoctorForm() {
                             <label>Confirm Password</label>
                             <input className='form-input' type='password' />
 
+                        <label className="form-label">Upload Profile Picture</label>
+                        <input type="file" className="form-control mb-3" onChange={handleFileChange2} />
+
                     <label>Write a short bio of your experience in medical practice. This will be publicly displayed on your profile. You may change this later.</label>
                     <input className='form-input' type='text' name='profile' value={doctorsData.profile} onChange={e => handleChange(e, setDoctorsData)} />
 
@@ -132,6 +154,31 @@ function DoctorForm() {
                     <label class="form-label" for="customFile">Enter Medical License Code</label>
                     <input className='form-input' type='text' name='license_number' value={doctorsData.license_number} onChange={e => handleChange(e, setDoctorsData)} />
                     
+                    <h5>Address Information</h5>
+                    <label>Address</label>
+                    <input className='form-input' type='text' label='Address' name='address' value={addressData.address} onChange={e => handleChange(e, setAddressData)} />
+                    <label>Address 2</label>
+                    <input className='form-input' type='text' label='Address 2' name='address2' value={addressData.address2} onChange={e => handleChange(e, setAddressData)} />
+                    <MDBRow className='mb-4'>
+                        <MDBCol>
+                            <label>City</label>
+                            <input className='form-input' type='text' label='City' name='city' value={addressData.city} onChange={e => handleChange(e, setAddressData)} />
+                        </MDBCol>
+                        <MDBCol>
+                            <label>State</label>
+                            <input className='form-input' type='text' label='State' name='state' value={addressData.state} onChange={e => handleChange(e, setAddressData)} />
+                        </MDBCol>
+                    </MDBRow>
+                    <MDBRow className='mb-4'>
+                        <MDBCol>
+                            <label>Country</label>
+                            <input className='form-input' type='text' label='Country' name='country' value={addressData.country} onChange={e => handleChange(e, setAddressData)} />
+                        </MDBCol>
+                        <MDBCol>
+                            <label>Zip</label>
+                            <input className='form-input' type='text' label='Zip Code' name='zip' value={addressData.zip} onChange={e => handleChange(e, setAddressData)} />
+                        </MDBCol>
+                    </MDBRow>
 
                     <p className='step'>Step 3: Acknowledgement and Compliance Forms</p>
                     <Eula />
