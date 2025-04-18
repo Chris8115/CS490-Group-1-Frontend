@@ -14,6 +14,12 @@ import DoctorPatientView from './routes/Doctor/DoctorPatientView.js';
 import DoctorSettings from './routes/Doctor/DoctorSettings.js';
 import ResetPassword from '../components/ResetPassword.js';
 import PostPage from './routes/Forums/PostPage.js';
+import PatientAppointmentBooking from './routes/Patient/PatientAppointmentBooking.js';
+import PatientReview from './routes/Patient/PatientReview.js';
+import PatientProgress from './routes/Patient/PatientProgress.js';
+import '../css/patient_pages.css'
+import PatientDashboard from './routes/Patient/PatientDashboard.js';
+import PatientPrescriptions from "./routes/Patient/PatientPrescriptions.js"
 
 function App() {
   return (
@@ -35,6 +41,20 @@ function App() {
 
           <Route path="/view_patients" element={<DoctorPatientView />} />
           <Route path="/settings" element={<DoctorSettings />} />
+        
+          <Route path="/patient" element={<PatientLayout />}>
+            <Route path="dashboard" element={<PatientDashboard />} />
+            <Route path="book-appointment" element={<PatientAppointmentBooking />} />
+            <Route path="review" element={<PatientReview />} />
+            <Route path="progress" element={<PatientProgress />} />
+            <Route path="prescriptions" element={<PatientPrescriptions />} />
+          </Route>
+
+          <Route path="/doctor" element={<PatientLayout />}>
+            <Route path="view-patients" element={<DoctorPatientView />} />
+            <Route path="settings" element={<DoctorSettings />} />
+          </Route>
+
         </Routes>
       </BrowserRouter>
       

@@ -8,23 +8,20 @@ import { Route, Routes } from 'react-router-dom';
 import Divider from "../../../components/Divider";
 import Footer from "../../../components/Footer";
 import '../../../css/dashboard.css';
+import { Outlet } from "react-router-dom";
 
 function PatientLayout() {
     return <>
-        <BetterUNavbar/>
+            <BetterUNavbar />
+            
+            <div className="patient_pages">
+                <div>
+                    <Outlet /> {/* Renders the matching route */}
+                </div>
+            </div>
 
-        <div className="dashboard">
-                <Routes>
-                    <Route path="dashboard" element={<PatientDashboard />} />
-                    <Route path="/" element={<PatientDashboard />} />
-                    <Route path="book-appointment" element={<PatientAppointmentBooking />} />
-                    <Route path="review" element={<PatientReview />} />
-                    <Route path="progress" element={<PatientProgress />} />
-                </Routes>
-        </div>
-
-        <Divider />
-        <Footer />
+            <Divider />
+            <Footer />
 
     </>
 }

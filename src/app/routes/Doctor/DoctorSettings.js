@@ -27,7 +27,7 @@ function DoctorSettings() {
                 "doctor_id": appointmentData.doctor_id,
                 "end_time": endTime,
                 "location": "100 Test Rd",
-                "patient_id": 26,
+                "patient_id": ,
                 "reason": appointmentData.reason,
                 "start_time": startTime,
                 "status": "pending",
