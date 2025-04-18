@@ -4,9 +4,10 @@ import { monthDayYear, hourMinute } from "../utils/DateFormatter";
 // itemDescription: The expanded text
 // icon: The asset in the ./assets/ folder used
 // href: The page the DashboardItem links to
-function PatientAppointmentCard(appointment) {
+function PatientAppointmentCard(props) {
+    const appointment = props.appointment;
     return <>
-        <div className="card"  key={appointment.appointment_id}>
+        <div className="card" key={appointment.appointment_id}>
                 <div className="card-body">
                     <h5 className="card-title">{monthDayYear(appointment.start_time)}</h5>
                     {appointmentStatus(appointment.status)}
