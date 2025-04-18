@@ -12,8 +12,8 @@ import { BrowserRouter, Router, Route, Link, Routes } from 'react-router-dom';
 import { Axios } from 'axios';
 import DoctorPatientView from './routes/Doctor/DoctorPatientView.js';
 import DoctorSettings from './routes/Doctor/DoctorSettings.js';
-import ResetPassword from '../components/ResetPassword.js';
 import PostPage from './routes/Forums/PostPage.js';
+import ResetPassword from './routes/ResetPassword.js';
 
 function App() {
   return (
