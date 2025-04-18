@@ -20,6 +20,7 @@ import PatientProgress from './routes/Patient/PatientProgress.js';
 import '../css/patient_pages.css'
 import PatientDashboard from './routes/Patient/PatientDashboard.js';
 import PatientPrescriptions from "./routes/Patient/PatientPrescriptions.js"
+import DoctorDashboard from './routes/Doctor/DoctorDashboard.js';
 
 function App() {
   return (
@@ -50,7 +51,8 @@ function App() {
             <Route path="prescriptions" element={<PatientPrescriptions />} />
           </Route>
 
-          <Route path="/doctor" element={<PatientLayout />}>
+          <Route path="/doctor" element={<DoctorLayout />}>
+            <Route path="dashboard" element={<DoctorDashboard />} />
             <Route path="view-patients" element={<DoctorPatientView />} />
             <Route path="settings" element={<DoctorSettings />} />
           </Route>

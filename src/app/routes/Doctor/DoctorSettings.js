@@ -83,11 +83,8 @@ function DoctorSettings() {
     return ( 
     <>
     
-        <BetterUNavbar />
-
-        <Divider />
-        <Footer />
-        </>
+    
+    </>
     )
 
 }
