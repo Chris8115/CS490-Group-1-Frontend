@@ -7,7 +7,7 @@ import {
 } from 'mdb-react-ui-kit';
 import '../css/custom.css';
 
-function ResetPassword() {
+function ResetPasswordForm() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const user_id = searchParams.get("user_id");
@@ -46,14 +46,14 @@ function ResetPassword() {
       navigate('/');
     } catch (err) {
       console.error(err);
-      setError("Something went wrong while resetting your password.");
+      setError("Something went wrong while resetting your password. Please try again later.");
     }
   };
 
   return (
-    <MDBContainer className="mt-5">
+    <MDBContainer className="p-3 my-5 d-flex flex-column w-50">
+      <h1 className='login-title'>Reset Your Password</h1>
       <form onSubmit={handleSubmit}>
-        <h4 className="mb-4 text-center">Reset Your Password</h4>
 
         <MDBInput
           wrapperClass="mb-4"
@@ -77,10 +77,10 @@ function ResetPassword() {
 
         {error && <div className="text-danger mb-3">{error}</div>}
 
-        <MDBBtn type="submit" className="w-100">Submit</MDBBtn>
+        <MDBBtn type="submit" className="w-100 register-btn">Submit</MDBBtn>
       </form>
     </MDBContainer>
   );
 }
 
-export default ResetPassword;
+export default ResetPasswordForm;
