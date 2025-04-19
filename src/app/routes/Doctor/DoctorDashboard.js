@@ -1,120 +1,121 @@
-
 import { useState, useEffect } from "react";
 import DashboardItem from "../../../components/DashboardItem";
 import Divider from '../../../components/Divider.js';
 import { useNavigate } from 'react-router-dom';
 import Calendar from 'react-calendar';
-import { Route, Routes } from 'react-router-dom';
 import 'react-calendar/dist/Calendar.css';
 import '../../../css/doctor_dashboard.css';
 import DoctorSettings from "./DoctorSettings.js";
 import DoctorPatientView from "./DoctorPatientView.js";
 import Appointments from "./Appointments.js";
 import PendingAppointments from "./PendingAppointments.js";
+import '../../../css/appointments.css';
 
 function DoctorDashboard() {
-
     const navigate = useNavigate();
+
     const [doctorAppointments, setDoctorAppointments] = useState([]);
+    const [pendingAppointments, setPendingAppointments] = useState([]);
     const [userInfo, setUserInfo] = useState({});
     const [date, setDate] = useState(new Date());
 
-    const [pendingAppointments, setPendingAppointments] = useState([]);
-    let displayAppointments;
-
-    const handleChange = (newDate) => {
+    const handleChange = async (newDate) => {
+        const user_info = JSON.parse(sessionStorage.getItem('user_info'));
         setDate(newDate);
-        console.log('Selected date:', newDate);
-      };
+
+        const formattedDate = newDate.toISOString().split('T')[0];
+
+        try {
+            const response = await fetch(`/appointments?doctor_id=${user_info.user_id}&start_time=${formattedDate}&status=accepted`);
+            if (!response.ok) throw new Error('Failed to fetch appointments');
+
+            const appointments = await response.json();
+            setDoctorAppointments(appointments);
+
+        } catch (error) {
+            console.error('Error fetching appointments:', error);
+        }
+    };
+
+    const getPendingAppointments = async () => {
+        try {
+            const response = await fetch(`/appointments?doctor_id=${userInfo.user_id}&status=pending`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include'
+            });
+
+            if (!response.ok) throw new Error('Failed to fetch pending appointments');
+
+            const data = await response.json();
+            setPendingAppointments(data);
+            // console.log("pending");
+            // console.log(data);
+
+        } catch (err) {
+            console.error(err);
+        }
+    };
 
     useEffect(() => {
         const user_info = JSON.parse(sessionStorage.getItem('user_info'));
         setUserInfo(user_info);
 
-        getDoctorAppointments();
-
-        setDoctorAppointments([1, 2, 3]);
-        
-
-    }, [])
+        handleChange(date); // Load current day appointments
+    }, []);
 
     useEffect(() => {
-
-        if (doctorAppointments.length === 0) {
-            displayAppointments = (
-                <p>No appointments for today.</p>
-            )
+        if (userInfo.user_id) {
+            getPendingAppointments(); // Fetch pending appointments once userInfo is set
         }
-        else {
-            displayAppointments = <Appointments />
-        }
-
-    }, [doctorAppointments]);
-
-
-    const getDoctorAppointments = async (event) => {
-        
-        try {
-
-            const response = await fetch(`http://localhost:5000/appointments?doctor_id=${userInfo.user_id}`, {
-              method: 'GET',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              credentials: 'include'
-
-            });
-    
-            if (!response.ok) throw new Error('Appointment Request Failed');
-            
-            const data = await response.json();
-            
-            console.log(data)
-            
-        }
-        catch (err) {
-          console.error(err);
-        }
-        
-      };
+    }, [userInfo]);
 
     return (
-
-        <div >
-
+        <div>
             <h1>Dashboard</h1>
             <Divider />
-            
+
             <h2>View Appointments</h2>
             <div className="appointments-container">
                 <div className="calendar-panel">
-                        <Calendar onChange={handleChange} value={date} />
+                    <Calendar onChange={handleChange} value={date} />
                 </div>
                 <div className="appointments-panel">
-                        <Appointments className="appointment-cards" />
+                    {doctorAppointments.appointments?.length === 0 ? (
+                        <p>No appointments for today.</p>
+                    ) : (
+                        <Appointments appointments={doctorAppointments.appointments || []} className="appointment-cards" />
+                    )}
                 </div>
             </div>
-            
+
             <div>
                 <h2>Pending Appointments</h2>
-                <PendingAppointments />
-
+                <PendingAppointments appointments={pendingAppointments.appointments || []} setAppointments={setPendingAppointments} />
             </div>
+
             <Divider />
+            
             <div className='doctor-features'>
-                <DashboardItem itemName="View Patients" itemDescription="View current patients" href="/doctor/view-patients" icon="user_icon" />
-                <DashboardItem itemName="Account and Appointment Settings" itemDescription="Set public account details and appointment settings" href="/doctor/settings" icon="gear" />
-
-            
+                <DashboardItem
+                    itemName="View Patients"
+                    itemDescription="View current patients"
+                    href="/doctor/view-patients"
+                    icon="user_icon"
+                />
+                <DashboardItem
+                    itemName="Account and Appointment Settings"
+                    itemDescription="Set public account details and appointment settings"
+                    href="/doctor/settings"
+                    icon="gear"
+                />
             </div>
-            
-        
-            
+
             <br />
-
         </div>
-
-    )
+    );
 }
 
 export default DoctorDashboard;
