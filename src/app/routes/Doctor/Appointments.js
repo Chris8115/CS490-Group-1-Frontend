@@ -49,10 +49,6 @@ function Appointments({ appointments }) {
         
     }, [appointments]);
 
-    if (!Array.isArray(appointments)) {
-        return ;
-    }
-
     return (
         <div className="appointments-scroll-box">
             {appointments.length === 0 ? 
