@@ -76,7 +76,7 @@ function PatientDoctorSearch() {
     return (
         <>        
             <form >
-                <label for="doctorName" className="form-label">Doctor Name</label>
+                <label htmlFor="doctorName" className="form-label">Doctor Name</label>
                 <input type="text" id="doctorName" placeholder="Search for doctors..." name="doctorName" className="form-control" onChange={(e) => setSearchTerm(e.target.value)}/>
             </form>
 

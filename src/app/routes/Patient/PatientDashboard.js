@@ -1,7 +1,6 @@
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import DashboardItem from "../../../components/DashboardItem";
-import axios from "axios";
 import { useState } from "react";
 import PatientAppointmentCard from "../../../components/PatientAppointmentCard";
 import Divider from "../../../components/Divider";
@@ -9,78 +8,81 @@ import { useUser } from "../../UserContext";
 import { getDoctorLastName } from "../../../utils/UserDataUtils";
 import PatientDoctorSearch from "./PatientDoctorSearch";
 
+// THIS PAGE IS PARTIALLY BROKEN IN STRICT MODE; WORKS FINE IN PRODUCTION BUILDS AND IF YOU REMOVE THE STRICT MODE TAGS FROM index.js
+
 function PatientDashboard() {
     const [patientAppointments, setPatientAppointments] = useState([]);
     const { userInfo } = useUser();
     const [patientHasDoctor, setPatientHasDoctor] = useState(0);
     const [patientDoctorId, setPatientDoctorId] = useState({});
     const [doctorName, setDoctorName] = useState("");
-    
 
     const getPatientAppointments = async() => {
-        axios.get("/appointments", {
-            params: {
-                "patient_id": userInfo.user_id,
-            }
-        })
-        .then((response) => {
-            let appointments = response.data.appointments;
-            setPatientAppointments(appointments);
-        })
-        .catch((error) => {
-            console.log(error);
-        })
-        .finally(() => {
+        try {
+            const response = await fetch(`/api/betteru/appointments?patient_id=${userInfo.user_id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include'
+            })
 
-        })
+            const data = await response.json();
+            setPatientAppointments(data.appointments);
+
+
+        } catch (e) {
+            console.error(e);
+        }
+
+
+    }
+    
+    const checkIfHasDoctor = async () => {
+        try {
+            const response = await fetch(`/api/betteru/doctor_patient_relationship?patient_id=${userInfo.user_id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include'
+            });
+
+            const data = await response.json();
+            const relationships = data.doctor_patient_relationship;
+            
+            let hasDoctor = false;
+            let hasPending = false;
+
+            for (let i = 0; i < relationships.length; i++) {
+                console.log(relationships[i]);
+                if (relationships[i].status === "active") {
+                    hasDoctor = true;
+                    const doctorName = await getDoctorLastName(relationships[i].doctor_id);
+                    setDoctorName(doctorName);
+                    break;
+                } else if (relationships[i].status === "pending") {
+                    hasPending = true;
+                    const doctorName = await getDoctorLastName(relationships[i].doctor_id);
+                    setDoctorName(doctorName);
+                }
+            }
+            if (hasDoctor) {
+                setPatientHasDoctor(1);
+            } else if (hasPending) {
+                setPatientHasDoctor(2);
+            } else {
+                setPatientHasDoctor(0);
+            }
+
+        } catch (e) {
+            console.error(e);
+        }
     }
 
     useEffect(() => {
 
         if (!userInfo) return <></>; 
-
-        const checkIfHasDoctor = async () => {
-            try {
-                const response = await fetch(`/doctor_patient_relationship?patient_id=${userInfo.user_id}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    credentials: 'include'
-                });
-
-                const data = await response.json();
-                const relationships = data.doctor_patient_relationship;
-                
-                let hasDoctor = false;
-                let hasPending = false;
-
-                for (let i = 0; i < relationships.length; i++) {
-                    console.log(relationships[i]);
-                    if (relationships[i].status === "active") {
-                        hasDoctor = true;
-                        const doctorName = await getDoctorLastName(relationships[i.doctor_id]);
-                        setDoctorName(doctorName);
-                    } else if (relationships[i].status === "pending") {
-                        hasPending = true;
-                        const doctorName = await getDoctorLastName(relationships[i.doctor_id]);
-                        setDoctorName(doctorName);
-                    }
-                }
-
-                if (hasDoctor) {
-                    setPatientHasDoctor(1);
-                } else if (hasPending) {
-                    setPatientHasDoctor(2);
-                } else {
-                    setPatientHasDoctor(0);
-                }
-
-            } catch (e) {
-                console.error(e);
-            }
-        }
-
 
         checkIfHasDoctor();
         getPatientAppointments();
