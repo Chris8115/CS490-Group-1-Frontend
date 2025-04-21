@@ -7,6 +7,7 @@ function PharmacyPatientSearch() {
     const { userInfo } = useUser();
     const [searchTerm, setSearchTerm] = useState('');
     const [patients, setPatients] = useState([]);
+    const [patientOrders, setPatientOrders] = useState([]);
     const [searchMethod, setSearchMethod] = useState("id"); 
 
 
@@ -17,8 +18,7 @@ function PharmacyPatientSearch() {
             return;
         }
 
-        // This works through id
-        const fetchPatients = async () => {
+        const fetchPatientDetails = async () => {
             const response = await fetch(`/api/pharmacy/patient/${searchTerm}`, {
                 method: 'GET',
                 headers: {
@@ -31,7 +31,15 @@ function PharmacyPatientSearch() {
             if (data.patient) {
                 setPatients([data.patient]);
             }
+
+            return [];
         }
+
+        // This works through id
+        const fetchPatients = async () => {
+            const patients = await fetchPatientDetails();
+        }
+
 
         fetchPatients()
 
@@ -40,7 +48,6 @@ function PharmacyPatientSearch() {
 
     // Update search result
     useEffect(() => {
-        console.log(patients);
 
     }, [patients]);
 
