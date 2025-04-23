@@ -63,6 +63,15 @@ function DoctorForm() {
         return String(date);
     }
 
+    const getToday = () => {
+        const today = new Date();
+        today.setDate(today.getDate());
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+
     const handleChange = (e, stateSetter) => {
         const { name, value } = e.target;
         stateSetter(prev => ({ ...prev, [name]: value }));
@@ -97,10 +106,11 @@ function DoctorForm() {
             });
 
             const result = await res.json();
-            if(res.ok){
+            if(res.status == 201 || res.status == 200){
                 navigate('/dashboard');
             } else {
-                document.getElementById('responsetext').textContent = res['message'];
+                console.log(result.message)
+                document.getElementById('responsetext').textContent = result['message'];
             }
 
 
@@ -149,7 +159,7 @@ function DoctorForm() {
                     <label>Please enter your medical specialization(s) below.</label>
                     <input required className='form-input' type='text' name='specialization' value={doctorsData.specialization} onChange={e => handleChange(e, setDoctorsData)} />
 
-                    <p className='step'>Step 2: Identification, Address & Payment Info</p>
+                    <p className='step'>Step 2: Identification & Address</p>
 
                     <label className="form-label">Upload Identification</label>
                     <input required type="file" className="form-control mb-3" onChange={handleFileChange} />
@@ -199,7 +209,8 @@ function DoctorForm() {
                                 className="form-control"
                                 name="date"
                                 value={formMeta.date}
-                                min={getTomorrow()}
+                                min={getToday()}
+                                max={getToday()}
                                 onChange={e => handleChange(e, setFormMeta)}
                                 required />
                         </MDBCol>

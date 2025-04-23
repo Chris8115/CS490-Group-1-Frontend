@@ -7,9 +7,11 @@ import {
 } from 'mdb-react-ui-kit';
 import Eula from './Eula';
 import Checkbox from '@mui/material/Checkbox';
-
+import { BACKEND_HOST, PHARMA_HOST } from './Hosts.js'
+import { useNavigate } from 'react-router-dom';
 
 function PatientForm() {
+    const navigate = useNavigate();
 
     const [userData, setUserData] = useState({
         first_name: '',
@@ -54,6 +56,15 @@ function PatientForm() {
         return `${year}-${month}-${day}`;
     };
 
+    const getToday = () => {
+        const today = new Date();
+        today.setDate(today.getDate());
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+
     const handleChange = (e, stateSetter) => {
         const { name, value } = e.target;
         stateSetter(prev => ({ ...prev, [name]: value }));
@@ -85,13 +96,19 @@ function PatientForm() {
         }
 
         try {
-            const res = await fetch('http://localhost:5000/users/patient', {
+            const res = await fetch(`http://${BACKEND_HOST}/users/patient`, {
                 method: 'POST',
                 body: formData
             });
 
             const result = await res.json();
-            alert(result.message || 'Patient registered!');
+            if(res.status == 201 || res.status == 200){
+                navigate('/dashboard');
+            } else {
+                console.log(result.message)
+                document.getElementById('responsetext').textContent = result['message'];
+            }
+            //alert(result.message || 'Patient registered!');
         } catch (err) {
             console.error(err);
             alert('Registration failed.');
@@ -231,12 +248,13 @@ function PatientForm() {
                             className="form-control"
                             name="date"
                             value={formMeta.date}
-                            min={getTomorrow()}
+                            min={getToday()}
+                            max={getToday()}
                             onChange={e => handleChange(e, setFormMeta)}
                             required />
                     </MDBCol>
                 </MDBRow>
-
+                <p id='responsetext' style={{color: 'red', fontWeight:'bold'}}></p>
                 <MDBBtn type='submit' style={{ backgroundColor: '#F53D3E', border: 'none' }} className='mb-4' block>
                     Register
                 </MDBBtn>
