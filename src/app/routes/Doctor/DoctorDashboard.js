@@ -19,6 +19,31 @@ function DoctorDashboard() {
     const [userInfo, setUserInfo] = useState({});
     const [date, setDate] = useState(new Date());
 
+const handleCancel = async (appointmentId) => {
+        try {
+            const response = await fetch(`/appointments`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify({
+                    appointment_id: appointmentId,
+                    status: 'canceled'
+                })
+            });
+
+            if (!response.ok) throw new Error("Failed to cancel appointment");
+
+            alert("Appointment canceled successfully.");
+            // You might want to refetch or filter out canceled ones here
+
+        } catch (err) {
+            console.error(err);
+            alert("Error canceling appointment.");
+        }
+    };
+
     const handleChange = async (newDate) => {
         const user_info = JSON.parse(sessionStorage.getItem('user_info'));
         setDate(newDate);
@@ -86,7 +111,10 @@ function DoctorDashboard() {
                     {doctorAppointments.appointments?.length === 0 ? (
                         <p>No appointments for today.</p>
                     ) : (
-                        <Appointments appointments={doctorAppointments.appointments || []} className="appointment-cards" />
+                        <Appointments
+                            appointments={doctorAppointments.appointments || []}
+                            refreshAppointments={() => handleChange(date)}
+                        />
                     )}
                 </div>
             </div>

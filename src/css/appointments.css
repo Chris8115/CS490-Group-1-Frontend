@@ -43,3 +43,24 @@
     color: #444;
   }
   
+  .appointment-reason-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+}
+
+.patient-request {
+    margin: 0;
+    flex: 1;
+}
+
+.cancel-button {
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 50px;
+}
