@@ -19,14 +19,18 @@ function PatientReview() {
     useEffect(() => {
         const getDoctors = async () => {
             try {
-                const response = await axios.get("/doctor_patient_relationship", {
-                params: {
-                    "patient_id": userInfo.user_id
-                }, 
-                withCredentials: true
+                
+                const response = await fetch(`/api/betteru/doctor_patient_relationship?patient_id=${userInfo.user_id}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include'
                 })
-    
-                let doctorRelationships = response.data.doctor_patient_relationship;
+
+                const data = await response.json();
+
+                let doctorRelationships = data.doctor_patient_relationship;
                 let doctorIds = doctorRelationships.map(r => r.doctor_id);
 
                 setAllDoctors(doctorIds);

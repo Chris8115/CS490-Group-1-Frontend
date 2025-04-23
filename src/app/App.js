@@ -22,6 +22,13 @@ import PatientDashboard from './routes/Patient/PatientDashboard.js';
 import PatientPrescriptions from "./routes/Patient/PatientPrescriptions.js"
 import DoctorDashboard from './routes/Doctor/DoctorDashboard.js';
 
+import PharmacyLayout from './routes/Pharmacy/PharmacyLayout.js';
+import PharmacyDashboard from './routes/Pharmacy/PharmacyDashboard.js';
+import PharmacyLogin from './routes/Pharmacy/PharmacyLogin.js';
+import PharmacyPatientSearch from './routes/Pharmacy/PharmacyPatientSearch.js';
+import PharmacyDeliveries from './routes/Pharmacy/PharmacyDeliveries.js';
+import PharmacyProductRecords from './routes/Pharmacy/PharmacyProductRecords.js';
+
 function App() {
   return (
     <div className="App">
@@ -32,9 +39,8 @@ function App() {
           
           <Route path="/home" element={<Landing/>}/>
           <Route path="/sign-up" element={<Registration/>}/>
-          <Route path="/log-in" element={<Login/>}></Route>
-          <Route path="/resetpassword" element={<ResetPassword/>}></Route>
           <Route path="/log-in" element={<Login/>} ></Route>
+          <Route path="/resetpassword" element={<ResetPassword/>}></Route>
           <Route path="/post/:postId" element={<PostPage />} ></Route>
 
           <Route path="/dashboard" element={<Dashboard/>}></Route>
@@ -56,6 +62,17 @@ function App() {
             <Route path="view-patients" element={<DoctorPatientView />} />
             <Route path="settings" element={<DoctorSettings />} />
           </Route>
+
+
+          <Route path="/pharmacy-log-in" element={<PharmacyLogin/>}></Route>
+
+          <Route path="/pharmacy" element={<PharmacyLayout />}>
+            <Route path="dashboard" element={<PharmacyDashboard />} />
+            <Route path="patient-search" element={<PharmacyPatientSearch />} />
+            <Route path="deliveries" element={<PharmacyDeliveries />} />
+            <Route path="records" element={<PharmacyProductRecords />} />
+          </Route>
+          
 
         </Routes>
       </BrowserRouter>

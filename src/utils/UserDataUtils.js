@@ -22,11 +22,24 @@ export async function getDoctorLastName(id) {
 }
 
 export async function getUserData(id) {
-    const response = await axios.get("/users", {
+    
+    const response = await fetch(`/api/betteru/users?user_id=${id}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include'
+    })
+
+    
+    /*const response = await axios.get("/users", {
         params: {
             "user_id": id
         },
         withCredentials: true
-    })
-    return response.data.users[0];
+    })*/
+
+    const data = await response.json();
+
+    return data.users[0];
 }
