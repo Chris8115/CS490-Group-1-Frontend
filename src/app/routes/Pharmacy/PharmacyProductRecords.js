@@ -31,6 +31,7 @@ function PharmacyProductRecords() {
 
     return (
         <>
+        <h1>Products</h1>   
  
             {medications.length > 0 && medications.map((medication, idx) => (
                 <PharmacyMedicationDetails medication={medication} key={medication.medication_id}/>

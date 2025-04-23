@@ -52,7 +52,8 @@ function PharmacyPatientSearch() {
     }, [patients]);
 
     return (
-        <>        
+        <>     
+        <h1>Patients</h1>   
             <form >
                 <label htmlFor="patientId" className="form-label">Patient ID</label>
                 <input type="number" id="patientId" placeholder="Input Patient's ID" name="patientId" className="form-control" onChange={(e) => setSearchTerm(e.target.value)}/>

@@ -28,7 +28,7 @@ function PatientDoctorSearch() {
         }
 
         const fetchDoctors = async () => {
-            const response = await fetch(`/users?role=doctor&last_name=${searchTerm}`, {
+            const response = await fetch(`/api/betteru/users?role=doctor&last_name=${searchTerm}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -46,7 +46,7 @@ function PatientDoctorSearch() {
             const fetchDoctorDetails = async (doctorIds) => {
                 try {
                     const detailsPromises = doctorIds.map(async (doctorId) => {
-                        const detailsResponse = await fetch(`/doctors?doctor_id=${doctorId}`, {
+                        const detailsResponse = await fetch(`/api/betteru/doctors?doctor_id=${doctorId}`, {
                             method: 'GET',
                             headers: {
                                 'Content-Type': 'application/json',

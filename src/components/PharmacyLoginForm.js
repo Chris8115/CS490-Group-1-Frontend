@@ -31,7 +31,7 @@ function PharmacyLoginForm() {
         
         try {
 
-            const response = await fetch(`http://localhost:5001/login`, {
+            const response = await fetch(`/api/pharmacy/login`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -62,45 +62,7 @@ function PharmacyLoginForm() {
         }
         
       };
-    async function ClickForgotPassword(){
-      let email = prompt("Enter your email address.", "Email");
-      let Emaildata = null;
-      if(email){
-        await fetch(`/users?email=${encodeURI(email)}`)
-        .then(data => {
-          /**/
-          console.log(data);
-          return data;
-          //console.log(requestOptions);
-        })
-        .then(resp => resp.json())
-        .then(Emaildata => {
-          if(Emaildata.users.length == 0){
-            throw new Error('Invalid email')
-          }
-          return Emaildata.users[0]
-        })
-        .then(userData => {
-          const requestOptions = {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-              'email_body': `Your password reset link: http://localhost:3000/resetpassword?user_id=${userData['user_id']}\n If you did not request this, you can ignore. Someone may have typed your email by mistake.`,
-              'email_subject': 'BetterU Password Reset request.'
-            })
-          };
-          fetch(`/mail/${userData['user_id']}`, requestOptions)
-          .then(response => response.json())
-          .then(data => {
-            console.log(data);
-            alert(data.message);
-          })
-        })
-        .catch(error => {
-          alert("Invalid Email.");
-        })
-      }
-    }
+      
     return (
 
         <MDBContainer className="p-3 my-5 d-flex flex-column w-50">

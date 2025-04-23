@@ -12,7 +12,7 @@ function PatientPrescriptions() {
 
         const getPrescriptions = async () => {
             try {
-                const response = await fetch(`/prescriptions?patient_id=${userInfo.user_id}`, {
+                const response = await fetch(`/api/betteru/prescriptions?patient_id=${userInfo.user_id}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',

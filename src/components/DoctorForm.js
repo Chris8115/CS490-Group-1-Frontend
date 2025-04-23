@@ -99,7 +99,7 @@ function DoctorForm() {
         }
 
         try {
-            const res = await fetch(`http://${BACKEND_HOST}/users/doctor`, {
+            const res = await fetch(`/api/betteru/users/doctor`, {
                 method: 'POST',
                 body: formData
             });

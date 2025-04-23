@@ -96,7 +96,7 @@ function PatientForm() {
         }
 
         try {
-            const res = await fetch(`http://${BACKEND_HOST}/users/patient`, {
+            const res = await fetch(`/api/betteru/users/patient`, {
                 method: 'POST',
                 body: formData
             });

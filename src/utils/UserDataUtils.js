@@ -2,7 +2,7 @@ import axios from "axios";
 import { ResponsiveEmbed } from "react-bootstrap";
 
 export async function getPatientDoctorId(user_id) {
-    const response = await fetch(`/doctor_patient_relationship?patient_id=${user_id}&status=active`, {
+    const response = await fetch(`/api/betteru/doctor_patient_relationship?patient_id=${user_id}&status=active`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

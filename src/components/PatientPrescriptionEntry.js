@@ -11,7 +11,7 @@ function PatientPrescriptionEntry(props) {
     useEffect(() => {
         const fetchMedication = async () => {
             try {
-                const response = await fetch(`/medications?medication_id=${prescription.medication_id}`, {
+                const response = await fetch(`/api/betteru/medications?medication_id=${prescription.medication_id}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -27,7 +27,7 @@ function PatientPrescriptionEntry(props) {
 
         const fetchPharmacy = async () => {
             try {
-                const response = await fetch(`/pharmacists?pharmacist_id=${prescription.pharmacist_id}`, {
+                const response = await fetch(`/api/betteru/pharmacists?pharmacist_id=${prescription.pharmacist_id}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',

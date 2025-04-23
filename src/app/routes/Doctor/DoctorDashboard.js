@@ -21,7 +21,7 @@ function DoctorDashboard() {
 
 const handleCancel = async (appointmentId) => {
         try {
-            const response = await fetch(`/appointments`, {
+            const response = await fetch(`/api/betteru/appointments`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json'
@@ -51,7 +51,7 @@ const handleCancel = async (appointmentId) => {
         const formattedDate = newDate.toISOString().split('T')[0];
 
         try {
-            const response = await fetch(`/appointments?doctor_id=${user_info.user_id}&start_time=${formattedDate}&status=accepted`);
+            const response = await fetch(`/api/betteru/appointments?doctor_id=${user_info.user_id}&start_time=${formattedDate}&status=accepted`);
             if (!response.ok) throw new Error('Failed to fetch appointments');
 
             const appointments = await response.json();
@@ -64,7 +64,7 @@ const handleCancel = async (appointmentId) => {
 
     const getPendingAppointments = async () => {
         try {
-            const response = await fetch(`/appointments?doctor_id=${userInfo.user_id}&status=pending`, {
+            const response = await fetch(`/api/betteru/appointments?doctor_id=${userInfo.user_id}&status=pending`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

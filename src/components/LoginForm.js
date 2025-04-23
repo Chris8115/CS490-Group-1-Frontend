@@ -31,7 +31,7 @@ function LoginForm() {
         
         try {
 
-            const response = await fetch(`http://localhost:5000/login`, {
+            const response = await fetch(`/api/betteru/login`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -67,7 +67,7 @@ function LoginForm() {
       let email = prompt("Enter your email address.", "Email");
       let Emaildata = null;
       if(email){
-        await fetch(`/users?email=${encodeURI(email)}`)
+        await fetch(`/api/betteru/users?email=${encodeURI(email)}`)
         .then(data => {
           /**/
           console.log(data);
@@ -90,7 +90,7 @@ function LoginForm() {
               'email_subject': 'BetterU Password Reset request.'
             })
           };
-          fetch(`/mail/${userData['user_id']}`, requestOptions)
+          fetch(`/api/betteru/mail/${userData['user_id']}`, requestOptions)
           .then(response => response.json())
           .then(data => {
             console.log(data);
