@@ -6,10 +6,10 @@ import {
     MDBBtn
 } from 'mdb-react-ui-kit';
 import Eula from './Eula';
+import { BACKEND_HOST, PHARMA_HOST } from './Hosts.js'
 import { useNavigate } from 'react-router-dom';
 
 function DoctorForm() {
-
     const navigate = useNavigate();
 
     const [userData, setUserData] = useState({
@@ -63,6 +63,15 @@ function DoctorForm() {
         return String(date);
     }
 
+    const getToday = () => {
+        const today = new Date();
+        today.setDate(today.getDate());
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+
     const handleChange = (e, stateSetter) => {
         const { name, value } = e.target;
         stateSetter(prev => ({ ...prev, [name]: value }));
@@ -90,14 +99,18 @@ function DoctorForm() {
         }
 
         try {
-            const res = await fetch('http://localhost:5000/users/doctor', {
+            const res = await fetch(`http://${BACKEND_HOST}/users/doctor`, {
                 method: 'POST',
                 body: formData
             });
 
             const result = await res.json();
-            
-            navigate('/dashboard');
+            if(res.status == 201 || res.status == 200){
+                navigate('/dashboard');
+            } else {
+                console.log(result.message)
+                document.getElementById('responsetext').textContent = result['message'];
+            }
 
 
         } catch (err) {
@@ -114,41 +127,41 @@ function DoctorForm() {
                     <MDBRow className='mb-4'>
                         <MDBCol>
                             <label>First name</label>
-                            <input className='form-input' name="first_name" value={userData.first_name} onChange={e => handleChange(e, setUserData)} />
+                            <input required className='form-input' name="first_name" value={userData.first_name} onChange={e => handleChange(e, setUserData)} />
                         </MDBCol>
                         <MDBCol>
                             <label>Last name</label>
-                            <input className='form-input' name="last_name" value={userData.last_name} onChange={e => handleChange(e, setUserData)} />
+                            <input required className='form-input' name="last_name" value={userData.last_name} onChange={e => handleChange(e, setUserData)} />
                         </MDBCol>
                         </MDBRow>
                         <MDBRow className='mb-4'>
                             <MDBCol>
                                 <label>Email Address</label>
-                                <input className='form-input' name="email" type='email' value={userData.email} onChange={e => handleChange(e, setUserData)} />
+                                <input required className='form-input' name="email" type='email' value={userData.email} onChange={e => handleChange(e, setUserData)} />
                             </MDBCol>
                             <MDBCol>
                                 <label>Phone Number</label>
-                                <input className='form-input' name="phone_number" type='text' value={userData.phone_number} onChange={e => handleChange(e, setUserData)} />
+                                <input required className='form-input' name="phone_number" type='text' value={userData.phone_number} onChange={e => handleChange(e, setUserData)} />
                             </MDBCol>
                         </MDBRow>
                             <label>Password</label>
-                            <input className='form-input' name="password" type='password' value={userData.password} onChange={e => handleChange(e, setUserData)} />
+                            <input required className='form-input' name="password" type='password' value={userData.password} onChange={e => handleChange(e, setUserData)} />
                             <label>Confirm Password</label>
-                            <input className='form-input' type='password' />
+                            <input required className='form-input' type='password' />
 
                         <label className="form-label">Upload Profile Picture</label>
-                        <input type="file" className="form-control mb-3" onChange={handleFileChange2} />
+                        <input required type="file" className="form-control mb-3" onChange={handleFileChange2} />
 
                     <label>Write a short bio of your experience in medical practice. This will be publicly displayed on your profile. You may change this later.</label>
-                    <input className='form-input' type='text' name='profile' value={doctorsData.profile} onChange={e => handleChange(e, setDoctorsData)} />
+                    <input required className='form-input' type='text' name='profile' value={doctorsData.profile} onChange={e => handleChange(e, setDoctorsData)} />
 
                     <label>Please enter your medical specialization(s) below.</label>
-                    <input className='form-input' type='text' name='specialization' value={doctorsData.specialization} onChange={e => handleChange(e, setDoctorsData)} />
+                    <input required className='form-input' type='text' name='specialization' value={doctorsData.specialization} onChange={e => handleChange(e, setDoctorsData)} />
 
-                    <p className='step'>Step 2: Identification, Address & Payment Info</p>
+                    <p className='step'>Step 2: Identification & Address</p>
 
                     <label className="form-label">Upload Identification</label>
-                    <input type="file" className="form-control mb-3" onChange={handleFileChange} />
+                    <input required type="file" className="form-control mb-3" onChange={handleFileChange} />
 
                     <br></br>
                     <label class="form-label" for="customFile">Enter Medical License Code</label>
@@ -156,27 +169,27 @@ function DoctorForm() {
                     
                     <h5>Address Information</h5>
                     <label>Address</label>
-                    <input className='form-input' type='text' label='Address' name='address' value={addressData.address} onChange={e => handleChange(e, setAddressData)} />
+                    <input required className='form-input' type='text' label='Address' name='address' value={addressData.address} onChange={e => handleChange(e, setAddressData)} />
                     <label>Address 2</label>
                     <input className='form-input' type='text' label='Address 2' name='address2' value={addressData.address2} onChange={e => handleChange(e, setAddressData)} />
                     <MDBRow className='mb-4'>
                         <MDBCol>
                             <label>City</label>
-                            <input className='form-input' type='text' label='City' name='city' value={addressData.city} onChange={e => handleChange(e, setAddressData)} />
+                            <input required className='form-input' type='text' label='City' name='city' value={addressData.city} onChange={e => handleChange(e, setAddressData)} />
                         </MDBCol>
                         <MDBCol>
                             <label>State</label>
-                            <input className='form-input' type='text' label='State' name='state' value={addressData.state} onChange={e => handleChange(e, setAddressData)} />
+                            <input required className='form-input' type='text' label='State' name='state' value={addressData.state} onChange={e => handleChange(e, setAddressData)} />
                         </MDBCol>
                     </MDBRow>
                     <MDBRow className='mb-4'>
                         <MDBCol>
                             <label>Country</label>
-                            <input className='form-input' type='text' label='Country' name='country' value={addressData.country} onChange={e => handleChange(e, setAddressData)} />
+                            <input required className='form-input' type='text' label='Country' name='country' value={addressData.country} onChange={e => handleChange(e, setAddressData)} />
                         </MDBCol>
                         <MDBCol>
                             <label>Zip</label>
-                            <input className='form-input' type='text' label='Zip Code' name='zip' value={addressData.zip} onChange={e => handleChange(e, setAddressData)} />
+                            <input required className='form-input' type='text' label='Zip Code' name='zip' value={addressData.zip} onChange={e => handleChange(e, setAddressData)} />
                         </MDBCol>
                     </MDBRow>
 
@@ -186,7 +199,7 @@ function DoctorForm() {
                     <MDBRow className='mb-4'>
                         <MDBCol>
                             <label>Name</label>
-                            <input className='form-input' name='eulaName' value={formMeta.eulaName} onChange={e => handleChange(e, setFormMeta)} />
+                            <input required className='form-input' name='eulaName' value={formMeta.eulaName} onChange={e => handleChange(e, setFormMeta)} />
                         </MDBCol>
                         <MDBCol>
                             <label>Today's Date</label>
@@ -195,12 +208,13 @@ function DoctorForm() {
                                 className="form-control"
                                 name="date"
                                 value={formMeta.date}
-                                min={getTomorrow()}
+                                min={getToday()}
+                                max={getToday()}
                                 onChange={e => handleChange(e, setFormMeta)}
                                 required />
                         </MDBCol>
                     </MDBRow>
-
+                    <p id='responsetext' style={{color: 'red', fontWeight:'bold'}}></p>
                     <button type='submit' className='register-btn' >
                         Register
                     </button>

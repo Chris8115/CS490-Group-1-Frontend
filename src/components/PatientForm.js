@@ -7,9 +7,11 @@ import {
 } from 'mdb-react-ui-kit';
 import Eula from './Eula';
 import Checkbox from '@mui/material/Checkbox';
-
+import { BACKEND_HOST, PHARMA_HOST } from './Hosts.js'
+import { useNavigate } from 'react-router-dom';
 
 function PatientForm() {
+    const navigate = useNavigate();
 
     const [userData, setUserData] = useState({
         first_name: '',
@@ -54,6 +56,15 @@ function PatientForm() {
         return `${year}-${month}-${day}`;
     };
 
+    const getToday = () => {
+        const today = new Date();
+        today.setDate(today.getDate());
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+
     const handleChange = (e, stateSetter) => {
         const { name, value } = e.target;
         stateSetter(prev => ({ ...prev, [name]: value }));
@@ -85,13 +96,19 @@ function PatientForm() {
         }
 
         try {
-            const res = await fetch('http://localhost:5000/users/patient', {
+            const res = await fetch(`http://${BACKEND_HOST}/users/patient`, {
                 method: 'POST',
                 body: formData
             });
 
             const result = await res.json();
-            alert(result.message || 'Patient registered!');
+            if(res.status == 201 || res.status == 200){
+                navigate('/dashboard');
+            } else {
+                console.log(result.message)
+                document.getElementById('responsetext').textContent = result['message'];
+            }
+            //alert(result.message || 'Patient registered!');
         } catch (err) {
             console.error(err);
             alert('Registration failed.');
@@ -138,64 +155,74 @@ function PatientForm() {
                 <MDBRow className='mb-4'>
                     <MDBCol>
                         <label>First name</label>
-                        <MDBInput name="first_name" value={userData.first_name} onChange={e => handleChange(e, setUserData)} />
+                        <MDBInput required name="first_name" value={userData.first_name} onChange={e => handleChange(e, setUserData)} />
                     </MDBCol>
                     <MDBCol>
                         <label>Last name</label>
-                        <MDBInput name="last_name" value={userData.last_name} onChange={e => handleChange(e, setUserData)} />
+                        <MDBInput required name="last_name" value={userData.last_name} onChange={e => handleChange(e, setUserData)} />
                     </MDBCol>
                 </MDBRow>
                 <MDBRow className='mb-4'>
                     <MDBCol>
                         <label>Email Address</label>
-                        <MDBInput name="email" type='email' value={userData.email} onChange={e => handleChange(e, setUserData)} />
+                        <MDBInput required name="email" type='email' value={userData.email} onChange={e => handleChange(e, setUserData)} />
                     </MDBCol>
                     <MDBCol>
                         <label>Phone Number</label>
-                        <MDBInput name="phone_number" type='text' value={userData.phone_number} onChange={e => handleChange(e, setUserData)} />
+                        <MDBInput required name="phone_number" type='text' value={userData.phone_number} onChange={e => handleChange(e, setUserData)} />
                     </MDBCol>
                 </MDBRow>
                 <label>Password</label>
-                <MDBInput className='mb-4' name="password" type='password' value={userData.password} onChange={e => handleChange(e, setUserData)} />
+                <MDBInput required className='mb-4' name="password" type='password' value={userData.password} onChange={e => handleChange(e, setUserData)} />
                 <label>Confirm Password</label>
-                <MDBInput className='mb-4' type='password' />
+                <MDBInput required className='mb-4' type='password' />
 
                 <p className='step'>Step 2: Identification, Address & Payment Info</p>
 
                 <label className="form-label">Upload Identification</label>
-                <input type="file" className="form-control mb-3" onChange={handleFileChange} />
+                <input required type="file" className="form-control mb-3" onChange={handleFileChange} />
 
                 <label>Social Security Number</label>
-                <MDBInput className='mb-4' type='text' name='ssn' value={patientData.ssn} onChange={e => handleChange(e, setPatientData)} />
+                <MDBInput required className='mb-4' type='text' name='ssn' value={patientData.ssn} onChange={e => handleChange(e, setPatientData)} />
 
                 <h5>Address Information</h5>
-                <MDBInput className='mb-4' label='Address' name='address' value={addressData.address} onChange={e => handleChange(e, setAddressData)} />
-                <MDBInput className='mb-4' label='Address 2' name='address2' value={addressData.address2} onChange={e => handleChange(e, setAddressData)} />
                 <MDBRow className='mb-4'>
                     <MDBCol>
-                        <MDBInput label='City' name='city' value={addressData.city} onChange={e => handleChange(e, setAddressData)} />
+                        <MDBInput required label='Address' name='address' value={addressData.address} onChange={e => handleChange(e, setAddressData)} />
                     </MDBCol>
                     <MDBCol>
-                        <MDBInput label='State' name='state' value={addressData.state} onChange={e => handleChange(e, setAddressData)} />
+                        <MDBInput label='Address 2' name='address2' value={addressData.address2} onChange={e => handleChange(e, setAddressData)} />
                     </MDBCol>
                 </MDBRow>
                 <MDBRow className='mb-4'>
                     <MDBCol>
-                        <MDBInput label='Country' name='country' value={addressData.country} onChange={e => handleChange(e, setAddressData)} />
+                        <MDBInput required label='City' name='city' value={addressData.city} onChange={e => handleChange(e, setAddressData)} />
                     </MDBCol>
                     <MDBCol>
-                        <MDBInput label='Zip Code' name='zip' value={addressData.zip} onChange={e => handleChange(e, setAddressData)} />
+                        <MDBInput required label='State' name='state' value={addressData.state} onChange={e => handleChange(e, setAddressData)} />
+                    </MDBCol>
+                </MDBRow>
+                <MDBRow className='mb-4'>
+                    <MDBCol>
+                        <MDBInput required label='Country' name='country' value={addressData.country} onChange={e => handleChange(e, setAddressData)} />
+                    </MDBCol>
+                    <MDBCol>
+                        <MDBInput required label='Zip Code' name='zip' value={addressData.zip} onChange={e => handleChange(e, setAddressData)} />
                     </MDBCol>
                 </MDBRow>
 
                 <h5>Credit Card Information</h5>
-                <MDBInput className='mb-4' label='Card Number' name='cardnumber' value={creditCardData.cardnumber} onChange={e => handleChange(e, setCreditCardData)} />
                 <MDBRow className='mb-4'>
                     <MDBCol>
-                        <MDBInput label='CVV' name='cvv' value={creditCardData.cvv} onChange={e => handleChange(e, setCreditCardData)} />
+                        <MDBInput required label='Card Number' name='cardnumber' value={creditCardData.cardnumber} onChange={e => handleChange(e, setCreditCardData)} />
+                    </MDBCol>
+                </MDBRow>
+                <MDBRow className='mb-4'>
+                    <MDBCol>
+                        <MDBInput required label='CVV' name='cvv' value={creditCardData.cvv} onChange={e => handleChange(e, setCreditCardData)} />
                     </MDBCol>
                     <MDBCol>
-                        <MDBInput label='Expiration Date (YYYY-MM-DD)' name='exp_date' value={creditCardData.exp_date} onChange={e => handleChange(e, setCreditCardData)} />
+                        <MDBInput required label='Expiration Date (YYYY-MM-DD)' name='exp_date' value={creditCardData.exp_date} onChange={e => handleChange(e, setCreditCardData)} />
                     </MDBCol>
                 </MDBRow>
 
@@ -222,7 +249,7 @@ function PatientForm() {
                 <MDBRow className='mb-4'>
                     <MDBCol>
                         <label>Name</label>
-                        <MDBInput name='eulaName' value={formMeta.eulaName} onChange={e => handleChange(e, setFormMeta)} />
+                        <MDBInput required name='eulaName' value={formMeta.eulaName} onChange={e => handleChange(e, setFormMeta)} />
                     </MDBCol>
                     <MDBCol>
                         <label>Today's Date</label>
@@ -231,12 +258,13 @@ function PatientForm() {
                             className="form-control"
                             name="date"
                             value={formMeta.date}
-                            min={getTomorrow()}
+                            min={getToday()}
+                            max={getToday()}
                             onChange={e => handleChange(e, setFormMeta)}
                             required />
                     </MDBCol>
                 </MDBRow>
-
+                <p id='responsetext' style={{color: 'red', fontWeight:'bold'}}></p>
                 <MDBBtn type='submit' style={{ backgroundColor: '#F53D3E', border: 'none' }} className='mb-4' block>
                     Register
                 </MDBBtn>
