@@ -30,7 +30,7 @@ function ResetPasswordForm() {
     }
 
     try {
-      const response = await fetch(`http://localhost:5000/users/${user_id}`, {
+      const response = await fetch(`/api/betteru/users/${user_id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

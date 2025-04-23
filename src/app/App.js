@@ -63,7 +63,6 @@ function App() {
             <Route path="settings" element={<DoctorSettings />} />
           </Route>
 
-
           <Route path="/pharmacy-log-in" element={<PharmacyLogin/>}></Route>
 
           <Route path="/pharmacy" element={<PharmacyLayout />}>

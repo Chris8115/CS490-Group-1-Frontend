@@ -59,7 +59,7 @@ function PostPage() {
 
         const fetchPost = async () => {
             try {
-                const res = await fetch(`http://localhost:5000/forum_posts?post_id=${postId}`);
+                const res = await fetch(`/api/betteru/forum_posts?post_id=${postId}`);
                 if (!res.ok) throw new Error('Failed to fetch post');
                 const data = await res.json();
                 setPost(data.forum_posts[0]);
@@ -75,7 +75,7 @@ function PostPage() {
 
     const fetchComments = async () => {
         try {
-            const res = await fetch(`http://localhost:5000/forum_comments?post_id=${postId}`);
+            const res = await fetch(`/api/betteru/forum_comments?post_id=${postId}`);
             if (!res.ok) throw new Error('Failed to fetch comments');
             const data = await res.json();
             setComments(data.forum_comments || []);

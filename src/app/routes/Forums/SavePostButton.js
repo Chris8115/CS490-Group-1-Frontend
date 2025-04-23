@@ -9,7 +9,7 @@ function SaveStarButton( { userId, postId } ) {
 
   useEffect(() => {
     // Check if this post is already saved by the user
-    fetch(`/saved_posts?user_id=${userId}`)
+    fetch(`/api/betteru/saved_posts?user_id=${userId}`)
       .then(res => res.json())
       .then(data => {
         const savedPostIds = data.saved_posts.map(post => post.post_id);

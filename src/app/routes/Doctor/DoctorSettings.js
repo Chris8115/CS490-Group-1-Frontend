@@ -13,7 +13,7 @@ function DoctorSettings() {
 
         const getDoctorInfo = async () => {
             try {
-                const doctorRes = await fetch(`http://localhost:3000/doctors?doctor_id=${user_info.user_id}`);
+                const doctorRes = await fetch(`/api/betteru//doctors?doctor_id=${user_info.user_id}`);
                 const doctorData = await doctorRes.json();
                 const doctorDetails = doctorData.doctors[0];
                 setDoctor(doctorDetails);
@@ -24,7 +24,7 @@ function DoctorSettings() {
             }
 
             try {
-                const userRes = await fetch(`http://localhost:3000/users?user_id=${user_info.user_id}`);
+                const userRes = await fetch(`/api/betteru//users?user_id=${user_info.user_id}`);
                 const userData = await userRes.json();
                 setUser(userData.users[0]);
             } catch (error) {
@@ -40,7 +40,7 @@ function DoctorSettings() {
         setEditing(false);
 
         try {
-            await fetch(`http://localhost:3000/doctors/${user_info.user_id}`, {
+            await fetch(`/api/betteru/doctors/${user_info.user_id}`, {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
                 credentials: 'include',

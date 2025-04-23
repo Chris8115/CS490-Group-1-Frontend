@@ -20,7 +20,7 @@ function PendingAppointments({ appointments, setAppointments }) {
 
                     if (patientId && !names[patientId]) {
                         try {
-                            const response = await fetch(`/users?user_id=${patientId}`);
+                            const response = await fetch(`/api/betteru/users?user_id=${patientId}`);
                             if (!response.ok) throw new Error("Failed to fetch patient");
                             const data = await response.json();
                             names[patientId] = `${data.users[0].first_name} ${data.users[0].last_name}`;
@@ -42,7 +42,7 @@ function PendingAppointments({ appointments, setAppointments }) {
 
     const updateAppointmentStatus = async (appointmentId, newStatus) => {
         try {
-            const response = await fetch(`/appointments/${appointmentId}`, {
+            const response = await fetch(`/api/betteru/appointments/${appointmentId}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',

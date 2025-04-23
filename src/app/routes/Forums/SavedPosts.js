@@ -12,7 +12,7 @@ function SavedPosts() {
 
         if (showModal) {
 
-            fetch(`/saved_posts?user_id=${userId}`)
+            fetch(`/api/betteru/saved_posts?user_id=${userId}`)
                 .then(res => {
                     if (!res.ok) throw new Error('Failed to fetch saved posts');
                     return res.json();

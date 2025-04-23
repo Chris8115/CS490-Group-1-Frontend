@@ -32,6 +32,7 @@ function PharmacyDeliveries() {
 
     return (
         <>        
+        <h1>Deliveries</h1>   
             {orders.length > 0 && orders.map((order, idx) => (
                 <PharmacyDeliveryStatus order={order} key={order.order_id}/>
             ))}

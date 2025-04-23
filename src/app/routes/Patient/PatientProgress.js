@@ -45,7 +45,7 @@ function PatientProgress() {
 
         const getProgress = async () => {
             try {
-                const response = await fetch(`/patient_progress?patient_id=${userInfo.user_id}`, {
+                const response = await fetch(`/api/betteru/patient_progress?patient_id=${userInfo.user_id}`, {
                     method: 'GET',
                     headers: {
                       'Content-Type': 'application/json',
@@ -84,7 +84,7 @@ function PatientProgress() {
 
         const getAssignments = async () => {
             try {
-                const response = await fetch(`/patient_exercise_assignments?patient_id=${userInfo.user_id}`, {
+                const response = await fetch(`/api/betteru/patient_exercise_assignments?patient_id=${userInfo.user_id}`, {
                     method: 'GET',
                     headers: {
                       'Content-Type': 'application/json',
@@ -113,7 +113,7 @@ function PatientProgress() {
                 const exerciseIds = assignments.map(item => item.exercise_id);
 
                 const fetches = exerciseIds.map(id => 
-                    fetch(`/exercise_plans?exercise_id=${id}`, {
+                    fetch(`/api/betteru/exercise_plans?exercise_id=${id}`, {
                         method: 'GET',
                         headers: {
                             'Content-Type': 'application/json'
