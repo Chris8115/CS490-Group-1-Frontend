@@ -99,7 +99,6 @@ function DoctorForm() {
         }
 
         try {
-            console.log(BACKEND_HOST)
             const res = await fetch(`http://${BACKEND_HOST}/users/doctor`, {
                 method: 'POST',
                 body: formData
