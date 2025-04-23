@@ -7,34 +7,25 @@ function formatTimeRange(start, end) {
     return `${format(start)} - ${format(end)}`;
 }
 
-function Appointments({ appointments }) {
+function Appointments({ appointments, refreshAppointments }) {
     const [patientNames, setPatientNames] = useState({});
 
     useEffect(() => {
-
         const fetchPatientNames = async () => {
-
             const names = {};
 
             await Promise.all(
                 appointments.map(async (appt) => {
-
                     const patientId = appt.patient_id;
-
                     if (patientId && !names[patientId]) {
                         try {
-
                             const response = await fetch(`/users?user_id=${patientId}`);
                             if (!response.ok) throw new Error("Failed to fetch patient");
                             const data = await response.json();
-                            console.log(data.users);
                             names[patientId] = `${data.users[0].first_name} ${data.users[0].last_name}`;
-
                         } catch (error) {
-
                             console.error("Error fetching patient info:", error);
                             names[patientId] = "Unknown Patient";
-
                         }
                     }
                 })
@@ -46,8 +37,30 @@ function Appointments({ appointments }) {
         if (appointments && appointments.length > 0) {
             fetchPatientNames();
         }
-        
+
     }, [appointments]);
+
+    const handleCancel = async (appointmentId) => {
+        try {
+            const res = await fetch(`/appointments/${appointmentId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify({
+                    status: 'canceled'
+                })
+            });
+
+            if (!res.ok) throw new Error('Failed to cancel appointment');
+
+            if (refreshAppointments) refreshAppointments(); // Refresh if function is passed
+
+        } catch (err) {
+            console.error(err);
+        }
+    };
 
     return (
         <div className="appointments-scroll-box">
@@ -56,19 +69,28 @@ function Appointments({ appointments }) {
             
                 appointments.map((appt, index) => {
                     const fullName = patientNames[appt.patient_id] ?? undefined;
-                        return (
-                            <div className="appointment-item" key={appt.appointment_id || index}>
-                                <div className="appointment-header">
-                                    <p className="patient-name">{fullName}</p>
-                                    <p className="time">{formatTimeRange(appt.start_time, appt.end_time)}</p>
-                                </div>
-                                <p className="patient-request">"{appt.reason}"</p>
+                    return (
+                    
+                    
+                        <div className="appointment-item" key={appt.appointment_id || index}>
+                            <div className="appointment-header">
+                                <p className="patient-name">{fullName}</p>
+                                <p className="time">{formatTimeRange(appt.start_time, appt.end_time)}</p>
                             </div>
-                        );
-                    }
-                )
-            }
+                            <div className="appointment-reason-row">
+                                <p className="patient-request">"{appt.reason}"</p>
+                                <button
+                                    className="cancel-button"
+                                    onClick={() => handleCancel(appt.appointment_id)}
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
 
+                    );
+                })
+            }
         </div>
     );
 }
