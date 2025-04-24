@@ -49,7 +49,7 @@ function PharmacyNavbar() {
 
   return (
     <>
-      <Navbar expand="lg" className="bg-body-tertiary navbar">
+      <Navbar expand="lg" className="bg-body-tertiary pharmacy-navbar">
         <Container>
           <Navbar.Brand href="/">Pharmacy</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />

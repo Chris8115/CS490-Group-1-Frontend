@@ -24,6 +24,11 @@ p {
     border-color: #76BED0 !important;
   }
 
+.pharmacy-navbar {
+    background-color: rgb(236, 149, 50) !important;
+    border-color: rgb(236, 149, 50) !important;
+}
+
 .special-text {
     color: #F7CB15;
 }
