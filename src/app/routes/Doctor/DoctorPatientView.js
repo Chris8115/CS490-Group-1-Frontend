@@ -26,7 +26,7 @@ function DoctorPatientView() {
     useEffect(() => {
         const user_info = JSON.parse(sessionStorage.getItem('user_info'));
         
-        fetch(`http://localhost:5000/doctor_patient_relationship?doctor_id=${user_info.user_id}&status=accepted`)
+        fetch(`http://localhost:5000/doctor_patient_relationship?doctor_id=${user_info.user_id}&status=active`)
             .then((res) => {
                 if (!res.ok) {
                     throw new Error('Failed to fetch doctor-patient relationships');

@@ -165,15 +165,17 @@ function DoctorPatientInfo() {
           </ul>
       
           <button 
-            onClick={() => navigate(`/prescribe?patient_id=${patient_id}`)} 
+            onClick={() => navigate(`/doctor/prescribe/${patient_id}`)} 
             style={{
               marginTop: "20px",
               padding: "10px 20px",
-              backgroundColor: "#4CAF50",
+              backgroundColor: "#FF5354",
               color: "white",
               border: "none",
               borderRadius: "5px",
-              cursor: "pointer"
+              cursor: "pointer",
+              marginBottom: "50px",
+              marginLeft: "100px",
             }}
           >
             Prescribe Medication
