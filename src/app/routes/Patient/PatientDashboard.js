@@ -61,10 +61,6 @@ function PatientDashboard() {
                     const doctorName = await getDoctorLastName(relationships[i].doctor_id);
                     setDoctorName(doctorName);
                     break;
-                } else if (relationships[i].status === "pending") {
-                    hasPending = true;
-                    const doctorName = await getDoctorLastName(relationships[i].doctor_id);
-                    setDoctorName(doctorName);
                 }
             }
             if (hasDoctor) {

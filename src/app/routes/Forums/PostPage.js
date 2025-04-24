@@ -33,7 +33,7 @@ function PostPage() {
         };
     
         try {
-            const res = await fetch('/forum_comments', {
+            const res = await fetch('/api/betteru/forum_comments', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

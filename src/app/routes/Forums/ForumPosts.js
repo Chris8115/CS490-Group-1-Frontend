@@ -23,7 +23,7 @@ function ForumPosts() {
   const postsPerPage = 10;
 
   useEffect(() => {
-    fetch('http://localhost:5000/forum_posts')
+    fetch('/api/betteru/forum_posts')
       .then((res) => {
         if (!res.ok) {
           throw new Error('Failed to fetch forum posts');

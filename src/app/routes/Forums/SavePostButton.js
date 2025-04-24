@@ -27,7 +27,7 @@ function SaveStarButton( { userId, postId } ) {
     };
 
     if (!isSaved) {
-        fetch('/saved_posts', {
+        fetch('/api/betteru/saved_posts', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -47,7 +47,7 @@ function SaveStarButton( { userId, postId } ) {
           });
     }
     else {
-        fetch('/saved_posts', {
+        fetch('/api/betteru/saved_posts', {
             method: 'DELETE',
             headers: {
               'Content-Type': 'application/json'

@@ -23,7 +23,7 @@ function CreatePostButton({ userId }) {
 
         try {
             console.log(payload);
-            const res = await fetch('/forum_posts', {
+            const res = await fetch(`/api/betteru/forum_posts`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

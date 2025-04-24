@@ -8,6 +8,7 @@ function PharmacyPatientSearchResult(props) {
     
     const patient = props.patient;
     
+    console.log(patient);
     
     const fetchPatientOrders = async () => {
 
@@ -25,8 +26,23 @@ function PharmacyPatientSearchResult(props) {
 
     }
 
+    const fetchPatientPrescriptions = async () => {
+
+        const response = await fetch(`/api/betteru/prescriptions?patient_id=${patient.patient_id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include'
+        });
+
+        const data = await response.json();
+        console.log(data);
+    }
+
     useEffect(() => {
         fetchPatientOrders();
+        fetchPatientPrescriptions();
     }, [])
 
     return <>
@@ -39,6 +55,8 @@ function PharmacyPatientSearchResult(props) {
             {patientOrders.map((order, idx) => (
                 <span key={order.order_id}><strong>{order.status.toUpperCase()} - {order.medication_id}: {order.name}</strong></span>
             ))}
+        
+        
     </div>
 
     </>

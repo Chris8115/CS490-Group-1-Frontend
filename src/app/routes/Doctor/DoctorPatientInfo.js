@@ -24,11 +24,11 @@ function DoctorPatientInfo() {
             const user_info = JSON.parse(sessionStorage.getItem('user_info'));
             try {
                 const [pRes, eRes, aRes, uRes, rRes] = await Promise.all([
-                    fetch(`/patients?patient_id=${patient_id}`),
-                    fetch(`/patient_exercise_assignments?patient_id=${patient_id}`),
-                    fetch(`/appointments?patient_id=${patient_id}`),
-                    fetch(`/users?user_id=${patient_id}`),
-                    fetch(`/doctor_patient_relationship?patient_id=${patient_id}&doctor_id=${user_info.user_id}`), // Get doctor notes from doctor-patient relationship table
+                    fetch(`/api/betteru/patients?patient_id=${patient_id}`),
+                    fetch(`/api/betteru/patient_exercise_assignments?patient_id=${patient_id}`),
+                    fetch(`/api/betteru/appointments?patient_id=${patient_id}`),
+                    fetch(`/api/betteru/users?user_id=${patient_id}`),
+                    fetch(`/api/betteru/doctor_patient_relationship?patient_id=${patient_id}&doctor_id=${user_info.user_id}`), // Get doctor notes from doctor-patient relationship table
                 ]);
 
                 if (!pRes.ok || !eRes.ok || !aRes.ok || !uRes.ok || !rRes.ok) {
@@ -58,7 +58,7 @@ function DoctorPatientInfo() {
                 const plans = {};
 
                 await Promise.all((exerciseData.patient_exercise_assignments || []).flat().map(async (ex) => {
-                    const res = await fetch(`/exercise_plans?exercise_id=${ex.exercise_id}`);
+                    const res = await fetch(`/api/betteru/exercise_plans?exercise_id=${ex.exercise_id}`);
                     if (res.ok) {
                     const data = await res.json();
                     plans[ex.exercise_id] = data.plan || data; // adjust depending on your API structure
