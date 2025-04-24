@@ -78,7 +78,7 @@ function DoctorPatientView() {
                 <div className="patients-container">
                     {currentPatients.map((p) => (
                         <div className='patient' key={p.patient_id}>
-                            <a onClick={() => navigate(`/patient/${p.patient_id}`)}>
+                            <a onClick={() => navigate(`/doctor/doctor_patient_info/${p.patient_id}`)}>
                                 <p>{patientNames[p.patient_id] || 'Loading...'}</p>
                             </a>
                         </div>

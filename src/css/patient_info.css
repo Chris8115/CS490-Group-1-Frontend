@@ -1,0 +1,10 @@
+.patient-info-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* vertical center */
+    align-items: flex-start; /* left align */
+    min-height: 100vh;
+    padding-left: 50px; /* or whatever left margin you like */
+    box-sizing: border-box;
+  }
+  
