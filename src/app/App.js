@@ -21,6 +21,8 @@ import '../css/patient_pages.css'
 import PatientDashboard from './routes/Patient/PatientDashboard.js';
 import PatientPrescriptions from "./routes/Patient/PatientPrescriptions.js"
 import DoctorDashboard from './routes/Doctor/DoctorDashboard.js';
+import DoctorPatientInfo from './routes/Doctor/DoctorPatientInfo.js';
+import DoctorPrescribe from './routes/Doctor/DoctorPrescribe.js';
 
 import PharmacyLayout from './routes/Pharmacy/PharmacyLayout.js';
 import PharmacyDashboard from './routes/Pharmacy/PharmacyDashboard.js';
@@ -61,6 +63,9 @@ function App() {
             <Route path="dashboard" element={<DoctorDashboard />} />
             <Route path="view-patients" element={<DoctorPatientView />} />
             <Route path="settings" element={<DoctorSettings />} />
+            <Route path="doctor_patient_info/:patient_id" element={<DoctorPatientInfo />} />
+            <Route path="prescribe/:patient_id" element={<DoctorPrescribe />} />
+
           </Route>
 
           <Route path="/pharmacy-log-in" element={<PharmacyLogin/>}></Route>

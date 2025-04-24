@@ -1,0 +1,19 @@
+.prescribe-wrapper {
+    margin-bottom: 60px;
+    padding-left: 100px;
+  }
+  
+  .prescribe-wrapper h2 {
+    margin-left: 0; /* already spaced by parent */
+    margin-bottom: 20px;
+  }
+  
+  .prescribe-wrapper .list-group-item {
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .prescribe-wrapper .list-group-item:hover {
+    background-color: #f0f0f0;
+    cursor: pointer;
+  }
+  
