@@ -47,15 +47,6 @@ function PatientForm() {
         identificationFile: null
     });
 
-    const getTomorrow = () => {
-        const tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        const year = tomorrow.getFullYear();
-        const month = String(tomorrow.getMonth() + 1).padStart(2, '0');
-        const day = String(tomorrow.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`;
-    };
-
     const getToday = () => {
         const today = new Date();
         today.setDate(today.getDate());
@@ -121,6 +112,7 @@ function PatientForm() {
         diabetes: false,
         highBloodPressure: false,
         asthma: false,
+        additional: '',
     });
 
     const handleConditionChange = (event) => {
@@ -144,7 +136,33 @@ function PatientForm() {
             ...prev,
             medical_history: selected
         }));
+        console.log(patientData)
+        console.log(updatedConditions)
     };
+
+    const handleAdditionalChange = (event) => {
+        const { name, value } = event.target;
+        const updatedConditions = {
+            ...medicalConditions,
+            [name]: value
+        }
+        setMedicalConditions(updatedConditions);
+
+        const selected = Object.entries(updatedConditions)
+            .filter(([_, value]) => value)
+            .map(([key]) =>
+                key
+                    .replace(/([A-Z])/g, ' $1')
+                    .replace(/^./, str => str.toUpperCase())
+                    .replace('Additional', `Additional Medical History: ${value}`)
+            )
+            .join(', ');
+    
+        setPatientData(prev => ({
+            ...prev,
+            medical_history: selected
+        }));
+    }
 
     return (
         <div className='patient-form'>
@@ -226,9 +244,9 @@ function PatientForm() {
                     </MDBCol>
                 </MDBRow>
 
-                <p className='step-descrip'>Upload Existing Medical History</p>
+                <p className='step-descrip'>Medical History</p>
                 <div className='mb-3'>
-                    {Object.entries(medicalConditions).map(([key, value]) => (
+                    {Object.entries(medicalConditions).slice(0,-1).map(([key, value]) => (
                         <div key={key}>
                             <label>
                                 <Checkbox
@@ -242,6 +260,7 @@ function PatientForm() {
                             </label>
                         </div>
                     ))}
+                    <MDBInput label='Additional Medical History' name='additional' value={medicalConditions.additional} onChange={e => handleAdditionalChange(e)} />
                 </div>
                 <p className='step'>Step 3: Acknowledgement and Compliance Forms</p>
                 <Eula />
