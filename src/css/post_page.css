@@ -126,3 +126,11 @@
     color: gold;
   }
 
+
+  .user-popup.fade-in {
+    opacity: 1;
+}
+
+.user-popup.fade-out {
+    opacity: 0;
+}
