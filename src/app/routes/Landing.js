@@ -57,8 +57,8 @@ function Landing() {
         <Divider />
 
         <div className="footer-sign-up">
-            <h1>Ready to try? Sign up today.</h1>
-            <button className="btn btn-primary footer-sign-up-btn">Make an account today</button>
+            <h1 className='footer-sign-up-title'>Ready to try? Sign up today.</h1>
+            <a href='sign-up'><button className="btn btn-primary footer-sign-up-btn">Make an account today</button></a>
         </div>
 
         <Divider />
