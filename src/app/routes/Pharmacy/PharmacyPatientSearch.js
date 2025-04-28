@@ -5,21 +5,22 @@ import PharmacyPatientSearchResult from "../../../components/PharmacyPatientSear
 
 function PharmacyPatientSearch() {
     const { userInfo } = useUser();
-    const [searchTerm, setSearchTerm] = useState('');
+    const [searchId, setSearchId] = useState('');
+    const [searchFirstName, setSearchFirstName] = useState('');
+    const [searchLastName, setSearchLastName] = useState('');
     const [patients, setPatients] = useState([]);
     const [patientOrders, setPatientOrders] = useState([]);
-    const [searchMethod, setSearchMethod] = useState("id"); 
 
 
     // ID Search
     useEffect(() => {
-        if (!searchTerm) {
+        if (!searchId && !searchFirstName && !searchLastName) {
             setPatients([]);
             return;
         }
 
         const fetchPatientDetails = async () => {
-            const response = await fetch(`/api/pharmacy/patient/${searchTerm}`, {
+            const response = await fetch(`/api/pharmacy/patients?patient_id=${searchId}&first_name=${searchFirstName}&last_name=${searchLastName}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -28,26 +29,17 @@ function PharmacyPatientSearch() {
             });
 
             const data = await response.json();
-            if (data.patient) {
-                setPatients([data.patient]);
-            }
-
-            return [];
+            setPatients(data.patients);
         }
 
-        // This works through id
-        const fetchPatients = async () => {
-            const patients = await fetchPatientDetails();
-        }
+        fetchPatientDetails();
 
-
-        fetchPatients()
-
-    }, [searchTerm])
+    }, [searchId, searchFirstName, searchLastName])
 
 
     // Update search result
     useEffect(() => {
+        console.log(patients);
 
     }, [patients]);
 
@@ -56,7 +48,13 @@ function PharmacyPatientSearch() {
         <h1>Patients</h1>   
             <form >
                 <label htmlFor="patientId" className="form-label">Patient ID</label>
-                <input type="number" id="patientId" placeholder="Input Patient's ID" name="patientId" className="form-control" onChange={(e) => setSearchTerm(e.target.value)}/>
+                <input type="number" id="patientId" placeholder="Input Patient's ID" name="patientId" className="form-control" onChange={(e) => setSearchId(e.target.value)}/>
+
+                <label htmlFor="patientFirstName" className="form-label">First Name</label>
+                <input type="text" id="patientFirstName" placeholder="Input Patient's First Name" name="patientFirstName" className="form-control" onChange={(e) => setSearchFirstName(e.target.value)}/>
+
+                <label htmlFor="patientLastName" className="form-label">Last Name</label>
+                <input type="text" id="patientLastName" placeholder="Input Patient's Last Name" name="patientLastName" className="form-control" onChange={(e) => setSearchLastName(e.target.value)}/>
             </form>
 
             <br />
