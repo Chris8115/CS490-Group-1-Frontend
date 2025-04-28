@@ -1,7 +1,7 @@
 .notes-container {
   width: 100%;
-  background-color: #f8f9fa; /* <-- MATCH the background */
-  border: 1px solid #dee2e6; /* <-- Add border like others */
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
   border-radius: 10px;
   padding: 20px;
   margin-top: 20px;
@@ -40,4 +40,170 @@
 .edit-notes-button:hover,
 .save-notes-button:hover {
   color: gray;
+}
+
+.exercise-buttons-container {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.exercise-button {
+  background-color: #FF5354;
+  color: white;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.exercise-button:hover {
+  background-color: #e44a4b;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1050;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-dialog {
+  margin: 100px auto;
+  max-width: 600px;
+}
+
+.modal-content {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-title {
+  font-size: 1.5rem;
+}
+
+.modal-body {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.modal-body input[type="text"] {
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.modal-body ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.modal-body li {
+  margin-bottom: 10px;
+}
+
+.modal-body button {
+  background-color: #FF5354;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 6px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.modal-body button:hover {
+  background-color: #e44a4b;
+}
+
+.close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.create-post-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1001;
+}
+
+.create-post-modal {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 600px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modal-input,
+.modal-textarea {
+  width: 100%;
+  border: 1px solid #ccc;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border-radius: 6px;
+}
+
+.modal-textarea {
+  height: 8rem;
+  resize: none;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 20px;
+}
+
+.cancel-button {
+  padding: 0.5rem 1rem;
+  background-color: #eee;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.submit-button {
+  padding: 0.5rem 1rem;
+  background-color: #F53D3E;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.cancel-button:hover {
+  background-color: #ddd;
+}
+
+.submit-button:hover {
+  background-color: #e44a4b;
 }

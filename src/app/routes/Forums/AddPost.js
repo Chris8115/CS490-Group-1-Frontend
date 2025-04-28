@@ -2,7 +2,7 @@ import { useState } from 'react';
 import '../../../css/add_post.css';
 import { useNavigate } from 'react-router-dom';
 
-function CreatePostButton({ userId }) {
+function AddPost({ userId }) {
     const [showModal, setShowModal] = useState(false);
     const [newPostTitle, setNewPostTitle] = useState('');
     const [newPostText, setNewPostText] = useState('');
@@ -110,4 +110,4 @@ function CreatePostButton({ userId }) {
     );
 }
 
-export default CreatePostButton;
+export default AddPost;
