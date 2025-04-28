@@ -5,3 +5,11 @@
 .patient-list {
     margin: 50px 100px;
 }
+
+.patient-view-name {
+    text-decoration: underline;
+}
+
+.patient-view-name:hover {
+    cursor: pointer;
+}

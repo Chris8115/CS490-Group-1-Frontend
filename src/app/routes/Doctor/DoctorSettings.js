@@ -6,7 +6,9 @@ function DoctorSettings() {
     const [doctor, setDoctor] = useState({});
     const [bio, setBio] = useState("");
     const [specialization, setSpecialization] = useState("");
-    const [editing, setEditing] = useState(false);
+    const [location, setLocation] = useState(""); // <-- NEW
+    const [editingProfile, setEditingProfile] = useState(false);
+    const [editingLocation, setEditingLocation] = useState(false);
 
     useEffect(() => {
         const user_info = JSON.parse(sessionStorage.getItem('user_info'));
@@ -19,6 +21,7 @@ function DoctorSettings() {
                 setDoctor(doctorDetails);
                 setBio(doctorDetails.profile);
                 setSpecialization(doctorDetails.specialization);
+                setLocation(doctorDetails.location); // <-- NEW
             } catch (error) {
                 console.error("Failed to fetch doctor data:", error);
             }
@@ -35,9 +38,9 @@ function DoctorSettings() {
         getDoctorInfo();
     }, []);
 
-    const handleSave = async () => {
+    const handleSaveProfile = async () => {
         const user_info = JSON.parse(sessionStorage.getItem('user_info'));
-        setEditing(false);
+        setEditingProfile(false);
 
         try {
             await fetch(`/api/betteru/doctors/${user_info.user_id}`, {
@@ -50,10 +53,30 @@ function DoctorSettings() {
                 }),
             });
         } catch (err) {
-            console.error("Failed to save updates:", err);
+            console.error("Failed to save profile updates:", err);
         }
 
         setDoctor(prev => ({ ...prev, profile: bio, specialization }));
+    };
+
+    const handleSaveLocation = async () => {
+        const user_info = JSON.parse(sessionStorage.getItem('user_info'));
+        setEditingLocation(false);
+
+        try {
+            await fetch(`/api/betteru/doctors/location/${user_info.user_id}`, {  // <-- Adjust if needed
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                credentials: 'include',
+                body: JSON.stringify({
+                    location: location
+                }),
+            });
+        } catch (err) {
+            console.error("Failed to save location updates:", err);
+        }
+
+        setDoctor(prev => ({ ...prev, location }));
     };
 
     return (
@@ -67,9 +90,10 @@ function DoctorSettings() {
                 <p><strong>Account Created:</strong> {user.created_at?.split(" ")[0]}</p>
             </div>
 
+            {/* Public Profile Section */}
             <div className="editable-section">
                 <h3>Public Profile</h3>
-                {editing ? (
+                {editingProfile ? (
                     <div className='editable-details'>
                         <div>
                             <label>Bio:</label>
@@ -79,13 +103,32 @@ function DoctorSettings() {
                             <label>Specialization:</label>
                             <input type="text" value={specialization} onChange={(e) => setSpecialization(e.target.value)} />
                         </div>
-                        <button className="profile-button" onClick={handleSave}>Save</button>
+                        <button className="profile-button" onClick={handleSaveProfile}>Save</button>
                     </div>
                 ) : (
                     <div className='editable-details'>
                         <p><strong>Bio:</strong> {bio}</p>
                         <p><strong>Specialization:</strong> {specialization}</p>
-                        <button className="profile-button" onClick={() => setEditing(true)}>Edit</button>
+                        <button className="profile-button" onClick={() => setEditingProfile(true)}>Edit</button>
+                    </div>
+                )}
+            </div>
+
+            {/* Location Section */}
+            <div className="editable-section">
+                <h3>Location/Meeting Details</h3>
+                {editingLocation ? (
+                    <div className='editable-details'>
+                        <div>
+                            <label>Location:</label>
+                            <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} />
+                        </div>
+                        <button className="profile-button" onClick={handleSaveLocation}>Save</button>
+                    </div>
+                ) : (
+                    <div className='editable-details'>
+                        <p><strong>Location:</strong> {location}</p>
+                        <button className="profile-button" onClick={() => setEditingLocation(true)}>Edit</button>
                     </div>
                 )}
             </div>
