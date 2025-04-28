@@ -48,8 +48,7 @@ function DoctorForm() {
     const [doctorsData, setDoctorsData] = useState({
         license_number: '',
         specialization: '',
-        profile: '',
-        office: ''
+        profile: ''
     });
 
 
@@ -191,12 +190,6 @@ function DoctorForm() {
                         <MDBCol>
                             <label>Zip</label>
                             <input required className='form-input' type='text' label='Zip Code' name='zip' value={addressData.zip} onChange={e => handleChange(e, setAddressData)} />
-                        </MDBCol>
-                    </MDBRow>
-                    <MDBRow>
-                        <MDBCol>
-                            <label>Location / Meeting Place</label>
-                            <input required className='form-input' type='text' label='office' name='office' value={doctorsData.office} onChange={e => handleChange(e, setDoctorsData)} />
                         </MDBCol>
                     </MDBRow>
 
