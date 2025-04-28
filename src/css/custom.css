@@ -202,6 +202,15 @@ p {
   margin-bottom: 10px;
 }
 
+.success-btn {
+  background-color: #14a44d !important;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
 .login-title {
   margin-bottom: 50px;
 }

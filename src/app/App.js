@@ -30,6 +30,7 @@ import PharmacyLogin from './routes/Pharmacy/PharmacyLogin.js';
 import PharmacyPatientSearch from './routes/Pharmacy/PharmacyPatientSearch.js';
 import PharmacyDeliveries from './routes/Pharmacy/PharmacyDeliveries.js';
 import PharmacyProductRecords from './routes/Pharmacy/PharmacyProductRecords.js';
+import PharmacyAddProduct from './routes/Pharmacy/PharmacyAddProduct.js';
 
 function App() {
   return (
@@ -75,6 +76,7 @@ function App() {
             <Route path="patient-search" element={<PharmacyPatientSearch />} />
             <Route path="deliveries" element={<PharmacyDeliveries />} />
             <Route path="records" element={<PharmacyProductRecords />} />
+            <Route path="add-product" element={<PharmacyAddProduct />} />
           </Route>
           
 
