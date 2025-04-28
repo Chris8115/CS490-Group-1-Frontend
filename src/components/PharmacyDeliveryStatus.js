@@ -11,7 +11,7 @@ function PharmacyDeliveryStatus(props) {
     
     const fetchPatientDetails = async () => {
 
-        const response = await fetch(`/api/pharmacy/patient/${order.patient_id}`, {
+        const response = await fetch(`/api/pharmacy/patients?patient_id=${order.patient_id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -21,8 +21,7 @@ function PharmacyDeliveryStatus(props) {
 
         
         const data = await response.json();
-        console.log(data);
-        //setDeliveryPatient(data.orders);
+        setDeliveryPatient(data.patients[0]);
 
     }
 
@@ -36,8 +35,8 @@ function PharmacyDeliveryStatus(props) {
         <h3>Order #{order.order_id}</h3>
         {/*<h4 style={{color: '#696969'}} >{patientDetails.specialization}</h4>*/}
         <h4><strong>{order.status.toUpperCase()}</strong></h4>
-        <p>Medication Name: {order.name}</p>
-        <p>Medication Recipient: </p>
+        <p>Medication: {order.name}</p>
+        <p>Medication Recipient: {deliveryPatient.last_name}, {deliveryPatient.first_name}</p>
     </div>
 
     </>
