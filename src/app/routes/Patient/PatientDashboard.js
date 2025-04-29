@@ -13,8 +13,8 @@ import PatientDoctorSearch from "./PatientDoctorSearch";
 function PatientDashboard() {
     const [patientAppointments, setPatientAppointments] = useState([]);
     const { userInfo } = useUser();
-    const [patientHasDoctor, setPatientHasDoctor] = useState(false);
-    const [patientDoctorId, setPatientDoctorId] = useState({});
+    const [patientHasDoctor, setPatientHasDoctor] = useState(true);
+    const [loading, setLoading] = useState(true);
     const [doctorName, setDoctorName] = useState("");
 
     const getPatientAppointments = async() => {
@@ -74,12 +74,18 @@ function PatientDashboard() {
     }
 
     useEffect(() => {
+        if (!userInfo) return;
+    
+        const fetchData = async () => {
+            await checkIfHasDoctor();
+            await getPatientAppointments();
+            setLoading(false);
+        };
+    
+        fetchData();
+    }, [userInfo.user_id]);
 
-        if (!userInfo) return <></>; 
-
-        checkIfHasDoctor();
-        getPatientAppointments();
-    }, [userInfo.user_id])
+    if (loading) {return <></>}
 
     if (!patientHasDoctor) {
         return <>
@@ -89,6 +95,7 @@ function PatientDashboard() {
         
         </>
     }
+
     return <>
         <h1>Dashboard</h1>
         <Divider/>

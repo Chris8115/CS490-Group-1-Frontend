@@ -4,11 +4,11 @@ import '../css/doctor-search.css'
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import StarRating from './StarRating';
+import PatientDoctorSearchReview from './PatientDoctorSearchReview';
 
 function PatientDoctorSearchResult(props) {
     const navigate = useNavigate();
     const patientUser = props.userInfo;
-    const doctorUser = props.doctorUser;
     const doctorDetails = props.doctorDetails;
     const [doctorReviews, setDoctorReviews] = useState([]);
     const [reviewsVisible, setReviewsVisible] = useState(false);
@@ -18,7 +18,7 @@ function PatientDoctorSearchResult(props) {
         // Get all reviews of doctor
         const getReviews = async () => {
             try {
-                const response = await fetch(`/api/betteru/reviews?doctor_id=${doctorUser.user_id}`, {
+                const response = await fetch(`/api/betteru/reviews?doctor_id=${doctorDetails.doctor_id}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -35,7 +35,6 @@ function PatientDoctorSearchResult(props) {
                     ratingAverage += reviews[i].rating;
                 }
                 ratingAverage /= reviews.length;
-                console.log(ratingAverage);
                 setAverageRating(ratingAverage);
      
             } catch (e) {
@@ -53,7 +52,7 @@ function PatientDoctorSearchResult(props) {
 
     const chooseDoctor = async () => {
         const patientId = patientUser.user_id;
-        const doctorId = doctorUser.user_id;
+        const doctorId = doctorDetails.doctor_id;
         console.log(patientId, doctorId);
         
         const payload = {
@@ -79,15 +78,16 @@ function PatientDoctorSearchResult(props) {
     return <>
     
     <div className="doctor-search">
-        <h3>Dr. {doctorUser.last_name}</h3>
+        <h3>Dr. {doctorDetails.last_name}</h3>
         <StarRating showRating={averageRating}/>
         <h4 style={{color: '#696969'}} >{doctorDetails.specialization}</h4>
         <p>{doctorDetails.profile}</p>
-        <button className='btn btn-success' onClick={showReviews}>Show Reviews</button>
+        <button className='btn btn-success mb-2' onClick={showReviews}>Show Reviews</button>
         {reviewsVisible && (
-            <p>AAA</p>
+            doctorReviews.map((review, index) => {
+                return <PatientDoctorSearchReview review={review} />
+            })
         )}
-
 
         <button className="btn btn-primary" onClick={chooseDoctor}>Choose Doctor</button>
 
