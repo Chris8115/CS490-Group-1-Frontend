@@ -13,7 +13,7 @@ import PatientDoctorSearch from "./PatientDoctorSearch";
 function PatientDashboard() {
     const [patientAppointments, setPatientAppointments] = useState([]);
     const { userInfo } = useUser();
-    const [patientHasDoctor, setPatientHasDoctor] = useState(0);
+    const [patientHasDoctor, setPatientHasDoctor] = useState(false);
     const [patientDoctorId, setPatientDoctorId] = useState({});
     const [doctorName, setDoctorName] = useState("");
 
@@ -52,7 +52,6 @@ function PatientDashboard() {
             const relationships = data.doctor_patient_relationship;
             
             let hasDoctor = false;
-            let hasPending = false;
 
             for (let i = 0; i < relationships.length; i++) {
                 console.log(relationships[i]);
@@ -64,11 +63,9 @@ function PatientDashboard() {
                 }
             }
             if (hasDoctor) {
-                setPatientHasDoctor(1);
-            } else if (hasPending) {
-                setPatientHasDoctor(2);
+                setPatientHasDoctor(true);
             } else {
-                setPatientHasDoctor(0);
+                setPatientHasDoctor(false);
             }
 
         } catch (e) {
@@ -84,22 +81,14 @@ function PatientDashboard() {
         getPatientAppointments();
     }, [userInfo.user_id])
 
-    if (patientHasDoctor === 0) {
+    if (!patientHasDoctor) {
         return <>
         
         <h1>Please Select a Doctor</h1>
         <PatientDoctorSearch />
         
         </>
-    } else if (patientHasDoctor === 2) {
-        return <>
-        
-        <h1>Doctor Approval Pending</h1>
-        Request with Dr. {doctorName} is pending.
-        
-        </>
     }
-
     return <>
         <h1>Dashboard</h1>
         <Divider/>

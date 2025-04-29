@@ -83,7 +83,7 @@ function PatientDoctorSearch() {
             <br />
 
             {doctorDetails.length > 0 && doctors.length > 0  && doctorDetails.map((doctor, idx) => (
-                <PatientDoctorSearchResult doctorUser={doctors[idx]} doctorDetails={doctorDetails[idx]} key={doctor.user_id}/>
+                <PatientDoctorSearchResult userInfo={userInfo} doctorUser={doctors[idx]} doctorDetails={doctorDetails[idx]} key={doctor.user_id}/>
             ))}
     
         </>
