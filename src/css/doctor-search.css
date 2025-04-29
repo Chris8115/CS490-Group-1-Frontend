@@ -1,8 +1,19 @@
-.doctor-search {
+.doctor-search-card {
     border-color: #E5E5E5;
     border-width: 2px;
     border-style: solid;
+    display: flex;
+    flex-direction: row;
+}
+
+.doctor-search {
     padding: 1em;
     display: flex;
     flex-direction: column;
+    width: 100%;
+}
+
+.doctor-search-card img {
+    height: 285px;
+    width: 285px;
 }

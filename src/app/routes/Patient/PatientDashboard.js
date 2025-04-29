@@ -11,8 +11,8 @@ import PatientDoctorSearch from "./PatientDoctorSearch";
 // THIS PAGE IS PARTIALLY BROKEN IN STRICT MODE; WORKS FINE IN PRODUCTION BUILDS AND IF YOU REMOVE THE STRICT MODE TAGS FROM index.js
 
 function PatientDashboard() {
-    const [patientAppointments, setPatientAppointments] = useState([]);
     const { userInfo } = useUser();
+    const [patientAppointments, setPatientAppointments] = useState([]);
     const [patientHasDoctor, setPatientHasDoctor] = useState(true);
     const [loading, setLoading] = useState(true);
     const [doctorName, setDoctorName] = useState("");
@@ -74,16 +74,16 @@ function PatientDashboard() {
     }
 
     useEffect(() => {
-        if (!userInfo) return;
+        const loadData = async () => {
+            if (userInfo?.user_id) {
+                await checkIfHasDoctor();
+                await getPatientAppointments();
+                setLoading(false);
+            };
+        }
+        loadData();
     
-        const fetchData = async () => {
-            await checkIfHasDoctor();
-            await getPatientAppointments();
-            setLoading(false);
-        };
-    
-        fetchData();
-    }, [userInfo.user_id]);
+    }, [userInfo]);
 
     if (loading) {return <></>}
 

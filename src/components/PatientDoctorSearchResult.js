@@ -77,22 +77,25 @@ function PatientDoctorSearchResult(props) {
 
     return <>
     
-    <div className="doctor-search">
-        <h3>Dr. {doctorDetails.last_name}</h3>
-        <StarRating showRating={averageRating}/>
-        <h4 style={{color: '#696969'}} >{doctorDetails.specialization}</h4>
-        <p>{doctorDetails.profile}</p>
-        <button className='btn btn-success mb-2' onClick={showReviews}>Show Reviews</button>
-        {reviewsVisible && (
-            doctorReviews.map((review, index) => {
-                return <PatientDoctorSearchReview review={review} />
-            })
-        )}
+    <div className="doctor-search-card">
+            <img src={doctorDetails.picture} />
+            <div className="doctor-search">
+                <h3>Dr. {doctorDetails.last_name}</h3>
+                <StarRating showRating={averageRating}/>
+                <h4 style={{color: '#696969'}} >{doctorDetails.specialization}</h4>
+                <p>{doctorDetails.profile}</p>
+                <button className='btn btn-success mb-2' onClick={showReviews}>Show Reviews</button>
+                {reviewsVisible && (
+                    doctorReviews.map((review, index) => {
+                        return <PatientDoctorSearchReview review={review} />
+                    })
+                )}
 
-        <button className="btn btn-primary" onClick={chooseDoctor}>Choose Doctor</button>
+                <button className="btn btn-primary" onClick={chooseDoctor}>Choose Doctor</button>
+            </div>
 
     </div>
 
     </>
 }
-export default PatientDoctorSearchResult;
+export default PatientDoctorSearchResult;   
