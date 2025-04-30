@@ -13,10 +13,6 @@ function ForumPosts() {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [filterType, setFilterType] = useState('');
-
-  const userId = JSON.parse(sessionStorage.getItem('user_info')).user_id;
-  const role = JSON.parse(sessionStorage.getItem('user_info')).role;
-
   const [showModal, setShowModal] = useState(false);
   const [newPostTitle, setNewPostTitle] = useState('');
   const [newPostText, setNewPostText] = useState('');
@@ -41,6 +37,10 @@ function ForumPosts() {
         setLoading(false);
       });
   }, []);
+
+  if(!sessionStorage.getItem('user_info')) return null;
+  const userId = JSON.parse(sessionStorage.getItem('user_info')).user_id;
+  const role = JSON.parse(sessionStorage.getItem('user_info')).role;
 
   const handlePageClick = ({ selected }) => {
     setCurrentPage(selected);

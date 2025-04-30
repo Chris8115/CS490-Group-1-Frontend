@@ -31,7 +31,7 @@ function PharmacyMedicationDetails(props) {
             try {
                 const responses = await Promise.all(
                     patientIds.map((id) => {
-                        const patientResponse = fetch(`/api/pharmacy/patient/${id}`, {
+                        const patientResponse = fetch(`/api/pharmacy/patients?patient_id=${id}`, {
                             method: 'GET',
                             headers: {
                                 'Content-Type': 'application/json',

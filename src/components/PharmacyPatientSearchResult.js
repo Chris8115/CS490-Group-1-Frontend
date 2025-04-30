@@ -8,7 +8,6 @@ function PharmacyPatientSearchResult(props) {
     
     const patient = props.patient;
     
-    console.log(patient);
     
     const fetchPatientOrders = async () => {
 

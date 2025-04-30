@@ -33,6 +33,11 @@ p {
     justify-content: space-between;
 }
 
+.pharmacy-navbar {
+    background-color: rgb(236, 149, 50) !important;
+    border-color: rgb(236, 149, 50) !important;
+}
+
 .special-text {
     color: #F7CB15;
 }
@@ -195,6 +200,15 @@ p {
 
 .login-btn {
   background-color: #F53D3E !important;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.success-btn {
+  background-color: #14a44d !important;
   border: none;
   border-radius: 5px;
   color: white;

@@ -45,9 +45,11 @@ function PharmacyLoginForm() {
             else {
 
               const data = await response.json();
+              console.log(data);
               const user_info = {
                 'user_id': data.pharmacist_id,
-                'role': data.role,
+                'role': 'pharmacist',
+                'pharmacy_location': data.pharmacy_location
               }
 
               sessionStorage.setItem('user_info', JSON.stringify(user_info));
@@ -87,9 +89,9 @@ function PharmacyLoginForm() {
 
             <button type='submit' className="login-btn" href=''>Sign in</button>
 
-            <div className="text-center">
+            {/*<div className="text-center">
                 <p>Not a member? <a href="/sign-up">Register</a></p>
-            </div>
+            </div>*/}
 
         </form>
 
