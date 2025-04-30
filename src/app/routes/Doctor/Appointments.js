@@ -9,6 +9,9 @@ function formatTimeRange(start, end) {
 
 function Appointments({ appointments, refreshAppointments }) {
     const [patientNames, setPatientNames] = useState({});
+    const [showNotesModal, setShowNotesModal] = useState(false);
+    const [editedNotes, setEditedNotes] = useState('');
+    const [activeAppointment, setActiveAppointment] = useState(null);
 
     useEffect(() => {
         const fetchPatientNames = async () => {
@@ -74,11 +77,26 @@ function Appointments({ appointments, refreshAppointments }) {
                     
                         <div className="appointment-item" key={appt.appointment_id || index}>
                             <div className="appointment-header">
-                                <p className="patient-name">{fullName}</p>
-                                <p className="time">{formatTimeRange(appt.start_time, appt.end_time)}</p>
+                            <p className="patient-name">
+                            <a href={`/doctor/doctor_patient_info/${appt.patient_id}`} style={{ textDecoration: 'underline', color: '#007bff' }}>
+                                {fullName}
+                            </a>
+                            </p>
+                            <p className="time">{formatTimeRange(appt.start_time, appt.end_time)}</p>
                             </div>
                             <div className="appointment-reason-row">
                                 <p className="patient-request">"{appt.reason}"</p>
+                                <button
+                                    className="edit-notes-button"
+                                    style={{ marginRight: '10px' }}
+                                    onClick={() => {
+                                        setEditedNotes(appt.notes || '');
+                                        setActiveAppointment(appt);
+                                        setShowNotesModal(true);
+                                    }}
+                                    >
+                                    Edit Appointment Notes
+                                </button>
                                 <button
                                     className="cancel-button"
                                     onClick={() => handleCancel(appt.appointment_id)}
@@ -91,8 +109,57 @@ function Appointments({ appointments, refreshAppointments }) {
                     );
                 })
             }
+
+            {showNotesModal && (
+            <div className="modal" style={{ display: 'block', backgroundColor: 'rgba(0,0,0,0.5)' }}>
+                <div className="modal-dialog">
+                <div className="modal-content">
+                    <div className="modal-header">
+                    <h5 className="modal-title">Edit Appointment Notes</h5>
+                    <button type="button" className="close" onClick={() => setShowNotesModal(false)}>&times;</button>
+                    </div>
+                    <div className="modal-body">
+                    <textarea
+                        value={editedNotes}
+                        onChange={(e) => setEditedNotes(e.target.value)}
+                        style={{ width: '100%', height: '150px', padding: '10px' }}
+                    />
+                    </div>
+                    <div className="modal-footer">
+                    <button className="btn btn-secondary" onClick={() => setShowNotesModal(false)}>Cancel</button>
+                    <button
+                        className="btn btn-primary"
+                        onClick={async () => {
+                        try {
+                            const res = await fetch(`/api/betteru/appointments/${activeAppointment.appointment_id}`, {
+                            method: 'PATCH',
+                            headers: { 'Content-Type': 'application/json' },
+                            credentials: 'include',
+                            body: JSON.stringify({
+                                notes: editedNotes
+                            })
+                            });
+                            if (!res.ok) throw new Error('Failed to update appointment notes');
+
+                            if (refreshAppointments) refreshAppointments();
+                            setShowNotesModal(false);
+                        } catch (err) {
+                            console.error(err);
+                            alert("Could not save notes.");
+                        }
+                        }}
+                    >
+                        Save
+                    </button>
+                    </div>
+                </div>
+                </div>
+            </div>
+            )}
         </div>
     );
 }
+
+
 
 export default Appointments;

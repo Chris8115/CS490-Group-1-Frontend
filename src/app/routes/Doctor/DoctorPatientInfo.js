@@ -17,6 +17,9 @@ function DoctorPatientInfo() {
     const [showCreateModal, setShowCreateModal] = useState(false);
     const [newExerciseTitle, setNewExerciseTitle] = useState('');
     const [newExerciseContent, setNewExerciseContent] = useState('');
+    const [exerciseFrequency, setExerciseFrequency] = useState('');
+    const [exerciseSets, setExerciseSets] = useState('');
+    const [exerciseReps, setExerciseReps] = useState('');
     const [medicalHistory, setMedicalHistory] = useState([]);
     const [appointments, setAppointments] = useState([]);
     const [notes, setNotes] = useState('');
@@ -93,22 +96,37 @@ function DoctorPatientInfo() {
 
     const handleAssignExercise = async (exerciseId) => {
         const user_info = JSON.parse(sessionStorage.getItem('user_info'));
+        const payload = {
+            doctor_id: user_info.user_id,
+            patient_id: patient_id,
+            exercise_id: exerciseId,
+            frequency_per_week: parseInt(exerciseFrequency) || 1,
+            sets: parseInt(exerciseSets) || 1,
+            reps: parseInt(exerciseReps) || 1
+        }
+
+        console.log(payload);
+
         try {
             await fetch(`/api/betteru/patient_exercise_assignments`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
-                body: JSON.stringify({ doctor_id: user_info.user_id, patient_id: patient_id, exercise_id: exerciseId })
+                body: JSON.stringify(payload)
             });
             setShowAssignModal(false);
             window.location.reload();
         } catch (error) {
             console.error('Failed to assign exercise:', error);
+            alert('Please enter all details before submitting.');
         }
     };
 
+    
+
     const handleCreateAndAssignExercise = async () => {
         const user_info = JSON.parse(sessionStorage.getItem('user_info'));
+
         try {
             const createRes = await fetch(`/api/betteru/forum_posts`, {
                 method: 'POST',
@@ -123,11 +141,13 @@ function DoctorPatientInfo() {
             });
 
             const createData = await createRes.json();
-            const newPostId = createData.post.id;
+            const newPostId = createData.id;
 
             await handleAssignExercise(newPostId);
+            setShowCreateModal(false);
         } catch (error) {
             console.error('Failed to create and assign exercise:', error);
+            alert('Please enter all details before submitting.');
         }
     };
 
@@ -156,18 +176,25 @@ function DoctorPatientInfo() {
                 <div className="notes-container">
                     {assignedExercises.length > 0 ? (
                         <ul>
-                            {assignedExercises.map((assignment, i) => (
-                                <li key={i} style={{ marginBottom: '10px' }}>
-                                    <a href={`/forum/post/${assignment.exercise_id}`}>{assignment.exercise_name || `Exercise ${assignment.exercise_id}`}</a>
-                                    <button 
-                                        onClick={() => handleDeleteExercise(assignment.assignment_id)} 
-                                        style={{ marginLeft: '10px', color: 'red', background: 'none', border: 'none', cursor: 'pointer' }}
-                                    >
-                                        Remove
-                                    </button>
-                                </li>
-                            ))}
-                        </ul>
+                        {assignedExercises.map((assignment, i) => {
+                          const post = allExercisePlans.find(p => p.post_id === assignment.exercise_id);
+                          const exerciseTitle = post ? post.title : `Exercise ${assignment.exercise_id}`;
+                          
+                          return (
+                            <li key={i} style={{ marginBottom: '10px' }}>
+                              <a href={`/post/${assignment.exercise_id}`}>
+                                {exerciseTitle} | {assignment.sets || 1} sets, {assignment.reps || 1} reps, {assignment.frequency_per_week || 1} times/week, 
+                              </a>
+                              <button 
+                                onClick={() => handleDeleteExercise(assignment.assignment_id)} 
+                                style={{ marginLeft: '10px', color: 'red', background: 'none', border: 'none', cursor: 'pointer' }}
+                              >
+                                Remove
+                              </button>
+                            </li>
+                          );
+                        })}
+                      </ul>
                     ) : (
                         <p>No exercises assigned.</p>
                     )}
@@ -188,25 +215,15 @@ function DoctorPatientInfo() {
                                 <button type="button" className="close" onClick={() => setShowAssignModal(false)}>&times;</button>
                             </div>
                             <div className="modal-body">
-                                <input
-                                    type="text"
-                                    placeholder="Search exercises..."
-                                    value={searchExercise}
-                                    onChange={(e) => setSearchExercise(e.target.value)}
-                                    style={{ marginBottom: '10px', width: '100%', padding: '8px' }}
-                                />
+                                <input type="text" placeholder="Search exercises..." value={searchExercise} onChange={(e) => setSearchExercise(e.target.value)} style={{ marginBottom: '10px', width: '100%', padding: '8px' }} />
+                                <input type="number" placeholder="Frequency per week" value={exerciseFrequency} onChange={(e) => setExerciseFrequency(e.target.value)} className="modal-input" />
+                                <input type="number" placeholder="Sets" value={exerciseSets} onChange={(e) => setExerciseSets(e.target.value)} className="modal-input" />
+                                <input type="number" placeholder="Reps" value={exerciseReps} onChange={(e) => setExerciseReps(e.target.value)} className="modal-input" />
                                 <ul>
-                                    {allExercisePlans.filter(post =>
-                                        post.title.toLowerCase().includes(searchExercise.toLowerCase())
-                                    ).map((post) => (
+                                    {allExercisePlans.filter(post => post.title.toLowerCase().includes(searchExercise.toLowerCase())).map((post) => (
                                         <li key={post.id} style={{ marginBottom: '10px' }}>
                                             {post.title}
-                                            <button
-                                                style={{ marginLeft: '10px' }}
-                                                onClick={() => handleAssignExercise(post.id)}
-                                            >
-                                                Assign
-                                            </button>
+                                            <button style={{ marginLeft: '10px' }} onClick={() => handleAssignExercise(post.post_id)}>Assign</button>
                                         </li>
                                     ))}
                                 </ul>
@@ -220,32 +237,14 @@ function DoctorPatientInfo() {
                 <div className="create-post-overlay">
                     <div className="create-post-modal">
                         <h2 className="modal-title">Create New Exercise</h2>
-                        <input
-                            type="text"
-                            placeholder="Title"
-                            value={newExerciseTitle}
-                            onChange={(e) => setNewExerciseTitle(e.target.value)}
-                            className="modal-input"
-                        />
-                        <textarea
-                            placeholder="Write exercise details..."
-                            value={newExerciseContent}
-                            onChange={(e) => setNewExerciseContent(e.target.value)}
-                            className="modal-textarea"
-                        />
+                        <input type="text" placeholder="Title" value={newExerciseTitle} onChange={(e) => setNewExerciseTitle(e.target.value)} className="modal-input" />
+                        <textarea placeholder="Write exercise details..." value={newExerciseContent} onChange={(e) => setNewExerciseContent(e.target.value)} className="modal-textarea" />
+                        <input type="number" placeholder="Frequency per week" value={exerciseFrequency} onChange={(e) => setExerciseFrequency(e.target.value)} className="modal-input" />
+                        <input type="number" placeholder="Sets" value={exerciseSets} onChange={(e) => setExerciseSets(e.target.value)} className="modal-input" />
+                        <input type="number" placeholder="Reps" value={exerciseReps} onChange={(e) => setExerciseReps(e.target.value)} className="modal-input" />
                         <div className="modal-buttons">
-                            <button
-                                onClick={() => setShowCreateModal(false)}
-                                className="cancel-button"
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                onClick={handleCreateAndAssignExercise}
-                                className="submit-button"
-                            >
-                                Create Exercise
-                            </button>
+                            <button onClick={() => setShowCreateModal(false)} className="cancel-button">Cancel</button>
+                            <button onClick={handleCreateAndAssignExercise} className="submit-button">Create Exercise</button>
                         </div>
                     </div>
                 </div>
@@ -283,11 +282,7 @@ function DoctorPatientInfo() {
                 <div className="notes-container">
                     {editingNotes ? (
                         <>
-                            <textarea
-                                className="notes-textarea"
-                                value={newNotes}
-                                onChange={(e) => setNewNotes(e.target.value)}
-                            />
+                            <textarea className="notes-textarea" value={newNotes} onChange={(e) => setNewNotes(e.target.value)} />
                             <button className="save-notes-button" onClick={handleSaveNotes}>Save</button>
                         </>
                     ) : (

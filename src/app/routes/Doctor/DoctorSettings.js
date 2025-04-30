@@ -12,6 +12,7 @@ function DoctorSettings() {
 
     useEffect(() => {
         const user_info = JSON.parse(sessionStorage.getItem('user_info'));
+        console.log(user_info);
 
         const getDoctorInfo = async () => {
             try {
@@ -21,7 +22,7 @@ function DoctorSettings() {
                 setDoctor(doctorDetails);
                 setBio(doctorDetails.profile);
                 setSpecialization(doctorDetails.specialization);
-                setLocation(doctorDetails.office); // <-- NEW
+                setLocation(doctorDetails.office);
             } catch (error) {
                 console.error("Failed to fetch doctor data:", error);
             }
@@ -64,7 +65,7 @@ function DoctorSettings() {
         setEditingLocation(false);
 
         try {
-            await fetch(`/api/betteru/doctors/${user_info.user_id}`, {  // <-- Adjust if needed
+            await fetch(`/api/betteru/doctors/${user_info.user_id}`, {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
                 credentials: 'include',
@@ -116,18 +117,18 @@ function DoctorSettings() {
 
             {/* Location Section */}
             <div className="editable-section">
-                <h3>Location/Meeting Details</h3>
+                <h3>Location</h3>
                 {editingLocation ? (
                     <div className='editable-details'>
                         <div>
-                            <label>Location:</label>
+                            <label>Location/Meeting Instructions:</label>
                             <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} />
                         </div>
                         <button className="profile-button" onClick={handleSaveLocation}>Save</button>
                     </div>
                 ) : (
                     <div className='editable-details'>
-                        <p><strong>Location:</strong> {location}</p>
+                        <p><strong>Location/Meeting Instructions:</strong> {location}</p>
                         <button className="profile-button" onClick={() => setEditingLocation(true)}>Edit</button>
                     </div>
                 )}
