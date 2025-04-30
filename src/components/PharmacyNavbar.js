@@ -14,7 +14,7 @@ function PharmacyNavbar() {
 
   const handleLogout = async () => {
     try {
-        const response = await fetch('/api/pharmacyu/logout', {
+        const response = await fetch('/api/pharmacy`/logout`', {
             method: 'GET',
             credentials: 'include',
         });

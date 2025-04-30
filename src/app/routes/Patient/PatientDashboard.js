@@ -11,10 +11,10 @@ import PatientDoctorSearch from "./PatientDoctorSearch";
 // THIS PAGE IS PARTIALLY BROKEN IN STRICT MODE; WORKS FINE IN PRODUCTION BUILDS AND IF YOU REMOVE THE STRICT MODE TAGS FROM index.js
 
 function PatientDashboard() {
-    const [patientAppointments, setPatientAppointments] = useState([]);
     const { userInfo } = useUser();
-    const [patientHasDoctor, setPatientHasDoctor] = useState(0);
-    const [patientDoctorId, setPatientDoctorId] = useState({});
+    const [patientAppointments, setPatientAppointments] = useState([]);
+    const [patientHasDoctor, setPatientHasDoctor] = useState(true);
+    const [loading, setLoading] = useState(true);
     const [doctorName, setDoctorName] = useState("");
 
     const getPatientAppointments = async() => {
@@ -52,7 +52,6 @@ function PatientDashboard() {
             const relationships = data.doctor_patient_relationship;
             
             let hasDoctor = false;
-            let hasPending = false;
 
             for (let i = 0; i < relationships.length; i++) {
                 console.log(relationships[i]);
@@ -64,11 +63,9 @@ function PatientDashboard() {
                 }
             }
             if (hasDoctor) {
-                setPatientHasDoctor(1);
-            } else if (hasPending) {
-                setPatientHasDoctor(2);
+                setPatientHasDoctor(true);
             } else {
-                setPatientHasDoctor(0);
+                setPatientHasDoctor(false);
             }
 
         } catch (e) {
@@ -77,25 +74,24 @@ function PatientDashboard() {
     }
 
     useEffect(() => {
+        const loadData = async () => {
+            if (userInfo?.user_id) {
+                await checkIfHasDoctor();
+                await getPatientAppointments();
+                setLoading(false);
+            };
+        }
+        loadData();
+    
+    }, [userInfo]);
 
-        if (!userInfo) return <></>; 
+    if (loading) {return <></>}
 
-        checkIfHasDoctor();
-        getPatientAppointments();
-    }, [userInfo.user_id])
-
-    if (patientHasDoctor === 0) {
+    if (!patientHasDoctor) {
         return <>
         
         <h1>Please Select a Doctor</h1>
         <PatientDoctorSearch />
-        
-        </>
-    } else if (patientHasDoctor === 2) {
-        return <>
-        
-        <h1>Doctor Approval Pending</h1>
-        Request with Dr. {doctorName} is pending.
         
         </>
     }

@@ -200,13 +200,33 @@ function PatientProgress() {
         <h2>Exercises</h2>
 
         <div>
-            {exercises[0] && exerciseAssignments.map((assignment, idx) => (
-                <div key={idx}>
-                    <hr />
-                    <h3>{exercises[idx].title}</h3>
-                    <h4>{exercises[idx].description}</h4>
-                </div>
-            ))}
+
+            <table className="table table-hover table-bordered">
+                <thead className="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Sets</th>
+                        <th scope="col">Reps</th>
+                        <th scope="col">Instructions</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {exercises.length > 0 && exerciseAssignments.map((assignment, idx) => (
+                    <tr>
+                        <th scope="row">{idx}</th>
+                        <td>{exercises[idx].title}</td>
+                        <td>{exerciseAssignments[idx].sets}</td>
+                        <td>{exerciseAssignments[idx].reps}</td>
+                        <td>{exercises[idx].description}</td>
+                    </tr>
+                    ))}
+
+                </tbody>
+
+            </table>
+
         </div>
 
         <br/>

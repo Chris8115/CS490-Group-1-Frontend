@@ -1,15 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-const StarRating = ({ totalStars = 5, onRatingChange }) => {
+const StarRating = ({ totalStars = 5, onRatingChange, showRating }) => {
   const [rating, setRating] = useState(0);
 
   // Handle clicking on a star
   const handleClick = (index) => {
+    if (!onRatingChange) {return;}
     setRating(index);
-    if (onRatingChange) {
-      onRatingChange(index); // Callback to parent component with the rating
-    }
+    onRatingChange(index); // Callback to parent component with the rating
   };
+
+  useEffect(() => {
+    if (showRating) {
+      setRating(showRating);
+    }
+  }, [showRating])
 
   // Render the stars
   const renderStars = () => {
