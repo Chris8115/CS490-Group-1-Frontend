@@ -45,9 +45,11 @@ function PharmacyLoginForm() {
             else {
 
               const data = await response.json();
+              console.log(data);
               const user_info = {
                 'user_id': data.pharmacist_id,
-                'role': data.role,
+                'role': 'pharmacist',
+                'pharmacy_location': data.pharmacy_location
               }
 
               sessionStorage.setItem('user_info', JSON.stringify(user_info));

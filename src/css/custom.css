@@ -23,6 +23,15 @@ p {
     background-color: #76BED0 !important;
     border-color: #76BED0 !important;
   }
+  
+  .navbar {
+    width: 100%;
+    padding: 20px 40px;
+    background-color: #d3edf8;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 
 .pharmacy-navbar {
     background-color: rgb(236, 149, 50) !important;
@@ -76,34 +85,94 @@ p {
 }
 
 .description-title {
-  margin-bottom: 50px;
+  margin-bottom: 0;
 }
 
 .cards {
   display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: nowrap; /* force all cards to stay in one line */
+  overflow-x: auto; /* if needed, let it scroll horizontally */
+  padding: 0;
 }
 
 .card {
-  flex: 1 1 1 auto;
-  margin: 0 10px 0 10px;
-  padding: 10px;
+  flex: 0 0 400px; /* fixed width for each card */
+  align-items: center;
+  background: none;
+  border: none;
+  padding: 0;
+  text-align: center;
+}
+
+.card img {
+  width: 100%;
+  height: auto; /* BIGGER images now */
+  object-fit: cover; /* no stretching */
+  padding: 0;
 }
 
 .card-title {
   font-size: 20px;
   font-weight: bold;
+  margin: 0px 0 0px 0;
+  padding: 0;
 }
 
-.card img {
-  width: 100%;
-  height: 100%;
+.card p {
+  font-size: 16px;
+  margin: 0px;
+}
 
+/* === Reviews Section === */
+.reviews-container {
+  display: flex;
+  justify-content: center;
+  gap: 80px;         /* space between each review */
+  margin: 40px 100px;/* adjust side margins to fit your layout */
+}
+
+.review-item {
+  max-width: 500px;              /* bump up the width */
+  background-color: #ffffff;     /* white card background */
+  border-radius: 12px;           /* rounded corners */
+  padding: 24px;                 /* extra padding for a larger feel */
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1); /* subtle depth */
+  text-align: left;
+}
+
+.review-text {
+  font-size: 18px;
+  line-height: 1.6;
+  margin: 0 0 24px;
+}
+
+.review-author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.review-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
   object-fit: cover;
 }
 
-.reviews {
-
+.author-info .author-role {
+  font-size: 14px;
+  font-weight: bold;
+  margin: 0;
 }
+
+.author-info .author-name {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
 
 .reviews h2 {
   margin: 50px 100px;
@@ -113,7 +182,7 @@ p {
   display: flex;
 }
 
-.footer-sign-up * {
+.footer-sign-up .footer-sign-up-title, .footer-sign-up-btn {
   flex: 1 1;
   margin: 50px 100px 50px 100px;
 }
@@ -123,7 +192,7 @@ p {
 }
 
 .footer-sign-up .footer-sign-up-btn {
-  width: 10px;
+  width: 600px;
   font-size: 30px;
   background-color: #F53D3E;
   border: none;
@@ -131,6 +200,15 @@ p {
 
 .login-btn {
   background-color: #F53D3E !important;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.success-btn {
+  background-color: #14a44d !important;
   border: none;
   border-radius: 5px;
   color: white;
@@ -189,7 +267,6 @@ p {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-
 }
 
 .switch-registration p {
@@ -239,4 +316,23 @@ p {
 .dropbox img {
   width: 50px;
   height: auto;
+}
+
+.nav-button {
+    background: none;
+    border: none;
+    padding: 8px 12px;
+    margin: 0 10px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.nav-button:hover {
+  color: #F55D3E; /* your special yellow accent */
+    transform: translateY(-1px);
+}
+
+.nav-button:active {
+  transform: translateY(1px);
 }

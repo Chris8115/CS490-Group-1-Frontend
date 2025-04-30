@@ -26,7 +26,7 @@ function DoctorPatientView() {
     useEffect(() => {
         const user_info = JSON.parse(sessionStorage.getItem('user_info'));
         
-        fetch(`http://localhost:5000/doctor_patient_relationship?doctor_id=${user_info.user_id}&status=active`)
+        fetch(`/api/betteru/doctor_patient_relationship?doctor_id=${user_info.user_id}&status=active`)
             .then((res) => {
                 if (!res.ok) {
                     throw new Error('Failed to fetch doctor-patient relationships');
@@ -52,7 +52,7 @@ function DoctorPatientView() {
                 const patientId = appt.patient_id;
                 if (patientId && !names[patientId]) {
                     try {
-                        const response = await fetch(`/users?user_id=${patientId}`);
+                        const response = await fetch(`/api/betteru/users?user_id=${patientId}`);
                         if (!response.ok) throw new Error("Failed to fetch patient");
                         const data = await response.json();
                         names[patientId] = `${data.users[0].first_name} ${data.users[0].last_name}`;
@@ -78,7 +78,7 @@ function DoctorPatientView() {
                 <div className="patients-container">
                     {currentPatients.map((p) => (
                         <div className='patient' key={p.patient_id}>
-                            <a onClick={() => navigate(`/doctor/doctor_patient_info/${p.patient_id}`)}>
+                            <a className='patient-view-name' onClick={() => navigate(`/doctor/doctor_patient_info/${p.patient_id}`)}>
                                 <p>{patientNames[p.patient_id] || 'Loading...'}</p>
                             </a>
                         </div>

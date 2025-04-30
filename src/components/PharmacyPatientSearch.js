@@ -4,7 +4,7 @@ import '../css/doctor-search.css'
 function PharmacyPatientSearchResult(props) {
     const patientUser = props.patientUser;
     const patientDetails = props.patientDetails;
-    
+
 
     return <>
     

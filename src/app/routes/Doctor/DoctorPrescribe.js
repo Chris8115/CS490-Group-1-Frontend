@@ -15,7 +15,7 @@ function DoctorPrescribe() {
   const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
-    fetch(`/medications?page=${currentPage + 1}`, {
+    fetch(`/api/betteru/medications?page=${currentPage + 1}`, {
       credentials: 'include',
     })
       .then(res => res.json())
@@ -35,13 +35,13 @@ function DoctorPrescribe() {
     const body = {
       doctor_id,
       patient_id: parseInt(patient_id),
-      pharmacist_id: 1, // Change as needed
+      pharmacist_id: 3, // Change as needed
       medication_id: selectedMedication.medication_id,
       quantity: parseInt(quantity),
       instructions
     };
 
-    const res = await fetch('/prescriptions', {
+    const res = await fetch('/api/betteru/prescriptions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',

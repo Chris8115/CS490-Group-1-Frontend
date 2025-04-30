@@ -43,7 +43,7 @@ function PatientAppointmentBooking() {
             }
             
             
-                const res = await fetch('/patient_progress', {
+                const res = await fetch('/api/betteru/patient_progress', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

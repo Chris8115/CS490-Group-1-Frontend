@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 function DashboardRedirect() {
   const navigate = useNavigate();
   const user_info = JSON.parse(sessionStorage.getItem('user_info'));
+  console.log(user_info);
 
   useEffect(() => {
     if (!user_info) {
@@ -14,8 +15,10 @@ function DashboardRedirect() {
         navigate('/patient/dashboard');
       } else if (user_info.role === 'doctor') {
         navigate('/doctor/dashboard');
+      } else if (user_info.role === 'pharmacist') {
+        navigate('/pharmacy/dashboard');
       } else {
-        navigate('/log-in');
+        navigate('/pharmacy');
       }
     }
   }, [user_info, navigate]);

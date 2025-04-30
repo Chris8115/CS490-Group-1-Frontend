@@ -2,7 +2,7 @@ import { useState } from 'react';
 import '../../../css/add_post.css';
 import { useNavigate } from 'react-router-dom';
 
-function CreatePostButton({ userId }) {
+function AddPost({ userId }) {
     const [showModal, setShowModal] = useState(false);
     const [newPostTitle, setNewPostTitle] = useState('');
     const [newPostText, setNewPostText] = useState('');
@@ -23,7 +23,7 @@ function CreatePostButton({ userId }) {
 
         try {
             console.log(payload);
-            const res = await fetch('/forum_posts', {
+            const res = await fetch(`/api/betteru/forum_posts`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -110,4 +110,4 @@ function CreatePostButton({ userId }) {
     );
 }
 
-export default CreatePostButton;
+export default AddPost;

@@ -2,6 +2,7 @@ import React from 'react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import NavButton from './NavButton';
 import '../css/custom.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -14,7 +15,7 @@ function BetterUNavbar() {
 
   const handleLogout = async () => {
     try {
-        const response = await fetch('http://localhost:5000/logout', {
+        const response = await fetch('/api/betteru/logout', {
             method: 'GET',
             credentials: 'include',
         });
@@ -28,25 +29,24 @@ function BetterUNavbar() {
     } catch (err) {
         console.error('Error during logout:', err);
     }
-};
+  };
 
   if (!isLoggedIn) {
     buttons = (
-                <>
-                  <Nav.Link href="/home">Home</Nav.Link>
-                  <Nav.Link href="/sign-up">Sign Up</Nav.Link>
-                  <Nav.Link href="/log-in">Log In</Nav.Link>
-                </>
-                )
-  }
-  else {
+        <>
+            <NavButton to="/home" label="Home" />
+            <NavButton to="/sign-up" label="Sign Up" />
+            <NavButton to="/log-in" label="Log In" />
+        </>
+    );
+  } else {
     buttons = (
-      <>
-        <Nav.Link href="/dashboard">Dashboard</Nav.Link>
-        <Nav.Link href="/forums">Discussion Forums</Nav.Link>
-        <Nav.Link onClick={handleLogout} >Logout</Nav.Link>
-      </>
-      )
+        <>
+            <NavButton to="/dashboard" label="Dashboard" />
+            <NavButton to="/forums" label="Discussion Forums" />
+            <NavButton label="Logout" onClick={handleLogout} />
+        </>
+    );
   }
 
   return (
