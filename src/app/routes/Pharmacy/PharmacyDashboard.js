@@ -5,14 +5,26 @@ import axios from "axios";
 import { useState } from "react";
 import Divider from "../../../components/Divider";
 import { useUser } from "../../UserContext";
+import { useNavigate } from 'react-router-dom';
 
 function PharmacyDashboard() {
-    
+    const navigate = useNavigate();
 
-    useEffect(() => {
-
-
+    useEffect(()=>{
+        fetch('/api/pharmacy/login_check', {
+            method: 'GET',
+            credentials: 'include',
+            redirect: 'manual', /* Needed for login_check */
+        }).then(resp => {
+            console.log(resp.status);
+            if(resp.status != 200) {
+                alert("You need to be logged in to view this page.");
+                navigate('/pharmacy-log-in');
+            }
+        })
     }, [])
+    
+    
 
     return <>
         <h1>Dashboard</h1>

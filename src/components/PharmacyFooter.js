@@ -1,6 +1,6 @@
 import { MDBFooter, MDBContainer, MDBRow, MDBCol, MDBIcon } from 'mdb-react-ui-kit';
 
-function Footer() {
+function PharmacyFooter() {
     return (
         <>
             <MDBFooter  className='text-center text-lg-start text-muted'>
@@ -11,30 +11,20 @@ function Footer() {
                     <MDBCol md="3" lg="4" xl="3" className='mx-auto mb-4'>
                     <h6 className='text-uppercase fw-bold mb-4'>
                         <MDBIcon icon="gem" className="me-3" />
-                        BetterU
+                        BigPharma
                     </h6>
                     </MDBCol>
 
                     <MDBCol md="3" lg="2" xl="2" className='mx-auto mb-4'>
                     <h6 className='text-uppercase fw-bold mb-4'>Products</h6>
                     <p>
-                        <a href='/sign-up' className='text-reset'>
-                        Register
+                        <a href='/pharmacy-log-in' className='text-reset'>
+                        Log In
                         </a>
                     </p>
                     <p>
-                        <a href='/log-in' className='text-reset'>
-                        Log In (Patients and Doctors)
-                        </a>
-                    </p>
-                    <p>
-                        <a href='/forums' className='text-reset'>
-                        Forums
-                        </a>
-                    </p>
-                    <p>
-                        <a href='/home' className='text-reset'>
-                        Home
+                        <a href='/pharmacy/dashboard' className='text-reset'>
+                        Pharmacy Dashboard
                         </a>
                     </p>
                     </MDBCol>
@@ -48,10 +38,10 @@ function Footer() {
                     </p>
                     <p>
                         <MDBIcon icon="envelope" className="me-3" />
-                        support@betteru.com
+                        support@bigpharma.com
                     </p>
                     <p>
-                        <MDBIcon icon="phone" className="me-3" /> + 01 234 567 89
+                        <MDBIcon icon="phone" className="me-3" /> + 01 201 555 2291
                     </p>
                     </MDBCol>
                 </MDBRow>
@@ -59,11 +49,11 @@ function Footer() {
             </section>
 
             <div className='text-center p-4' >
-                © 2025 Copyright: <a className='text-reset fw-bold' href='#'>BetterU.com</a>
+                © 2025 Copyright: <a className='text-reset fw-bold' href='#'>BigPharma</a>
             </div>
             </MDBFooter>
         </>
     )
 }
 
-export default Footer;
+export default PharmacyFooter;

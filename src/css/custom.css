@@ -33,6 +33,11 @@ p {
     justify-content: space-between;
 }
 
+.pharmacy-navbar {
+    background-color: rgb(236, 149, 50) !important;
+    border-color: rgb(236, 149, 50) !important;
+}
+
 .special-text {
     color: #F7CB15;
 }
