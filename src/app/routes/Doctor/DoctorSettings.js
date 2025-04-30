@@ -21,7 +21,7 @@ function DoctorSettings() {
                 setDoctor(doctorDetails);
                 setBio(doctorDetails.profile);
                 setSpecialization(doctorDetails.specialization);
-                setLocation(doctorDetails.location); // <-- NEW
+                setLocation(doctorDetails.office); // <-- NEW
             } catch (error) {
                 console.error("Failed to fetch doctor data:", error);
             }
@@ -64,12 +64,12 @@ function DoctorSettings() {
         setEditingLocation(false);
 
         try {
-            await fetch(`/api/betteru/doctors/location/${user_info.user_id}`, {  // <-- Adjust if needed
+            await fetch(`/api/betteru/doctors/${user_info.user_id}`, {  // <-- Adjust if needed
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
                 credentials: 'include',
                 body: JSON.stringify({
-                    location: location
+                    office: location
                 }),
             });
         } catch (err) {
