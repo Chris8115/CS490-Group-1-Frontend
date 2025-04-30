@@ -21,7 +21,7 @@ function DoctorSettings() {
                 setDoctor(doctorDetails);
                 setBio(doctorDetails.profile);
                 setSpecialization(doctorDetails.specialization);
-                setLocation(doctorDetails.location); // <-- NEW
+                setLocation(doctorDetails.office); // <-- NEW
             } catch (error) {
                 console.error("Failed to fetch doctor data:", error);
             }
