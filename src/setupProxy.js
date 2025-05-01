@@ -5,7 +5,7 @@ module.exports = function(app) {
     app.use(
         '/api/betteru',
         createProxyMiddleware({
-            target: 'http://localhost:5000',
+            target: 'http://localhost:8080',
             changeOrigin: 'true',
             pathRewrite: {
             '^/api/betteru': '' // Removes /api/pharmacy from the start of the URL before forwarding
