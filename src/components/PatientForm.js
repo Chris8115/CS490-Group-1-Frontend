@@ -346,9 +346,9 @@ function PatientForm() {
                     </MDBCol>
                 </MDBRow>
                 <p id='responsetext' style={{color: 'red', fontWeight:'bold'}}></p>
-                <MDBBtn type='submit' style={{ backgroundColor: '#F53D3E', border: 'none' }} className='mb-4' block>
+                <button type='submit' className='register-btn'>
                     Register
-                </MDBBtn>
+                </button>
 
             </form>
         </div>
