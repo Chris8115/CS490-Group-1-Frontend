@@ -8,6 +8,12 @@ import '../../../css/post_page.css';
 import SavePostButton from './SavePostButton';
 import { useParams } from 'react-router-dom';
 
+function correctCommentTime(dateString) {
+    const inputDate = new Date(dateString);
+    inputDate.setHours(inputDate.getHours() - 4);
+    return inputDate.toLocaleString();
+};
+
 function PostPage() {
     const { postId } = useParams();
     const userId = JSON.parse(sessionStorage.getItem('user_info')).user_id;
@@ -308,7 +314,7 @@ function PostPage() {
                                         )}
                                     </div>
                                     {' • '}
-                                    {new Date(comment.created_at).toLocaleString()}
+                                    {correctCommentTime(comment.created_at)}
                                 </div>
                                 <div className="text-gray-800">{comment.comment_text}</div>
                             </div>
