@@ -111,9 +111,12 @@ function PatientDashboard() {
         
         <h1>Appointments</h1>
         <div className="dashboard-features" style={{display: 'flex', flexDirection: 'column', gap: '1rem'}}>
-            {patientAppointments.map((appointment, index) => (
+            {patientAppointments.length > 0 ? (patientAppointments.map((appointment, index) => (
                 <PatientAppointmentCard appointment={appointment} key={appointment.appointment_id} />
-            ))}
+            ))
+            ) : (
+                <h2>No Appointments</h2>
+            )}
         </div>
 
     </>
