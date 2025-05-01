@@ -12,8 +12,8 @@ import { useNavigate } from "react-router-dom";
 // THIS PAGE IS PARTIALLY BROKEN IN STRICT MODE; WORKS FINE IN PRODUCTION BUILDS AND IF YOU REMOVE THE STRICT MODE TAGS FROM index.js
 
 function PatientDashboard() {
-    const navigate = useNavigate();
     const { userInfo } = useUser();
+    const navigate = useNavigate();
     const [patientAppointments, setPatientAppointments] = useState([]);
     const [patientHasDoctor, setPatientHasDoctor] = useState(true);
     const [loading, setLoading] = useState(true);
@@ -39,8 +39,8 @@ function PatientDashboard() {
                     filteredAppointments.push(data.appointments[i]);
                 }
             }
-            setPatientAppointments(filteredAppointments);
 
+            setPatientAppointments(filteredAppointments);
 
         } catch (e) {
             console.error(e);
@@ -117,15 +117,16 @@ function PatientDashboard() {
     }
 
     useEffect(() => {
-        const loadData = async () => {
-            if (userInfo?.user_id) {
-                await checkIfHasDoctor();
-                await getPatientAppointments();
-                setLoading(false);
-            };
+        if (!userInfo) {
+            navigate(0);
+            return;
         }
-        loadData();
-    
+
+        if (userInfo.user_id) {
+            checkIfHasDoctor();
+            getPatientAppointments();
+            setLoading(false);
+        };
     }, [userInfo]);
 
     if (loading) {return <></>}
