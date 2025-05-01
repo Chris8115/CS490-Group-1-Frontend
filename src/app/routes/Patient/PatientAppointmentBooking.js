@@ -34,8 +34,6 @@ function PatientAppointmentBooking() {
                 
             const data = {
                 "doctor_id": appointmentData.doctor_id,
-                "end_time": endTime,
-                "location": "100 Test Rd",
                 "patient_id": userInfo.user_id,
                 "reason": appointmentData.reason,
                 "start_time": startTime,
@@ -43,7 +41,7 @@ function PatientAppointmentBooking() {
             }
             
             
-                const res = await fetch('/api/betteru/patient_progress', {
+                const res = await fetch('/api/betteru/appointments', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -112,15 +110,9 @@ function PatientAppointmentBooking() {
     if (requestMade) {
         return <>
 
-        <BetterUNavbar />
-
-        <div className="patient_pages">
 
         <h1>Appointment Requested</h1>
 
-        </div>
-        <Divider />
-        <Footer />
 
         </>
     }

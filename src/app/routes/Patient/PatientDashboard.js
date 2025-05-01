@@ -28,6 +28,7 @@ function PatientDashboard() {
             })
 
             const data = await response.json();
+            console.log("Appointments: ", data);
             setPatientAppointments(data.appointments);
 
 
