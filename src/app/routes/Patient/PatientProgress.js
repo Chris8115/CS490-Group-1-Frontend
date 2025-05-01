@@ -34,11 +34,13 @@ const chartTemplate = {
 function PatientProgress() {
     const { userInfo } = useUser();
     const [chartData, setChartData] = useState({});
-    const [progressData, setProgressData] = useState([]);
+    const [progressData, setProgressData] = useState([]); // Daily
+    const [weeklyProgressData, setWeeklyProgressData] = useState([]); // Weekly
     const [loading, setLoading] = useState(true);
     const [exerciseAssignments, setExerciseAssignments] = useState([]);
     const [exercises, setExercises] = useState([]);
-    const [surveySubmitted, setSurveySubmitted] = useState(false);
+    const [dailySurveySubmitted, setDailySurveySubmitted] = useState(false);
+    const [weeklySurveySubmitted, setWeeklySurveySubmitted] = useState(false);
 
     useEffect(() => {
         if (!userInfo?.user_id) return; 
@@ -54,13 +56,26 @@ function PatientProgress() {
       
                 });
 
-                if (!response.ok) throw new Error('Request Failed');
-                
                 const data = await response.json();
-                
-                console.log(data)
+                if (!response.ok) throw new Error('Request Failed');
 
-                const progress = data.patient_progress.slice(0, 8);
+                
+                const weeklyResponse = await fetch(`/api/betteru/patient_weekly_surveys?patient_id=${userInfo.user_id}`, {
+                    method: 'GET',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    credentials: 'include'
+      
+                });
+
+                const weeklyData = await weeklyResponse.json();
+                if (!weeklyResponse.ok) throw new Error('Request Failed');
+                
+                console.log("Daily: ", data)
+                console.log("Weekly: ", weeklyData)
+                
+                const progress = data.patient_progress.slice(0, 20);
                 
                 const newChart = structuredClone(chartTemplate);
                 newChart["labels"] = [];
@@ -71,10 +86,13 @@ function PatientProgress() {
                 
                 // Reverses twice because reverse() doesn't return a new array but just flips the old one
                 setProgressData(progress.reverse());
+                setWeeklyProgressData(weeklyData.patient_weekly_surveys.reverse());
+
                 setChartData(newChart);
                 setLoading(false);
 
-                setSurveySubmitted(surveyCheck(progress[0].date_logged));
+                setWeeklySurveySubmitted(weeklySurveyCheck(weeklyData.patient_weekly_surveys[0].submitted_at));
+                setDailySurveySubmitted(dailySurveyCheck(progress[0].date_logged));
 
                 
             } catch (e) {
@@ -142,7 +160,7 @@ function PatientProgress() {
         
     }, [userInfo]);
       
-    const handleSurveySubmit = async (e) => {
+    const handleDailySurveySubmit = async (e) => {
         e.preventDefault();
 
         try {
@@ -151,11 +169,11 @@ function PatientProgress() {
             const data = {
                 "calories": Number(surveyForm.get("calories")),
                 "weight": Number(surveyForm.get("recordedWeight")),
-                "weight_goal": Number(surveyForm.get("weightGoal")),
-                "notes": surveyForm.get("notes"),
+                "water_intake": Number(surveyForm.get("waterIntake")),
                 "patient_id": userInfo.user_id
             }
         
+            console.log("Submitting: ", data);
         
             const res = await fetch('/api/betteru/patient_progress', {
                 method: 'POST',
@@ -168,7 +186,37 @@ function PatientProgress() {
 
             const result = await res.json();
             console.log(result);
-            setSurveySubmitted(true);
+            setDailySurveySubmitted(true);
+            
+        } catch (err) {
+            console.error(err);
+        }
+    }
+      
+    const handleWeeklySurveySubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            const surveyForm = new FormData(e.target);
+            
+            const data = {
+                "weight_goal": Number(surveyForm.get("weightGoal")),
+                "notes": surveyForm.get("notes"),
+                "patient_id": userInfo.user_id
+            }
+        
+            const res = await fetch('/api/betteru/patient_weekly_surveys', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify(data)
+            });
+
+            const result = await res.json();
+            console.log(result);
+            setWeeklySurveySubmitted(true);
             
         } catch (err) {
             console.error(err);
@@ -179,37 +227,7 @@ function PatientProgress() {
         return <>Loading...</>;
     }
 
-    if (!progressData.length || !chartData) {
-        return <>
-        No progress data available.
-        
-        <h2>Weekly Survey</h2>
 
-        {surveySubmitted ? (
-            <p>Weekly survey submitted.</p>
-        ) : (
-            <form onSubmit={handleSurveySubmit}>
-                <div className="survey-container">
-                    <label htmlFor="calories" className="form-label">Calorie Intake</label>
-                    <input type="number" className="form-control" id="calories" name="calories" min="0" max="40000" required/>
-                    
-                    <label htmlFor="recordedWeight" className="form-label">Recorded Weight (lbs.)</label>
-                    <input type="number" className="form-control" id="recordedWeight" name="recordedWeight" min="1" max="1500" required/>
-                    
-                    <label htmlFor="weightGoal" className="form-label">Weight Goal (lbs.)</label>
-                    <input type="number" className="form-control" id="weightGoal" name="weightGoal" min="1" max="1500" required/>
-                    
-                    <label htmlFor="notes" className="form-label">Notes</label>
-                    <input type="text" className="form-control" id="notes" name="notes"/>
-
-                    <br/>
-
-                    <button type="submit" className="btn btn-primary">Submit Survey</button>
-                </div>
-            </form>
-        )}
-        </>;
-    }
     return <>
     
     <h1>Progress</h1>
@@ -218,10 +236,21 @@ function PatientProgress() {
     
     <br/>
     
-        <h3><strong>GOAL:</strong> {progressData[0].weight_goal} lbs</h3>
-        <h3><strong>Last recorded weight:</strong> {progressData[0].weight} lbs</h3>
+        {weeklyProgressData.length > 0 ? (
+            <h3><strong>GOAL:</strong> {weeklyProgressData[0].weight_goal} lbs</h3>
+        ) : (
+            <p>No weekly progress data available.</p>
+        )}
+
+        {progressData.length > 0 ? (
+            <h3><strong>Last recorded weight:</strong> {progressData[0].weight} lbs</h3>
+        ) : (
+            <p>No daily progress data available.</p>
+        )}
         
-        <Line data={chartData} />
+        {(chartData && progressData.length > 0) && (
+            <Line data={chartData} />
+        )}
 
         <br/>
 
@@ -259,12 +288,11 @@ function PatientProgress() {
 
         <br/>
 
-        <h2>Weekly Survey</h2>
-
-        {surveySubmitted ? (
-            <p>Weekly survey submitted.</p>
+        <h2>Daily Survey</h2>
+        {dailySurveySubmitted ? (
+            <p>Daily survey submitted.</p>
         ) : (
-            <form onSubmit={handleSurveySubmit}>
+            <form onSubmit={handleDailySurveySubmit}>
                 <div className="survey-container">
                     <label htmlFor="calories" className="form-label">Calorie Intake</label>
                     <input type="number" className="form-control" id="calories" name="calories" min="0" max="40000" required/>
@@ -272,12 +300,28 @@ function PatientProgress() {
                     <label htmlFor="recordedWeight" className="form-label">Recorded Weight (lbs.)</label>
                     <input type="number" className="form-control" id="recordedWeight" name="recordedWeight" min="1" max="1500" required/>
                     
+                    <label htmlFor="waterIntake" className="form-label">Water Intake (liters)</label>
+                    <input type="number" step="0.1" className="form-control" id="waterIntake" name="waterIntake" min="0" max="50" required/>
+                    
+                    <br/>
+
+                    <button type="submit" className="btn btn-primary">Submit Survey</button>
+                </div>
+            </form>
+        )}
+
+        <h2>Weekly Survey</h2>
+
+        {weeklySurveySubmitted ? (
+            <p>Weekly survey submitted.</p>
+        ) : (
+            <form onSubmit={handleWeeklySurveySubmit}>
+                <div className="survey-container">
                     <label htmlFor="weightGoal" className="form-label">Weight Goal (lbs.)</label>
                     <input type="number" className="form-control" id="weightGoal" name="weightGoal" min="1" max="1500" required/>
                     
                     <label htmlFor="notes" className="form-label">Notes</label>
                     <input type="text" className="form-control" id="notes" name="notes"/>
-
                     <br/>
 
                     <button type="submit" className="btn btn-primary">Submit Survey</button>
@@ -288,7 +332,18 @@ function PatientProgress() {
     </>
 }
 
-const surveyCheck = (dateString) => {
+const dailySurveyCheck = (dateString) => {
+    const inputDate = new Date(dateString);
+    inputDate.setHours(inputDate.getHours() - 4);
+    const now = new Date();
+  
+    const oneDayAgo = new Date();
+    oneDayAgo.setDate(now.getDate() - 1);
+  
+    return inputDate >= oneDayAgo && inputDate <= now;
+};
+
+const weeklySurveyCheck = (dateString) => {
     const inputDate = new Date(dateString);
     inputDate.setHours(inputDate.getHours() - 4);
     const now = new Date();
