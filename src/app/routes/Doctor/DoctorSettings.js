@@ -6,6 +6,7 @@ function DoctorSettings() {
     const [doctor, setDoctor] = useState({});
     const [bio, setBio] = useState("");
     const [specialization, setSpecialization] = useState("");
+    const [picture, setPicture] = useState("");
     const [location, setLocation] = useState(""); // <-- NEW
     const [editingProfile, setEditingProfile] = useState(false);
     const [editingLocation, setEditingLocation] = useState(false);
@@ -23,6 +24,7 @@ function DoctorSettings() {
                 setBio(doctorDetails.profile);
                 setSpecialization(doctorDetails.specialization);
                 setLocation(doctorDetails.office);
+                setPicture(doctorDetails.picture)
             } catch (error) {
                 console.error("Failed to fetch doctor data:", error);
             }
@@ -85,6 +87,7 @@ function DoctorSettings() {
             <h2>Doctor Profile</h2>
 
             <div className="profile-section">
+                <p><img src = {picture}></img></p>
                 <p><strong>Name:</strong> {user.first_name} {user.last_name}</p>
                 <p><strong>Email:</strong> {user.email}</p>
                 <p><strong>Phone Number:</strong> {user.phone_number}</p>
