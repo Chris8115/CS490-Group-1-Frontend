@@ -11,9 +11,6 @@ function PharmacyLogin() {
 
             <PharmacyLoginForm/>
             
-            <Divider/>
-
-            <Footer/>
         </>
     )
 }

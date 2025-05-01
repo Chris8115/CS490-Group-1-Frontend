@@ -12,7 +12,7 @@ function DoctorLayout() {
             
             <div>
                 <div className="dashboard">
-                    <Outlet /> {/* Renders the matching route */}
+                    <Outlet />
                 </div>
             </div>
 
