@@ -32,8 +32,14 @@ function PatientDashboard() {
             })
 
             const data = await response.json();
-            console.log("Appointments: ", data);
-            setPatientAppointments(data.appointments);
+            let filteredAppointments = [];
+            
+            for (let i = 0; i < data.appointments.length; i++) {
+                if (data.appointments[i].status !== "canceled") {
+                    filteredAppointments.push(data.appointments[i]);
+                }
+            }
+            setPatientAppointments(filteredAppointments);
 
 
         } catch (e) {

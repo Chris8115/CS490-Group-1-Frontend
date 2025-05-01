@@ -9,18 +9,18 @@ import '../css/pending_appointments.css';
 const handleCancel = async (appointmentId) => {
     console.log(appointmentId);
     try {
-        const response = await fetch(`/api/betteru/appointments`, {
+        const response = await fetch(`/api/betteru/appointments/${appointmentId}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'
             },
             credentials: 'include',
             body: JSON.stringify({
-                appointment_id: appointmentId,
                 status: 'canceled'
             })
         });
 
+        const data = await response.json();
         if (!response.ok) throw new Error("Failed to cancel appointment");
 
         alert("Appointment canceled successfully.");
@@ -48,6 +48,15 @@ function PatientAppointmentCard(props) {
             </p>
             <p className="time">{formatTimeRange(appt.start_time, appt.end_time)}</p>
             </div>
+
+            <div>
+                {appt.status === "pending" ? (
+                    <strong style={{ color: 'orange'}}>Pending</strong>
+                ) : (
+                    <strong style={{ color: 'green'}}>Confirmed</strong>
+                )}
+            </div>
+
             <div className="appointment-reason-row">
                 <p className="patient-request">"{appt.reason}"</p>
                 <button
