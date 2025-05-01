@@ -72,13 +72,25 @@ function PostPage() {
                 const user = data.users[0];
 
                 let numPostsOrComments = 0;
-                let role = user.role;
+                const role = user.role;
 
-                if (role === 'patient') {
-                    numPostsOrComments = 25;
-                } else if (role === 'doctor') {
-                    numPostsOrComments = 12;
+                try {
+                    if (role === 'patient') {
+                        const commentsRes = await fetch(`/api/betteru/forum_comments?user_id=${userId}`);
+                        if (!commentsRes.ok) throw new Error('Failed to fetch comments count');
+                        const commentsData = await commentsRes.json();
+                        numPostsOrComments = commentsData.forum_comments?.length || 0;
+                    } else if (role === 'doctor') {
+                        const postsRes = await fetch(`/api/betteru/forum_posts?user_id=${userId}`);
+                        if (!postsRes.ok) throw new Error('Failed to fetch posts count');
+                        const postsData = await postsRes.json();
+                        numPostsOrComments = postsData.forum_posts?.length || 0;
+                    }
+                } catch (err) {
+                    console.error('Failed to fetch post/comment counts:', err);
+                    numPostsOrComments = 0;
                 }
+
 
                 setSelectedUser({
                     user_id: userId,
