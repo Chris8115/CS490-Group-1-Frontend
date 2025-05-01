@@ -180,7 +180,35 @@ function PatientProgress() {
     }
 
     if (!progressData.length || !chartData) {
-        return <>No progress data available.</>;
+        return <>
+        No progress data available.
+        
+        <h2>Weekly Survey</h2>
+
+        {surveySubmitted ? (
+            <p>Weekly survey submitted.</p>
+        ) : (
+            <form onSubmit={handleSurveySubmit}>
+                <div className="survey-container">
+                    <label htmlFor="calories" className="form-label">Calorie Intake</label>
+                    <input type="number" className="form-control" id="calories" name="calories" min="0" max="40000" required/>
+                    
+                    <label htmlFor="recordedWeight" className="form-label">Recorded Weight (lbs.)</label>
+                    <input type="number" className="form-control" id="recordedWeight" name="recordedWeight" min="1" max="1500" required/>
+                    
+                    <label htmlFor="weightGoal" className="form-label">Weight Goal (lbs.)</label>
+                    <input type="number" className="form-control" id="weightGoal" name="weightGoal" min="1" max="1500" required/>
+                    
+                    <label htmlFor="notes" className="form-label">Notes</label>
+                    <input type="text" className="form-control" id="notes" name="notes"/>
+
+                    <br/>
+
+                    <button type="submit" className="btn btn-primary">Submit Survey</button>
+                </div>
+            </form>
+        )}
+        </>;
     }
     return <>
     
