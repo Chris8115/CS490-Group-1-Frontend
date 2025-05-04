@@ -300,8 +300,8 @@ function PatientForm() {
                         <input className='form-input' required label='CVV' name='cvv' value={creditCardData.cvv} onChange={e => handleChange(e, setCreditCardData)} />
                     </MDBCol>
                     <MDBCol>
-                        <label>Expiration Date (YYYY-MM-DD)</label>
-                        <input className='form-input' required label='Expiration Date (YYYY-MM-DD)' name='exp_date' value={creditCardData.exp_date} onChange={e => handleChange(e, setCreditCardData)} />
+                        <label>Expiration Date (YYYY-MM)</label>
+                        <input className='form-input' required label='Expiration Date (YYYY-MM)' name='exp_date' value={creditCardData.exp_date} onChange={e => handleChange(e, setCreditCardData)} />
                     </MDBCol>
                 </MDBRow>
 
