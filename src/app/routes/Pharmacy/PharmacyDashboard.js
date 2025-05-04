@@ -6,6 +6,7 @@ import { useState } from "react";
 import Divider from "../../../components/Divider";
 import { useUser } from "../../UserContext";
 import { useNavigate } from 'react-router-dom';
+import PharmacyDeliveries from "../../../components/PharmacyDeliveries";
 
 function PharmacyDashboard() {
     const navigate = useNavigate();
@@ -37,6 +38,9 @@ function PharmacyDashboard() {
         </div>
         
         <br/>
+
+        <h1>Pending Deliveries</h1>   
+        <PharmacyDeliveries status='pending' />
         
 
     </>
