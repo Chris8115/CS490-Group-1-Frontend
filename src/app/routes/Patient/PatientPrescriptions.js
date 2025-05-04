@@ -23,7 +23,7 @@ function PatientPrescriptions() {
 
                 const prescriptions = [];
                 for (let i = 0; i < data.prescriptions.length; i++) {
-                    if (data.prescriptions[i].status === "Ready" || data.prescriptions[i].status === "Accepted") {
+                    if (data.prescriptions[i].status.toLowerCase() != "canceled") {
                         prescriptions.push(data.prescriptions[i]);
                     }
                 }
@@ -36,8 +36,6 @@ function PatientPrescriptions() {
         }
 
         getPrescriptions();
-
-
 
     }, [userInfo])
 

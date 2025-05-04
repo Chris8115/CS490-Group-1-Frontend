@@ -33,6 +33,7 @@ function PatientReview() {
 
                 let doctorRelationships = data.doctor_patient_relationship;
                 let doctorIds = doctorRelationships.map(r => r.doctor_id);
+                doctorIds = [...new Set(doctorIds)];
 
                 setAllDoctors(doctorIds);
 
