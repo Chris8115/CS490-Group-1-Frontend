@@ -74,10 +74,6 @@ function PharmacyMedicationDetails(props) {
         fetchUsers();
     }, [])
 
-    if (!inventory) {
-        return <>Loading...</>  
-    }
-
     return <>
     
     <div className="doctor-search">
