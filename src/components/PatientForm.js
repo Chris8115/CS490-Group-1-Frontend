@@ -9,6 +9,7 @@ import Eula from './Eula';
 import Checkbox from '@mui/material/Checkbox';
 import { BACKEND_HOST, PHARMA_HOST } from './Hosts.js'
 import { useNavigate } from 'react-router-dom';
+import '../css/registration.css';
 
 function PatientForm() {
     const navigate = useNavigate();
@@ -107,11 +108,62 @@ function PatientForm() {
     };
 
     const [medicalConditions, setMedicalConditions] = useState({
-        smoker: false,
-        heartDisease: false,
-        diabetes: false,
-        highBloodPressure: false,
+        acidReflux: false,
+        alcoholAddiction: false,
+        allergyProblems: false,
+        anemia: false,
+        anxiety: false,
+        arteryVeinProblems: false,
+        arthritis: false,
         asthma: false,
+        autoimmuneDisease: false,
+        bipolarDisorder: false,
+        bladderIrritability: false,
+        bleedingProblems: false,
+        bloodClots: false,
+        cancer: false,
+        cataracts: false,
+        colitisCrohns: false,
+        chronicPain: false,
+        depression: false,
+        diabetes: false,
+        drugAddiction: false,
+        esophagitisUlcers: false,
+        fractures: false,
+        gallstones: false,
+        glaucoma: false,
+        gout: false,
+        headaches: false,
+        hearingImpairment: false,
+        heartAttack: false,
+        heartDisease: false,
+        heartValveProblems: false,
+        hepatitisA: false,
+        hepatitisB: false,
+        hepatitisC: false,
+        hernia: false,
+        highBloodPressure: false,
+        highCholesterol: false,
+        hiv: false,
+        irritableBowel: false,
+        kidneyDisease: false,
+        kidneyStones: false,
+        liverDisease: false,
+        lungDisease: false,
+        mentalIllness: false,
+        migraines: false,
+        mrsa: false,
+        osteoporosis: false,
+        recurrentSkinInfections: false,
+        recurrentUti: false,
+        ptsd: false,
+        seizures: false,
+        stds: false,
+        sleepApnea: false,
+        stroke: false,
+        tb: false,
+        thyroidDiseases: false,
+        visionImpairment: false,
         additional: '',
     });
 
@@ -248,15 +300,15 @@ function PatientForm() {
                         <input className='form-input' required label='CVV' name='cvv' value={creditCardData.cvv} onChange={e => handleChange(e, setCreditCardData)} />
                     </MDBCol>
                     <MDBCol>
-                        <label>Expiration Date (YYYY-MM-DD)</label>
-                        <input className='form-input' required label='Expiration Date (YYYY-MM-DD)' name='exp_date' value={creditCardData.exp_date} onChange={e => handleChange(e, setCreditCardData)} />
+                        <label>Expiration Date (YYYY-MM)</label>
+                        <input className='form-input' required label='Expiration Date (YYYY-MM)' name='exp_date' value={creditCardData.exp_date} onChange={e => handleChange(e, setCreditCardData)} />
                     </MDBCol>
                 </MDBRow>
 
-                <p className='step-descrip'>Medical History</p>
-                <div className='mb-3'>
+                <h5>Medical History</h5>
+                <div className='checkbox-grid mb-3'>
                     {Object.entries(medicalConditions).slice(0,-1).map(([key, value]) => (
-                        <div key={key}>
+                        <div key={key} className='checkbox-item'>
                             <label>
                                 <Checkbox
                                     name={key}
@@ -269,9 +321,9 @@ function PatientForm() {
                             </label>
                         </div>
                     ))}
+                </div>
                     <label>Additional Notes</label>
                     <input className='form-input' label='Additional Medical History' name='additional' value={medicalConditions.additional} onChange={e => handleAdditionalChange(e)} />
-                </div>
                 <p className='step'>Step 3: Acknowledgement and Compliance Forms</p>
                 <Eula />
 
@@ -294,9 +346,9 @@ function PatientForm() {
                     </MDBCol>
                 </MDBRow>
                 <p id='responsetext' style={{color: 'red', fontWeight:'bold'}}></p>
-                <MDBBtn type='submit' style={{ backgroundColor: '#F53D3E', border: 'none' }} className='mb-4' block>
+                <button type='submit' className='register-btn'>
                     Register
-                </MDBBtn>
+                </button>
 
             </form>
         </div>

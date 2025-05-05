@@ -89,9 +89,9 @@ function PharmacyLoginForm() {
 
             <button type='submit' className="login-btn" href=''>Sign in</button>
 
-            <div className="text-center">
+            {/*<div className="text-center">
                 <p>Not a member? <a href="/sign-up">Register</a></p>
-            </div>
+            </div>*/}
 
         </form>
 

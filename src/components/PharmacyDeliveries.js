@@ -1,15 +1,16 @@
 import { useEffect } from "react";
-import { useUser } from "../../UserContext";
+import { useUser } from "../app/UserContext";
 import { useState } from "react";
-import PharmacyDeliveryStatus from "../../../components/PharmacyDeliveryStatus";
+import PharmacyDeliveryStatus from "./PharmacyDeliveryStatus";
 
-function PharmacyDeliveries() {
+function PharmacyDeliveries({status}) {
     const { userInfo } = useUser();
     const [orders, setOrders] = useState([]);
 
+
     const fetchOrders = async () => {
         try {
-            const response = await fetch(`/api/pharmacy/orders`, {
+            const response = await fetch(`/api/pharmacy/orders?status=${status}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -26,16 +27,16 @@ function PharmacyDeliveries() {
 
     // ID Search
     useEffect(() => {
+        if (!status) {status = '';}
         fetchOrders();
 
     }, [])
 
     return (
-        <>        
-        <h1>Deliveries</h1>   
-            {orders.length > 0 && orders.map((order, idx) => (
-                <PharmacyDeliveryStatus order={order} key={order.order_id}/>
-            ))}
+        <>         
+        {orders.length > 0 && orders.map((order, idx) => (
+            <PharmacyDeliveryStatus order={order} key={order.order_id}/>
+        ))}
     
         </>
     )

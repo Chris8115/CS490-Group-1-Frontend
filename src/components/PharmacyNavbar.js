@@ -14,7 +14,7 @@ function PharmacyNavbar() {
 
   const handleLogout = async () => {
     try {
-        const response = await fetch('/api/pharmacyu/logout', {
+        const response = await fetch('/api/pharmacy/logout', {
             method: 'GET',
             credentials: 'include',
         });
@@ -33,8 +33,7 @@ function PharmacyNavbar() {
   if (!isLoggedIn) {
     buttons = (
                 <>
-                  <Nav.Link href="/home">Home</Nav.Link>
-                  <Nav.Link href="/sign-up">Sign Up</Nav.Link>
+
                   <Nav.Link href="/pharmacy-log-in">Log In</Nav.Link>
                 </>
                 )
@@ -43,15 +42,16 @@ function PharmacyNavbar() {
     buttons = (
       <>
         <Nav.Link onClick={handleLogout} >Logout</Nav.Link>
+        <Nav.Link href="/pharmacy/dashboard">Dashboard</Nav.Link>
       </>
       )
   }
 
   return (
     <>
-      <Navbar expand="lg" className="bg-body-tertiary navbar">
+      <Navbar expand="lg" className="bg-body-tertiary pharmacy-navbar">
         <Container>
-          <Navbar.Brand href="/">Pharmacy</Navbar.Brand>
+          <Navbar.Brand href="/pharmacy/dashboard">BigPharma</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav float-center">
             <Nav className="ms-auto">

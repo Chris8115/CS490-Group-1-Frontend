@@ -5,14 +5,27 @@ import axios from "axios";
 import { useState } from "react";
 import Divider from "../../../components/Divider";
 import { useUser } from "../../UserContext";
+import { useNavigate } from 'react-router-dom';
+import PharmacyDeliveries from "../../../components/PharmacyDeliveries";
 
 function PharmacyDashboard() {
-    
+    const navigate = useNavigate();
 
-    useEffect(() => {
-
-
+    useEffect(()=>{
+        fetch('/api/pharmacy/login_check', {
+            method: 'GET',
+            credentials: 'include',
+            redirect: 'manual', /* Needed for login_check */
+        }).then(resp => {
+            console.log(resp.status);
+            if(resp.status != 200) {
+                alert("You need to be logged in to view this page.");
+                navigate('/pharmacy-log-in');
+            }
+        })
     }, [])
+    
+    
 
     return <>
         <h1>Dashboard</h1>
@@ -25,6 +38,9 @@ function PharmacyDashboard() {
         </div>
         
         <br/>
+
+        <h1>Pending Deliveries</h1>   
+        <PharmacyDeliveries status='pending' />
         
 
     </>

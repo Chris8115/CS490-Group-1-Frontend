@@ -6,6 +6,7 @@ import StarRating from "../../../components/StarRating";
 import Footer from "../../../components/Footer";
 import BetterUNavbar from "../../../components/BetterUNavbar";
 import { useUser } from "../../UserContext";
+import { sub } from "date-fns";
 
 function PatientReview() {
     const { userInfo } = useUser();
@@ -15,11 +16,11 @@ function PatientReview() {
     const [rating, setRating] = useState(null);
     const [selectedDoctor, setSelectedDoctor] = useState(null);
     const [reviewText, setReviewText] = useState("");
+    const [reviewSubmitted, setReviewSubmitted] = useState(false);
 
     useEffect(() => {
         const getDoctors = async () => {
             try {
-                
                 const response = await fetch(`/api/betteru/doctor_patient_relationship?patient_id=${userInfo.user_id}`, {
                     method: 'GET',
                     headers: {
@@ -48,26 +49,57 @@ function PatientReview() {
         }
 
         getDoctors();
-    }, []);
+    }, [userInfo]);
 
     const handleRatingChange = (newRating) => {
         setRating(newRating);
         console.log(newRating);
     }
 
-    const handleSubmitReview = (e) => {
+    const handleSubmitReview = async (e) => {
+        e.preventDefault();
         if (rating == null) {
-            e.preventDefault();
             alert("Must provide rating.");
         } else {
             try {
-                axios.post("/reviews", {
-                    "patient_id": userInfo.user_id,
-                    "doctor_id": selectedDoctor,
-                    "rating": rating,
-                    "review_text": reviewText
+                const response = await fetch(`/api/betteru/reviews?doctor_id=${selectedDoctor}&patient_id=${userInfo.user_id}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include'
                 })
-                alert("Review submitted.");
+
+                const data = await response.json();
+
+                const reviewExists = data.reviews.length > 0;
+                if (reviewExists) {
+                    alert("Review for this doctor already submitted.");
+                    return;
+                }
+
+                const args = {
+                    patient_id: userInfo.user_id,
+                    doctor_id: selectedDoctor,
+                    rating: rating,
+                    review_text: reviewText
+                }
+
+                const submit = await fetch(`/api/betteru/reviews`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify(args)
+                });
+
+                const submitData = await submit.json();
+                
+            if(submit.status == 201 || submit.status == 200){
+                setReviewSubmitted(true);
+            }  
+
             } catch (e) {
                 console.log(e);
             }
@@ -84,9 +116,11 @@ function PatientReview() {
         setReviewText(newReviewText);
     }
 
+    if (reviewSubmitted) {
+        return <h1>Review successfully submitted.</h1>
+    }
+
     return <>
-
-
 
     <h1>Write Review</h1>
 
