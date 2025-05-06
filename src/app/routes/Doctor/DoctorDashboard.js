@@ -47,9 +47,10 @@ const handleCancel = async (appointmentId) => {
 
     const handleChange = async (newDate) => {
         setDate(newDate);
-
+        if(!user_info){
+            navigate('/log-in');
+        }
         const formattedDate = newDate.toISOString().split('T')[0];
-
         try {
             const response = await fetch(`/api/betteru/appointments?doctor_id=${user_info.user_id}&start_time=${formattedDate}&status=accepted`);
             if (!response.ok) throw new Error('Failed to fetch appointments');
@@ -63,8 +64,11 @@ const handleCancel = async (appointmentId) => {
     };
 
     const getPendingAppointments = async () => {
+        if(!user_info){
+            navigate('/log-in');
+        }
         try {
-            const response = await fetch(`/api/betteru/appointments?doctor_id=${userInfo.user_id}&status=pending`, {
+            const response = await fetch(`/api/betteru/appointments?doctor_id=${user_info.user_id}&status=pending`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -85,16 +89,22 @@ const handleCancel = async (appointmentId) => {
     };
 
     useEffect(() => {
+        if(!user_info){
+            navigate('/log-in');
+        }
         setUserInfo(user_info);
-
         handleChange(date); // Load current day appointments
     }, []);
 
     useEffect(() => {
-        if (userInfo.user_id) {
+        if(!user_info){
+            navigate('/log-in');
+            return undefined;
+        }
+        if (user_info.user_id) {
             getPendingAppointments(); // Fetch pending appointments once userInfo is set
         }
-    }, [userInfo]);
+    }, [user_info]);
 
     return (
         <div>

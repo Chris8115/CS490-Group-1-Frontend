@@ -1,10 +1,10 @@
 import { useEffect } from "react";
-import { useUser } from "../../UserContext";
+import { user_info } from "../../UserContext";
 import { useState } from "react";
 import PatientDoctorSearchResult from "../../../components/PatientDoctorSearchResult";
 
 function PatientDoctorSearch() {
-    const { userInfo } = useUser();
+    //const { userInfo } = useUser();
     const [searchTerm, setSearchTerm] = useState(''); // remove once functional
     const [debouncedTerm, setDebouncedTerm] = useState(''); // remove once functional
     const [nameSearch, setNameSearch] = useState('');
@@ -50,7 +50,7 @@ function PatientDoctorSearch() {
             <br />
 
             {doctorDetails.length > 0 && doctorDetails.map((doctor, idx) => (
-                <PatientDoctorSearchResult userInfo={userInfo} doctorDetails={doctorDetails[idx]} key={doctor.doctor_id}/>
+                <PatientDoctorSearchResult userInfo={user_info} doctorDetails={doctorDetails[idx]} key={doctor.doctor_id}/>
             ))}
     
         </>
