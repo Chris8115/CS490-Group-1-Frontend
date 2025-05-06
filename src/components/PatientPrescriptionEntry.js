@@ -56,7 +56,7 @@ function PatientPrescriptionEntry(props) {
                 <h3><strong>
                     {medicationData.medications[0].name}
                 </strong></h3>
-                <h3>{prescription.status}</h3>
+                <h3>{prescription.status.toUpperCase()}</h3>
                 <p>{medicationData.medications[0].description}</p>
                 <p><strong>Instructions: </strong> {prescription.instructions}</p>
                 <p><strong>QTY: </strong>{prescription.quantity}</p>

@@ -13,6 +13,7 @@ function LoginForm() {
     
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [remember, setRemember] = useState(false);
     // const [responseMessage, setResponseMessage] = useState('');
     const [failedLogin, setFailedLogin] = useState(false);
 
@@ -37,7 +38,7 @@ function LoginForm() {
                 'Content-Type': 'application/json',
               },
               credentials: 'include',
-              body: JSON.stringify({ email, password }),
+              body: JSON.stringify({ email, password, remember }),
 
             });
     
@@ -86,7 +87,7 @@ function LoginForm() {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
-              'email_body': `Your password reset link: http://localhost:3000/resetpassword?user_id=${userData['user_id']}\n If you did not request this, you can ignore. Someone may have typed your email by mistake.`,
+              'email_body': `Your password reset link: http://better-u.org/resetpassword?user_id=${userData['user_id']}\r\n If you did not request this, you can ignore. Someone may have typed your email by mistake.`,
               'email_subject': 'BetterU Password Reset request.'
             })
           };
@@ -118,7 +119,7 @@ function LoginForm() {
             <input className='form-input' wrapperClass='mb-4' label='' id='form2' type='password' value={password} placeholder='Password' onChange={(e) => setPassword(e.target.value)}/>
 
             <div className="d-flex justify-content-between mx-3 mb-4">
-                <MDBCheckbox name='flexCheck' value='' id='flexCheckDefault' label='Remember me' />
+                <MDBCheckbox name='flexCheck' value='' id='flexCheckDefault' label='Remember me' onChange={(e)=>setRemember(!remember)}/>
                 <a style={{'cursor': 'pointer'}} onClick={ClickForgotPassword}>Forgot password?</a>
             </div>
 

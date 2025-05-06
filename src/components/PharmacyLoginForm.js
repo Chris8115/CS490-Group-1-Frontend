@@ -76,9 +76,9 @@ function PharmacyLoginForm() {
           {failedLogin ? <p style={{color: 'red', fontSize: '18px'}}>Your username or password was incorrect.</p> : <></>}
 
             <label>Pharmacist ID</label>
-            <MDBInput wrapperClass='mb-4' label='' id='form1' type='number' value={pharmacist_id} placeholder='Pharmacy ID' onChange={(e) => setpharmacist_id(e.target.value)} />
+            <input className='form-input' wrapperClass='mb-4' label='' id='form1' type='number' value={pharmacist_id} placeholder='Pharmacy ID' onChange={(e) => setpharmacist_id(e.target.value)} />
             <label>Password</label>
-            <MDBInput wrapperClass='mb-4' label='' id='form2' type='password' value={password} placeholder='Password' onChange={(e) => setPassword(e.target.value)}/>
+            <input className='form-input' wrapperClass='mb-4' label='' id='form2' type='password' value={password} placeholder='Password' onChange={(e) => setPassword(e.target.value)}/>
 
             {/* Comments out the forgot password parts for now
                 <div className="d-flex justify-content-between mx-3 mb-4">

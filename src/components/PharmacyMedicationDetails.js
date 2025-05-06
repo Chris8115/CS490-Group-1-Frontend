@@ -5,7 +5,7 @@ import { use } from 'react';
 
 function PharmacyMedicationDetails(props) {
     const [inventory, setInventory] = useState([]);
-    const [medicationUsers, setMedicationUsers] = useState([]);
+    const [medicationUsers, setMedicationUsers] = useState({});
     
     const medication = props.medication;
     
@@ -29,20 +29,26 @@ function PharmacyMedicationDetails(props) {
     const fetchUsers = async() => {
         const fetchUserDetails = async (patientIds) => {
             try {
-                const responses = await Promise.all(
-                    patientIds.map((id) => {
-                        const patientResponse = fetch(`/api/pharmacy/patients?patient_id=${id}`, {
+                const names = {}
+
+                await Promise.all(
+                    patientIds.map(async (patientId) => {
+                        const patientResponse = await fetch(`/api/pharmacy/patients?patient_id=${patientId}`, {
                             method: 'GET',
                             headers: {
                                 'Content-Type': 'application/json',
                             },
                             credentials: 'include'
                         });
+
+                        
+                        if (!patientResponse.ok) throw new Error("Failed to fetch patient");
+                        const data = await patientResponse.json();
+                        names[patientId] = `${data.patients[0].first_name} ${data.patients[0].last_name}`;
                     })
                 )
-
-                //const patientDatas = await responses.map(res => res.data);
-                console.log(responses);
+                
+                setMedicationUsers(names);
 
             } catch (e) {
                 console.error(e);
@@ -80,6 +86,16 @@ function PharmacyMedicationDetails(props) {
         <h3>{medication.medication_id}: {medication.name}</h3>
         <p>{medication.description}</p>
         <p>Stock: {inventory.stock}</p>
+        {Object.keys(medicationUsers).length > 0 && (
+            <>
+                <p>Users:</p>
+                <ul>
+                    {Object.entries(medicationUsers).map(([key, value]) => (
+                        <li key={key}>{key}: {value}</li>
+                    ))}
+                </ul>
+            </>
+        )}
     </div>
     
 

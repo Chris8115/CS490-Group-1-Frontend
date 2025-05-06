@@ -23,10 +23,13 @@ function PatientPrescriptions() {
 
                 const prescriptions = [];
                 for (let i = 0; i < data.prescriptions.length; i++) {
-                    if (data.prescriptions[i].status === "Ready" || data.prescriptions[i].status === "Accepted") {
+                    if (data.prescriptions[i].status.toLowerCase() === "ready" || data.prescriptions[i].status.toLowerCase() === "accepted") {
                         prescriptions.push(data.prescriptions[i]);
                     }
                 }
+
+                console.log(data);
+                console.log(prescriptions);
 
                 setPatientPrescriptions(prescriptions);
 

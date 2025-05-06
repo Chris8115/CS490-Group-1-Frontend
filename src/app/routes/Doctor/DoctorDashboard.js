@@ -10,6 +10,7 @@ import DoctorPatientView from "./DoctorPatientView.js";
 import Appointments from "./Appointments.js";
 import PendingAppointments from "./PendingAppointments.js";
 import '../../../css/appointments.css';
+import { user_info } from "../../UserContext.js";
 
 function DoctorDashboard() {
     const navigate = useNavigate();
@@ -45,11 +46,11 @@ const handleCancel = async (appointmentId) => {
     };
 
     const handleChange = async (newDate) => {
-        const user_info = JSON.parse(sessionStorage.getItem('user_info'));
         setDate(newDate);
-
+        if(!user_info){
+            navigate('/log-in');
+        }
         const formattedDate = newDate.toISOString().split('T')[0];
-
         try {
             const response = await fetch(`/api/betteru/appointments?doctor_id=${user_info.user_id}&start_time=${formattedDate}&status=accepted`);
             if (!response.ok) throw new Error('Failed to fetch appointments');
@@ -63,8 +64,11 @@ const handleCancel = async (appointmentId) => {
     };
 
     const getPendingAppointments = async () => {
+        if(!user_info){
+            navigate('/log-in');
+        }
         try {
-            const response = await fetch(`/api/betteru/appointments?doctor_id=${userInfo.user_id}&status=pending`, {
+            const response = await fetch(`/api/betteru/appointments?doctor_id=${user_info.user_id}&status=pending`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -85,17 +89,22 @@ const handleCancel = async (appointmentId) => {
     };
 
     useEffect(() => {
-        const user_info = JSON.parse(sessionStorage.getItem('user_info'));
+        if(!user_info){
+            navigate('/log-in');
+        }
         setUserInfo(user_info);
-
         handleChange(date); // Load current day appointments
     }, []);
 
     useEffect(() => {
-        if (userInfo.user_id) {
+        if(!user_info){
+            navigate('/log-in');
+            return undefined;
+        }
+        if (user_info.user_id) {
             getPendingAppointments(); // Fetch pending appointments once userInfo is set
         }
-    }, [userInfo]);
+    }, [user_info]);
 
     return (
         <div>

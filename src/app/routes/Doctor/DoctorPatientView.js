@@ -5,6 +5,7 @@ import Footer from '../../../components/Footer';
 import { useNavigate } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 import '../../../css/patient-view.css';
+import { user_info } from '../../UserContext';
 
 function DoctorPatientView() {
     const [patients, setPatients] = useState([]);
@@ -24,7 +25,6 @@ function DoctorPatientView() {
     const pageCount = Math.ceil(patients.length / patientsPerPage);
 
     useEffect(() => {
-        const user_info = JSON.parse(sessionStorage.getItem('user_info'));
         
         fetch(`/api/betteru/doctor_patient_relationship?doctor_id=${user_info.user_id}&status=active`)
             .then((res) => {

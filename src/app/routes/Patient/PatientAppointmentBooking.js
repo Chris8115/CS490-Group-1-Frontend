@@ -11,6 +11,7 @@ import { useUser } from "../../UserContext";
 
 function PatientAppointmentBooking() {
     const { userInfo } = useUser();
+    const [showMessageAppointment, setShowMessageAppointment] = useState(false);
     
     const [appointmentData, setAppointmentData] = useState({
         date: "",
@@ -130,7 +131,6 @@ function PatientAppointmentBooking() {
             <label htmlFor="appointmentReason" className="form-label">Reason for Appointment</label>
             <input type="text" className="form-control" id="appointmentReason" name="reason" onChange={handleChange} required/>
 
-
             <label htmlFor="appointmentDate" className="form-label">Appointment Date</label>
 
             <input
@@ -154,8 +154,24 @@ function PatientAppointmentBooking() {
             required />
         </div>
         
-
-        <button type="submit" className="btn btn-primary">Request Appointment</button>
+        <button type="button" className="btn btn-primary" onClick={() => setShowMessageAppointment(true)}>Request Appointment</button>
+        {showMessageAppointment && (<div className="modal" style={{ display: 'block', backgroundColor: 'rgba(0,0,0,0.5)' }}>
+            <div className="modal-dialog">
+                <div className="modal-content">
+                    <div className="modal-header">
+                        <h5 className="modal-title">Confirm Appointment</h5>
+                        <button type="button" className="close" onClick={() => setShowMessageAppointment(false)}>&times;</button>
+                        </div>
+                        <div className="modal-body">
+                        <p>By clicking confirm you are agreeing to pay</p>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-success" onClick={() => setShowMessageAppointment(false)} >Close</button>
+                            <button type="button" className="btn btn-success" onClick={handleSubmit} >Confirm</button>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>)}
 
     </form>
 
