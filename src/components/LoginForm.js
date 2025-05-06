@@ -13,6 +13,7 @@ function LoginForm() {
     
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [remember, setRemember] = useState(false);
     // const [responseMessage, setResponseMessage] = useState('');
     const [failedLogin, setFailedLogin] = useState(false);
 
@@ -37,7 +38,7 @@ function LoginForm() {
                 'Content-Type': 'application/json',
               },
               credentials: 'include',
-              body: JSON.stringify({ email, password }),
+              body: JSON.stringify({ email, password, remember }),
 
             });
     
@@ -118,7 +119,7 @@ function LoginForm() {
             <input className='form-input' wrapperClass='mb-4' label='' id='form2' type='password' value={password} placeholder='Password' onChange={(e) => setPassword(e.target.value)}/>
 
             <div className="d-flex justify-content-between mx-3 mb-4">
-                <MDBCheckbox name='flexCheck' value='' id='flexCheckDefault' label='Remember me' />
+                <MDBCheckbox name='flexCheck' value='' id='flexCheckDefault' label='Remember me' onChange={(e)=>setRemember(!remember)}/>
                 <a style={{'cursor': 'pointer'}} onClick={ClickForgotPassword}>Forgot password?</a>
             </div>
 

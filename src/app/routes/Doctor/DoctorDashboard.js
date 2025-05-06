@@ -10,6 +10,7 @@ import DoctorPatientView from "./DoctorPatientView.js";
 import Appointments from "./Appointments.js";
 import PendingAppointments from "./PendingAppointments.js";
 import '../../../css/appointments.css';
+import { user_info } from "../../UserContext.js";
 
 function DoctorDashboard() {
     const navigate = useNavigate();
@@ -45,7 +46,6 @@ const handleCancel = async (appointmentId) => {
     };
 
     const handleChange = async (newDate) => {
-        const user_info = JSON.parse(sessionStorage.getItem('user_info'));
         setDate(newDate);
 
         const formattedDate = newDate.toISOString().split('T')[0];
@@ -85,7 +85,6 @@ const handleCancel = async (appointmentId) => {
     };
 
     useEffect(() => {
-        const user_info = JSON.parse(sessionStorage.getItem('user_info'));
         setUserInfo(user_info);
 
         handleChange(date); // Load current day appointments

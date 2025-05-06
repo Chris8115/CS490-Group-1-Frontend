@@ -31,8 +31,10 @@ import PharmacyPatientSearch from './routes/Pharmacy/PharmacyPatientSearch.js';
 import PharmacyDeliveriesPage from './routes/Pharmacy/PharmacyDeliveriesPage.js';
 import PharmacyProductRecords from './routes/Pharmacy/PharmacyProductRecords.js';
 import PharmacyAddProduct from './routes/Pharmacy/PharmacyAddProduct.js';
+import { refresh_user_info } from './UserContext.js';
 
 function App() {
+  refresh_user_info();
   return (
     <div className="App">
       <BrowserRouter>

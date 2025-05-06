@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import '../../../css/doctor_settings.css';
+import { user_info } from "../../UserContext";
 
 function DoctorSettings() {
     const [user, setUser] = useState({});
@@ -12,7 +13,6 @@ function DoctorSettings() {
     const [editingLocation, setEditingLocation] = useState(false);
 
     useEffect(() => {
-        const user_info = JSON.parse(sessionStorage.getItem('user_info'));
         console.log(user_info);
 
         const getDoctorInfo = async () => {
@@ -42,7 +42,6 @@ function DoctorSettings() {
     }, []);
 
     const handleSaveProfile = async () => {
-        const user_info = JSON.parse(sessionStorage.getItem('user_info'));
         setEditingProfile(false);
 
         try {
@@ -63,7 +62,6 @@ function DoctorSettings() {
     };
 
     const handleSaveLocation = async () => {
-        const user_info = JSON.parse(sessionStorage.getItem('user_info'));
         setEditingLocation(false);
 
         try {

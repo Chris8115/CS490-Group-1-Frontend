@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../../../css/patient_info.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { user_info } from '../../UserContext';
 
 function DoctorPatientInfo() {
     const { patient_id } = useParams();
@@ -30,7 +31,6 @@ function DoctorPatientInfo() {
 
     useEffect(() => {
         async function fetchAll() {
-            const user_info = JSON.parse(sessionStorage.getItem('user_info'));
             try {
                 const [pRes, eRes, aRes, uRes, nRes, assignedRes, allPostsRes] = await Promise.all([
                     fetch(`/api/betteru/patients?patient_id=${patient_id}`),
@@ -78,7 +78,6 @@ function DoctorPatientInfo() {
     }, [patient_id]);
 
     const handleSaveNotes = async () => {
-        const user_info = JSON.parse(sessionStorage.getItem('user_info'));
         setEditingNotes(false);
 
         try {
@@ -95,7 +94,6 @@ function DoctorPatientInfo() {
     };
 
     const handleAssignExercise = async (exerciseId) => {
-        const user_info = JSON.parse(sessionStorage.getItem('user_info'));
         const payload = {
             doctor_id: user_info.user_id,
             patient_id: patient_id,
@@ -125,7 +123,6 @@ function DoctorPatientInfo() {
     
 
     const handleCreateAndAssignExercise = async () => {
-        const user_info = JSON.parse(sessionStorage.getItem('user_info'));
 
         try {
             const createRes = await fetch(`/api/betteru/forum_posts`, {
