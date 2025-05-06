@@ -72,8 +72,8 @@ function PatientProgress() {
                 const weeklyData = await weeklyResponse.json();
                 if (!weeklyResponse.ok) throw new Error('Request Failed');
                 
-                console.log("Daily: ", data)
-                console.log("Weekly: ", weeklyData)
+                //console.log("Daily: ", data)
+                //console.log("Weekly: ", weeklyData)
                 
                 const progress = data.patient_progress.slice(0, 20);
                 
@@ -115,7 +115,6 @@ function PatientProgress() {
                 
                 const data = await response.json();
                 
-                console.log(data)
 
                 const assignments = data.patient_exercise_assignments;
                 setExerciseAssignments(assignments);
@@ -131,7 +130,7 @@ function PatientProgress() {
                 const exerciseIds = assignments.map(item => item.exercise_id);
 
                 const fetches = exerciseIds.map(id => 
-                    fetch(`/api/betteru/exercise_plans?exercise_id=${id}`, {
+                    fetch(`/api/betteru/forum_posts?post_id=${id}`, {
                         method: 'GET',
                         headers: {
                             'Content-Type': 'application/json'
@@ -148,7 +147,7 @@ function PatientProgress() {
                 )
 
                 const results = await Promise.all(fetches);
-                setExercises(results.map(res => res.exercise_plans[0]));
+                setExercises(results.map(res => res.forum_posts[0]));
 
             } catch (e) {
                 console.error(e);
@@ -263,20 +262,16 @@ function PatientProgress() {
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Name</th>
-                        <th scope="col">Sets</th>
-                        <th scope="col">Reps</th>
-                        <th scope="col">Instructions</th>
+                        <th scope="col">Description</th>
                     </tr>
                 </thead>
                 <tbody>
 
                     {exercises.length > 0 && exerciseAssignments.map((assignment, idx) => (
-                    <tr>
-                        <th scope="row">{idx}</th>
-                        <td>{exercises[idx].title}</td>
-                        <td>{exerciseAssignments[idx].sets}</td>
-                        <td>{exerciseAssignments[idx].reps}</td>
-                        <td>{exercises[idx].description}</td>
+                    <tr key={idx}>
+                        <th scope="row">{idx+1}</th>
+                        <td><a href={`/post/${exercises[idx].post_id}`} style={{ textDecoration: 'underline', color: '#007bff' }} >{exercises[idx].title}</a></td>
+                        <td>{exercises[idx].content}</td>
                     </tr>
                     ))}
 
