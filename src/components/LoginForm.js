@@ -87,7 +87,7 @@ function LoginForm() {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
-              'email_body': `Your password reset link: http://localhost:3000/resetpassword?user_id=${userData['user_id']}\n If you did not request this, you can ignore. Someone may have typed your email by mistake.`,
+              'email_body': `Your password reset link: http://better-u.org/resetpassword?user_id=${userData['user_id']}\r\n If you did not request this, you can ignore. Someone may have typed your email by mistake.`,
               'email_subject': 'BetterU Password Reset request.'
             })
           };

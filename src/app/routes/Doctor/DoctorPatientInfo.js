@@ -28,6 +28,8 @@ function DoctorPatientInfo() {
     const [newNotes, setNewNotes] = useState('');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [showMessagePatientModal, setShowMessagePatientModal] = useState(false);
+    const [emailMessage, setEmailMessage] = useState("");
 
     useEffect(() => {
         async function fetchAll() {
@@ -164,6 +166,27 @@ function DoctorPatientInfo() {
     if (error) return <p>Error: {error}</p>;
     if (!patient) return <p>No patient data found.</p>;
 
+    function sendMessage() {
+        fetch(`/api/betteru/users?user_id=${user_info.user_id}`)
+        .then(resp => resp.json())
+        .then(data => {
+            console.log(data);
+            const requestOptions = {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                  'email_subject': `A message from your doctor.`,
+                  'email_body': `Dr. ${data.users[0].last_name} has sent you a message: \r\n\r\n${emailMessage}\r\n\r\nTo reply, log into your Dashboard and send them a message.`
+                })
+              };
+            fetch(`/api/betteru/mail/${patient_id}`, requestOptions)
+            .then(resp => resp.json())
+            .then(data => {
+                alert(data.message);
+            })
+        })
+    }
+
     return (
         <div className="patient-info-wrapper">
             <h1>Patient: {patientName}</h1>
@@ -297,6 +320,25 @@ function DoctorPatientInfo() {
             >
                 Prescribe Medication
             </button>
+            <button type="button" className="btn btn-success" onClick={() => setShowMessagePatientModal(true)}>Message Patient</button>
+            {showMessagePatientModal && (<div className="modal" style={{ display: 'block', backgroundColor: 'rgba(0,0,0,0.5)' }}>
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title">Message Patient</h5>
+                            <button type="button" className="close" onClick={() => setShowMessagePatientModal(false)}>&times;</button>
+                            </div>
+                            <div className="modal-body">
+                            <p>Enter the message to your patient below</p>
+                            <input type="text" onChange={(e)=>{setEmailMessage(e.target.value)}}></input>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-success" onClick={() => setShowMessagePatientModal(false)} >Close</button>
+                                <button type="button" className="btn btn-success" onClick={sendMessage} >Send Message</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>)}
         </div>
     );
 }

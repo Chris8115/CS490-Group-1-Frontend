@@ -142,21 +142,27 @@ function PatientDashboard() {
         </>
     }
 
-    /*function sendMessage() {
-        const requestOptions = {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-              'email_body': ``,
-              'email_subject': 'BetterU Password Reset request.'
+    function sendMessage() {
+        fetch(`/api/betteru/users?user_id=${user_info.user_id}`)
+        .then(resp => {console.log(resp); return resp.json()})
+        .then(data => {
+            console.log(data);
+            const requestOptions = {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                  'email_subject': `A message from your patient.`,
+                  'email_body': `Your patient, ${data.users[0].first_name} ${data.users[0].last_name} has sent you a message: \r\n\r\n${emailMessage}\r\n\r\nTo reply, log into your Dashboard and send them a message.`
+                })
+              };
+            fetch(`/api/betteru/mail/${doctorInfo.doctor_id}`, requestOptions)
+            .then(resp => resp.json())
+            .then(data => {
+                alert(data.message);
             })
-          };
-        let first_name, last_name;
-        fetch(`api/betteru/users?user_id=${user_info.user_id}`)
-        .then(resp => resp.json())
-        .then()
-        //fetch(`/api/betteru/mail/${doctorInfo.doctor_id}`)
-    }*/
+        })
+
+    }
 
     return <>
         <h1>Dashboard</h1>
@@ -209,19 +215,20 @@ function PatientDashboard() {
                 </div>
             </div>
         </div>)}
-        <button type="button" className="btn btn-danger" onClick={() => setShowMessageDoctorModal(true)}>Email Doctor</button>
-        {showCancelDoctorModal && (<div className="modal" style={{ display: 'block', backgroundColor: 'rgba(0,0,0,0.5)' }}>
+        <button type="button" className="btn btn-success" onClick={() => setShowMessageDoctorModal(true)}>Message Doctor</button>
+        {showMessageDoctorModal && (<div className="modal" style={{ display: 'block', backgroundColor: 'rgba(0,0,0,0.5)' }}>
             <div className="modal-dialog">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title">Email Doctor</h5>
+                        <h5 className="modal-title">Message Doctor</h5>
                         <button type="button" className="close" onClick={() => setShowMessageDoctorModal(false)}>&times;</button>
                         </div>
                         <div className="modal-body">
-                        <p>Are you sure you want to switch your doctor?</p>
+                        <p>Enter the message to your doctor below</p>
+                        <input type="text" onChange={(e)=>{setEmailMessage(e.target.value)}}></input>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-success" onClick={() => setShowMessageDoctorModal(false)} >Close</button>
-                            <button type="button" className="btn btn-danger" onClick={changeDoctor} >Change Doctor</button>
+                            <button type="button" className="btn btn-success" onClick={sendMessage} >Send Message</button>
                          </div>
                     </div>
                 </div>
