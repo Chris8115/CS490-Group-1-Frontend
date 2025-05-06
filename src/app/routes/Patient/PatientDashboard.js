@@ -19,6 +19,8 @@ function PatientDashboard() {
     const [doctorName, setDoctorName] = useState("");
     const [doctorInfo, setDoctorInfo] = useState({});
     const [showCancelDoctorModal, setShowCancelDoctorModal] = useState(false);
+    const [showMessageDoctorModal, setShowMessageDoctorModal] = useState(false);
+    const [emailMessage, setEmailMessage] = useState("");
 
     const getPatientAppointments = async() => {
         try {
@@ -140,6 +142,10 @@ function PatientDashboard() {
         </>
     }
 
+    /*function sendMessage() {
+        fetch('/api/betteru/mail/')
+    }*/
+
     return <>
         <h1>Dashboard</h1>
         <Divider/>
@@ -185,6 +191,24 @@ function PatientDashboard() {
                         <p>Are you sure you want to switch your doctor?</p>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-success" onClick={() => setShowCancelDoctorModal(false)} >Close</button>
+                            <button type="button" className="btn btn-danger" onClick={changeDoctor} >Change Doctor</button>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>)}
+        <button type="button" className="btn btn-danger" onClick={() => setShowMessageDoctorModal(true)}>Email Doctor</button>
+        {showCancelDoctorModal && (<div className="modal" style={{ display: 'block', backgroundColor: 'rgba(0,0,0,0.5)' }}>
+            <div className="modal-dialog">
+                <div className="modal-content">
+                    <div className="modal-header">
+                        <h5 className="modal-title">Email Doctor</h5>
+                        <button type="button" className="close" onClick={() => setShowMessageDoctorModal(false)}>&times;</button>
+                        </div>
+                        <div className="modal-body">
+                        <p>Are you sure you want to switch your doctor?</p>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-success" onClick={() => setShowMessageDoctorModal(false)} >Close</button>
                             <button type="button" className="btn btn-danger" onClick={changeDoctor} >Change Doctor</button>
                          </div>
                     </div>
