@@ -7,6 +7,7 @@ import BackToForumsButton from './BackToForumsButton';
 import '../../../css/post_page.css';
 import SavePostButton from './SavePostButton';
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function correctCommentTime(dateString) {
     const inputDate = new Date(dateString);
@@ -15,6 +16,7 @@ function correctCommentTime(dateString) {
 };
 
 function PostPage() {
+    const navigate = useNavigate();
     const { postId } = useParams();
     const userId = JSON.parse(sessionStorage.getItem('user_info')).user_id;
     const role = JSON.parse(sessionStorage.getItem('user_info')).role;
@@ -119,6 +121,7 @@ function PostPage() {
             const res = await fetch(`/api/betteru/forum_posts?post_id=${postId}`);
             if (!res.ok) throw new Error('Failed to fetch post');
             const data = await res.json();
+            if (data.forum_posts.length === 0) {navigate('/forums');}
             setPost(data.forum_posts[0]);
         } catch (err) {
             setError(err.message);
