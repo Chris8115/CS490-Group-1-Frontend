@@ -143,7 +143,19 @@ function PatientDashboard() {
     }
 
     /*function sendMessage() {
-        fetch('/api/betteru/mail/')
+        const requestOptions = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+              'email_body': ``,
+              'email_subject': 'BetterU Password Reset request.'
+            })
+          };
+        let first_name, last_name;
+        fetch(`api/betteru/users?user_id=${user_info.user_id}`)
+        .then(resp => resp.json())
+        .then()
+        //fetch(`/api/betteru/mail/${doctorInfo.doctor_id}`)
     }*/
 
     return <>
