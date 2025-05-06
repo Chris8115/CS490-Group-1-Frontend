@@ -4,7 +4,7 @@ import DashboardItem from "../../../components/DashboardItem";
 import { useState } from "react";
 import PatientAppointmentCard from "../../../components/PatientAppointmentCard";
 import Divider from "../../../components/Divider";
-import { useUser } from "../../UserContext";
+import { refresh_user_info, user_info, useUser } from "../../UserContext";
 import { getDoctorLastName } from "../../../utils/UserDataUtils";
 import PatientDoctorSearch from "./PatientDoctorSearch";
 import { useNavigate } from "react-router-dom";
@@ -12,7 +12,6 @@ import { useNavigate } from "react-router-dom";
 // THIS PAGE IS PARTIALLY BROKEN IN STRICT MODE; WORKS FINE IN PRODUCTION BUILDS AND IF YOU REMOVE THE STRICT MODE TAGS FROM index.js
 
 function PatientDashboard() {
-    const { userInfo } = useUser();
     const navigate = useNavigate();
     const [patientAppointments, setPatientAppointments] = useState([]);
     const [patientHasDoctor, setPatientHasDoctor] = useState(true);
@@ -20,10 +19,12 @@ function PatientDashboard() {
     const [doctorName, setDoctorName] = useState("");
     const [doctorInfo, setDoctorInfo] = useState({});
     const [showCancelDoctorModal, setShowCancelDoctorModal] = useState(false);
+    const [showMessageDoctorModal, setShowMessageDoctorModal] = useState(false);
+    const [emailMessage, setEmailMessage] = useState("");
 
     const getPatientAppointments = async() => {
         try {
-            const response = await fetch(`/api/betteru/appointments?patient_id=${userInfo.user_id}`, {
+            const response = await fetch(`/api/betteru/appointments?patient_id=${user_info.user_id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -51,7 +52,7 @@ function PatientDashboard() {
     
     const checkIfHasDoctor = async () => {
         try {
-            const response = await fetch(`/api/betteru/doctor_patient_relationship?patient_id=${userInfo.user_id}`, {
+            const response = await fetch(`/api/betteru/doctor_patient_relationship?patient_id=${user_info.user_id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -103,7 +104,7 @@ function PatientDashboard() {
             notes: "",
             status: "inactive"
         }
-        const removeDoctor = await fetch(`/api/betteru/doctor_patient_relationship/${doctorInfo.doctor_id}/${userInfo.user_id}`, {
+        const removeDoctor = await fetch(`/api/betteru/doctor_patient_relationship/${doctorInfo.doctor_id}/${user_info.user_id}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
@@ -117,17 +118,18 @@ function PatientDashboard() {
     }
 
     useEffect(() => {
-        if (!userInfo) {
-            navigate(0);
+        refresh_user_info();
+        if (!user_info) {
+            navigate('/log-in');
             return;
         }
 
-        if (userInfo.user_id) {
+        if (user_info.user_id) {
             checkIfHasDoctor();
             getPatientAppointments();
             setLoading(false);
         };
-    }, [userInfo]);
+    }, [user_info]);
 
     if (loading) {return <></>}
 
@@ -138,6 +140,28 @@ function PatientDashboard() {
         <PatientDoctorSearch />
         
         </>
+    }
+
+    function sendMessage() {
+        fetch(`/api/betteru/users?user_id=${user_info.user_id}`)
+        .then(resp => {console.log(resp); return resp.json()})
+        .then(data => {
+            console.log(data);
+            const requestOptions = {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                  'email_subject': `A message from your patient.`,
+                  'email_body': `Your patient, ${data.users[0].first_name} ${data.users[0].last_name} has sent you a message: \r\n\r\n${emailMessage}\r\n\r\nTo reply, log into your Dashboard and send them a message.`
+                })
+              };
+            fetch(`/api/betteru/mail/${doctorInfo.doctor_id}`, requestOptions)
+            .then(resp => resp.json())
+            .then(data => {
+                alert(data.message);
+            })
+        })
+
     }
 
     return <>
@@ -186,6 +210,25 @@ function PatientDashboard() {
                         <div className="modal-footer">
                             <button type="button" className="btn btn-success" onClick={() => setShowCancelDoctorModal(false)} >Close</button>
                             <button type="button" className="btn btn-danger" onClick={changeDoctor} >Change Doctor</button>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>)}
+        <button type="button" className="btn btn-success" onClick={() => setShowMessageDoctorModal(true)}>Message Doctor</button>
+        {showMessageDoctorModal && (<div className="modal" style={{ display: 'block', backgroundColor: 'rgba(0,0,0,0.5)' }}>
+            <div className="modal-dialog">
+                <div className="modal-content">
+                    <div className="modal-header">
+                        <h5 className="modal-title">Message Doctor</h5>
+                        <button type="button" className="close" onClick={() => setShowMessageDoctorModal(false)}>&times;</button>
+                        </div>
+                        <div className="modal-body">
+                        <p>Enter the message to your doctor below</p>
+                        <input type="text" onChange={(e)=>{setEmailMessage(e.target.value)}}></input>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-success" onClick={() => setShowMessageDoctorModal(false)} >Close</button>
+                            <button type="button" className="btn btn-success" onClick={sendMessage} >Send Message</button>
                          </div>
                     </div>
                 </div>

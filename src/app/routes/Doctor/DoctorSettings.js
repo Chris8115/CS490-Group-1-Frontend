@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import '../../../css/doctor_settings.css';
+import { user_info } from "../../UserContext";
+import { useNavigate } from "react-router-dom";
 
 function DoctorSettings() {
     const [user, setUser] = useState({});
@@ -10,14 +12,18 @@ function DoctorSettings() {
     const [location, setLocation] = useState(""); // <-- NEW
     const [editingProfile, setEditingProfile] = useState(false);
     const [editingLocation, setEditingLocation] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        const user_info = JSON.parse(sessionStorage.getItem('user_info'));
         console.log(user_info);
-
+        
         const getDoctorInfo = async () => {
+            if(!user_info){
+                navigate('/log-in');
+                return null;
+            }
             try {
-                const doctorRes = await fetch(`/api/betteru//doctors?doctor_id=${user_info.user_id}`);
+                const doctorRes = await fetch(`/api/betteru/doctors?doctor_id=${user_info.user_id}`);
                 const doctorData = await doctorRes.json();
                 const doctorDetails = doctorData.doctors[0];
                 setDoctor(doctorDetails);
@@ -30,7 +36,7 @@ function DoctorSettings() {
             }
 
             try {
-                const userRes = await fetch(`/api/betteru//users?user_id=${user_info.user_id}`);
+                const userRes = await fetch(`/api/betteru/users?user_id=${user_info.user_id}`);
                 const userData = await userRes.json();
                 setUser(userData.users[0]);
             } catch (error) {
@@ -42,9 +48,11 @@ function DoctorSettings() {
     }, []);
 
     const handleSaveProfile = async () => {
-        const user_info = JSON.parse(sessionStorage.getItem('user_info'));
         setEditingProfile(false);
-
+        if(!user_info){
+            navigate('/log-in');
+            return null;
+        }
         try {
             await fetch(`/api/betteru/doctors/${user_info.user_id}`, {
                 method: "PATCH",
@@ -63,9 +71,11 @@ function DoctorSettings() {
     };
 
     const handleSaveLocation = async () => {
-        const user_info = JSON.parse(sessionStorage.getItem('user_info'));
         setEditingLocation(false);
-
+        if(!user_info){
+            navigate('/log-in');
+            return null;
+        }
         try {
             await fetch(`/api/betteru/doctors/${user_info.user_id}`, {
                 method: "PATCH",

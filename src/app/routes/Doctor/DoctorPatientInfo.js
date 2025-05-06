@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../../../css/patient_info.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { user_info } from '../../UserContext';
 
 function DoctorPatientInfo() {
     const { patient_id } = useParams();
@@ -27,10 +28,11 @@ function DoctorPatientInfo() {
     const [newNotes, setNewNotes] = useState('');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [showMessagePatientModal, setShowMessagePatientModal] = useState(false);
+    const [emailMessage, setEmailMessage] = useState("");
 
     useEffect(() => {
         async function fetchAll() {
-            const user_info = JSON.parse(sessionStorage.getItem('user_info'));
             try {
                 const [pRes, eRes, aRes, uRes, nRes, assignedRes, allPostsRes] = await Promise.all([
                     fetch(`/api/betteru/patients?patient_id=${patient_id}`),
@@ -78,7 +80,6 @@ function DoctorPatientInfo() {
     }, [patient_id]);
 
     const handleSaveNotes = async () => {
-        const user_info = JSON.parse(sessionStorage.getItem('user_info'));
         setEditingNotes(false);
 
         try {
@@ -95,7 +96,6 @@ function DoctorPatientInfo() {
     };
 
     const handleAssignExercise = async (exerciseId) => {
-        const user_info = JSON.parse(sessionStorage.getItem('user_info'));
         const payload = {
             doctor_id: user_info.user_id,
             patient_id: patient_id,
@@ -125,7 +125,6 @@ function DoctorPatientInfo() {
     
 
     const handleCreateAndAssignExercise = async () => {
-        const user_info = JSON.parse(sessionStorage.getItem('user_info'));
 
         try {
             const createRes = await fetch(`/api/betteru/forum_posts`, {
@@ -166,6 +165,27 @@ function DoctorPatientInfo() {
     if (loading) return <p>Loading patient info...</p>;
     if (error) return <p>Error: {error}</p>;
     if (!patient) return <p>No patient data found.</p>;
+
+    function sendMessage() {
+        fetch(`/api/betteru/users?user_id=${user_info.user_id}`)
+        .then(resp => resp.json())
+        .then(data => {
+            console.log(data);
+            const requestOptions = {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                  'email_subject': `A message from your doctor.`,
+                  'email_body': `Dr. ${data.users[0].last_name} has sent you a message: \r\n\r\n${emailMessage}\r\n\r\nTo reply, log into your Dashboard and send them a message.`
+                })
+              };
+            fetch(`/api/betteru/mail/${patient_id}`, requestOptions)
+            .then(resp => resp.json())
+            .then(data => {
+                alert(data.message);
+            })
+        })
+    }
 
     return (
         <div className="patient-info-wrapper">
@@ -300,6 +320,25 @@ function DoctorPatientInfo() {
             >
                 Prescribe Medication
             </button>
+            <button type="button" className="btn btn-success" onClick={() => setShowMessagePatientModal(true)}>Message Patient</button>
+            {showMessagePatientModal && (<div className="modal" style={{ display: 'block', backgroundColor: 'rgba(0,0,0,0.5)' }}>
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title">Message Patient</h5>
+                            <button type="button" className="close" onClick={() => setShowMessagePatientModal(false)}>&times;</button>
+                            </div>
+                            <div className="modal-body">
+                            <p>Enter the message to your patient below</p>
+                            <input type="text" onChange={(e)=>{setEmailMessage(e.target.value)}}></input>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-success" onClick={() => setShowMessagePatientModal(false)} >Close</button>
+                                <button type="button" className="btn btn-success" onClick={sendMessage} >Send Message</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>)}
         </div>
     );
 }
