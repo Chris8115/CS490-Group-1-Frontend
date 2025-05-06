@@ -4,7 +4,7 @@ import DashboardItem from "../../../components/DashboardItem";
 import { useState } from "react";
 import PatientAppointmentCard from "../../../components/PatientAppointmentCard";
 import Divider from "../../../components/Divider";
-import { useUser } from "../../UserContext";
+import { refresh_user_info, user_info, useUser } from "../../UserContext";
 import { getDoctorLastName } from "../../../utils/UserDataUtils";
 import PatientDoctorSearch from "./PatientDoctorSearch";
 import { useNavigate } from "react-router-dom";
@@ -12,7 +12,6 @@ import { useNavigate } from "react-router-dom";
 // THIS PAGE IS PARTIALLY BROKEN IN STRICT MODE; WORKS FINE IN PRODUCTION BUILDS AND IF YOU REMOVE THE STRICT MODE TAGS FROM index.js
 
 function PatientDashboard() {
-    const { userInfo } = useUser();
     const navigate = useNavigate();
     const [patientAppointments, setPatientAppointments] = useState([]);
     const [patientHasDoctor, setPatientHasDoctor] = useState(true);
@@ -23,7 +22,7 @@ function PatientDashboard() {
 
     const getPatientAppointments = async() => {
         try {
-            const response = await fetch(`/api/betteru/appointments?patient_id=${userInfo.user_id}`, {
+            const response = await fetch(`/api/betteru/appointments?patient_id=${user_info.user_id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -51,7 +50,7 @@ function PatientDashboard() {
     
     const checkIfHasDoctor = async () => {
         try {
-            const response = await fetch(`/api/betteru/doctor_patient_relationship?patient_id=${userInfo.user_id}`, {
+            const response = await fetch(`/api/betteru/doctor_patient_relationship?patient_id=${user_info.user_id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -103,7 +102,7 @@ function PatientDashboard() {
             notes: "",
             status: "inactive"
         }
-        const removeDoctor = await fetch(`/api/betteru/doctor_patient_relationship/${doctorInfo.doctor_id}/${userInfo.user_id}`, {
+        const removeDoctor = await fetch(`/api/betteru/doctor_patient_relationship/${doctorInfo.doctor_id}/${user_info.user_id}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
@@ -117,17 +116,18 @@ function PatientDashboard() {
     }
 
     useEffect(() => {
-        if (!userInfo) {
-            navigate(0);
+        refresh_user_info();
+        if (!user_info) {
+            navigate('/log-in');
             return;
         }
 
-        if (userInfo.user_id) {
+        if (user_info.user_id) {
             checkIfHasDoctor();
             getPatientAppointments();
             setLoading(false);
         };
-    }, [userInfo]);
+    }, [user_info]);
 
     if (loading) {return <></>}
 

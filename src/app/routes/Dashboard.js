@@ -1,12 +1,13 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { user_info } from '../UserContext'
+import { refresh_user_info, user_info } from '../UserContext'
 
 function DashboardRedirect() {
   const navigate = useNavigate();
   console.log(user_info);
 
   useEffect(() => {
+    refresh_user_info();
     if (!user_info) {
       navigate('/log-in');
     } else {
