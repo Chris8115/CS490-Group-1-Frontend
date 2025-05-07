@@ -54,7 +54,7 @@ function PatientPrescriptions() {
                 <PatientPrescriptionEntry prescription={prescription} key={prescription.prescription_id} />
             ))}
         </ul>
-        
+        {(patientPrescriptions.length == 0) ? <p>No prescriptions on record.</p> : <></>}
         </>
     )
 
