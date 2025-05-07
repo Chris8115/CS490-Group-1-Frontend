@@ -32,6 +32,7 @@ import PharmacyDeliveriesPage from './routes/Pharmacy/PharmacyDeliveriesPage.js'
 import PharmacyProductRecords from './routes/Pharmacy/PharmacyProductRecords.js';
 import PharmacyAddProduct from './routes/Pharmacy/PharmacyAddProduct.js';
 import { refresh_user_info } from './UserContext.js';
+import PatientTransactions from './routes/Patient/PatientTransactions.js';
 
 function App() {
   refresh_user_info();
@@ -60,6 +61,7 @@ function App() {
             <Route path="review" element={<PatientReview />} />
             <Route path="progress" element={<PatientProgress />} />
             <Route path="prescriptions" element={<PatientPrescriptions />} />
+            <Route path="transactions" element={<PatientTransactions />} />
           </Route>
 
           <Route path="/doctor" element={<DoctorLayout />}>

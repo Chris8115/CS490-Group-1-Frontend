@@ -7,11 +7,13 @@ import Divider from "../../../components/Divider";
 import '../../../css/dashboard.css';
 import BetterUNavbar from "../../../components/BetterUNavbar";
 import Footer from "../../../components/Footer";
-import { useUser } from "../../UserContext";
+import { user_info, useUser } from "../../UserContext";
 
 function PatientAppointmentBooking() {
     const { userInfo } = useUser();
     const [showMessageAppointment, setShowMessageAppointment] = useState(false);
+    const [doctorRate, setDoctorRate] = useState(0.0);
+    const [cardEnding, setCardEnding] = useState("Loading...");
     
     const [appointmentData, setAppointmentData] = useState({
         date: "",
@@ -27,8 +29,6 @@ function PatientAppointmentBooking() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        
         try {
             const startTime = `${appointmentData.date} ${appointmentData.time}:00`;
             const endTime = `${appointmentData.date} ${getEndTime(startTime)}`;
@@ -40,8 +40,6 @@ function PatientAppointmentBooking() {
                 "start_time": startTime,
                 "status": "pending",
             }
-            
-            
                 const res = await fetch('/api/betteru/appointments', {
                     method: 'POST',
                     headers: {
@@ -61,7 +59,6 @@ function PatientAppointmentBooking() {
         } catch (error) {
             console.log(error);
         }
-        
     }
     
     const handleChange = (e) => {
@@ -71,7 +68,6 @@ function PatientAppointmentBooking() {
             [name]: value
         }))
     }
-    
 
     const getTomorrow = () => {
         const tomorrow = new Date();
@@ -89,6 +85,19 @@ function PatientAppointmentBooking() {
         endTime.setHours(endTime.getHours() + 1);
         return endTime.toTimeString().slice(0, 8);
     }
+
+    useEffect(()=>{
+        fetch(`/api/betteru/patients?user_id=${user_info.user_id}`)
+        .then(resp => resp.json())
+        .then(data => {
+            fetch(`/api/betteru/credit_card?creditcard_id=${data.patients[0].creditcard_id}`)
+            .then(resp => resp.json())
+            .then(data => setCardEnding(data.credit_card[0].card_ending))
+        })
+        fetch(`/api/betteru/doctors?doctor_id=${appointmentData.doctor_id}`)
+        .then(resp => resp.json())
+        .then(data => setDoctorRate(data.doctors[0]?.rate))
+    }, [showMessageAppointment]);
 
     useEffect(() => {
         if (!userInfo?.user_id) return; 
@@ -163,7 +172,10 @@ function PatientAppointmentBooking() {
                         <button type="button" className="close" onClick={() => setShowMessageAppointment(false)}>&times;</button>
                         </div>
                         <div className="modal-body">
-                        <p>By clicking confirm you are agreeing to pay</p>
+                        <p>By confirming this appointment request, you are agreeing that the card on file (ending in {cardEnding}) will be charged the total amount.</p>
+                        <p><strong>Total: </strong>${(doctorRate + (Math.round(doctorRate * 13.71)/100)).toFixed(2)}</p>
+                        <sup>In the event that you cancel this appointment or Dr. {doctorName} rejects the appointment, you will automatically be refunded the full amount.</sup> <br/>
+                        <sup>Additional transaction breakdown can be viewed in the Transactions page on your Patient Dashboard</sup>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-success" onClick={() => setShowMessageAppointment(false)} >Close</button>
                             <button type="button" className="btn btn-success" onClick={handleSubmit} >Confirm</button>
