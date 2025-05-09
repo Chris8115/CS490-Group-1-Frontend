@@ -391,7 +391,7 @@ function DoctorPatientInfo() {
             <h2>Daily Surveys</h2>
             <div style={{ maxHeight: '300px', overflowY: 'auto', backgroundColor: '#f8f9fa', border: '1px solid #ccc', borderRadius: '8px', padding: '1rem', marginRight: '100px', marginLeft: '100px' }}>
                 {progressData.length > 0 ? (
-                    <table className="table">
+                    <table className="table-daily-survey">
                         <thead>
                             <tr>
                                 <th>Date</th>
@@ -434,11 +434,12 @@ function DoctorPatientInfo() {
 
             <button 
                 onClick={() => navigate(`/doctor/prescribe/${patient_id}`)} 
-                style={{ marginTop: "20px", padding: "10px 20px", backgroundColor: "#FF5354", color: "white", border: "none", borderRadius: "5px", cursor: "pointer", marginBottom: "50px", marginLeft: "100px" }}
+                style={{ marginTop: "20px", padding: "10px 20px", backgroundColor: "#FF5354", color: "white", border: "none", borderRadius: "5px", cursor: "pointer", marginBottom: "50px", marginLeft: "100px", marginRight: "50px" }}
             >
                 Prescribe Medication
             </button>
-            <button type="button" className="btn btn-success" onClick={() => setShowMessagePatientModal(true)}>Message Patient</button>
+
+            <button type="button" className="btn btn-success" style={{ padding: "10px 20px"}} onClick={() => setShowMessagePatientModal(true)}>Message Patient</button>
             {showMessagePatientModal && (<div className="modal" style={{ display: 'block', backgroundColor: 'rgba(0,0,0,0.5)' }}>
                 <div className="modal-dialog">
                     <div className="modal-content">

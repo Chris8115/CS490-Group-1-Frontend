@@ -1,3 +1,29 @@
+.table-daily-survey {
+  width: 100%;
+  margin-bottom: 1rem;
+  color: #212529;
+  vertical-align: top;
+  border-color: #dee2e6;
+  border-collapse: collapse;
+}
+
+.table-daily-survey th,
+.table-daily-survey td {
+  padding: 0.75rem;
+  vertical-align: top;
+  border-top: 1px solid #dee2e6;
+}
+
+.table-daily-survey thead th {
+  vertical-align: bottom;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.table-daily-survey tbody + tbody {
+  border-top: 2px solid #dee2e6;
+}
+
+
 .notes-container {
   width: 100%;
   background-color: #f8f9fa;
@@ -184,7 +210,7 @@
 
 .cancel-button {
   padding: 0.5rem 1rem;
-  background-color: #eee;
+  background-color: gray;
   border: none;
   border-radius: 4px;
   cursor: pointer;
