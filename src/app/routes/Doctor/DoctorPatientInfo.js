@@ -3,6 +3,19 @@ import { useParams, useNavigate } from 'react-router-dom';
 import '../../../css/patient_info.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { user_info } from '../../UserContext';
+import { Line } from 'react-chartjs-2';
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend,
+} from 'chart.js';
+
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 function DoctorPatientInfo() {
     const { patient_id } = useParams();
@@ -31,6 +44,11 @@ function DoctorPatientInfo() {
     const [showMessagePatientModal, setShowMessagePatientModal] = useState(false);
     const [emailMessage, setEmailMessage] = useState("");
 
+    const [progressData, setProgressData] = useState([]);
+    const [weeklySurveys, setWeeklySurveys] = useState([]);
+    const [chartData, setChartData] = useState({});
+
+
     useEffect(() => {
         async function fetchAll() {
             try {
@@ -57,7 +75,7 @@ function DoctorPatientInfo() {
                 const allPostsData = await allPostsRes.json();
 
                 setPatientName(userData.users[0].first_name + ' ' + userData.users[0].last_name);
-                setMedicalHistory(patientData.patients[0].medical_history);
+                setMedicalHistory(patientData.patients[0].medical_history || '');
                 setNotes(noteData.doctor_patient_relationship[0].notes || '');
                 setNewNotes(noteData.doctor_patient_relationship[0].notes || '');
 
@@ -77,6 +95,52 @@ function DoctorPatientInfo() {
         }
 
         fetchAll();
+    }, [patient_id]);
+
+    useEffect(() => {
+        async function fetchProgress() {
+            try {
+                const res = await fetch(`/api/betteru/patient_progress?patient_id=${patient_id}`);
+                if (!res.ok) throw new Error('Failed to fetch progress');
+                const data = await res.json();
+    
+                const progress = data.patient_progress.slice(0, 20).reverse();
+    
+                const chart = {
+                    labels: progress.map(p => p.date_logged.split(' ')[0]),
+                    datasets: [
+                        {
+                            label: 'Weight',
+                            data: progress.map(p => p.weight),
+                            fill: false,
+                            borderColor: '#42a5f5',
+                            tension: 0.1,
+                            pointRadius: 5,
+                            pointBackgroundColor: '#42a5f5',
+                        },
+                    ],
+                };
+    
+                setProgressData(progress.reverse());
+                setChartData(chart);
+            } catch (e) {
+                console.error(e);
+            }
+        }
+    
+        async function fetchWeeklySurveys() {
+            try {
+                const res = await fetch(`/api/betteru/patient_weekly_surveys?patient_id=${patient_id}`);
+                if (!res.ok) throw new Error('Failed to fetch weekly surveys');
+                const data = await res.json();
+                setWeeklySurveys(data.patient_weekly_surveys.reverse());
+            } catch (e) {
+                console.error(e);
+            }
+        }
+    
+        fetchProgress();
+        fetchWeeklySurveys();
     }, [patient_id]);
 
     const handleSaveNotes = async () => {
@@ -312,6 +376,60 @@ function DoctorPatientInfo() {
                         </>
                     )}
                 </div>
+            </div>
+
+            <h2>Patient Progress</h2>
+            <div style={{marginRight: '100px', marginLeft: '100px'}}>
+                {chartData && chartData.labels && chartData.labels.length > 0 ? (
+                    <Line data={chartData} />
+                ) : (
+                    <p>No progress data available.</p>
+                )}
+            </div>
+            
+
+            <h2>Daily Surveys</h2>
+            <div style={{ maxHeight: '300px', overflowY: 'auto', backgroundColor: '#f8f9fa', border: '1px solid #ccc', borderRadius: '8px', padding: '1rem', marginRight: '100px', marginLeft: '100px' }}>
+                {progressData.length > 0 ? (
+                    <table className="table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Weight</th>
+                                <th>Calories</th>
+                                <th>Water Intake</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {progressData.map((entry, idx) => (
+                                <tr key={idx}>
+                                    <td>{entry.date_logged.split(' ')[0]}</td>
+                                    <td>{entry.weight}</td>
+                                    <td>{entry.calories}</td>
+                                    <td>{entry.water_intake}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                ) : (
+                    <p>No daily surveys available.</p>
+                )}
+            </div>
+
+            <h2>Weekly Surveys</h2>
+            <div style={{ maxHeight: '300px', overflowY: 'auto', backgroundColor: '#f8f9fa', border: '1px solid #ccc', borderRadius: '8px', padding: '1rem', whiteSpace: 'pre-wrap', marginRight: '100px', marginLeft: '100px' }}>
+                {weeklySurveys.length > 0 ? (
+                    weeklySurveys.map((survey, idx) => (
+                        <div key={idx} style={{ marginBottom: '1rem' }}>
+                            <strong>Date:</strong> {survey.submitted_at.split(' ')[0]} <br />
+                            <strong>Goal Weight:</strong> {survey.weight_goal} lbs <br />
+                            <strong>Notes:</strong> {survey.comments}
+                            <hr />
+                        </div>
+                    ))
+                ) : (
+                    <p>No weekly surveys available.</p>
+                )}
             </div>
 
             <button 
