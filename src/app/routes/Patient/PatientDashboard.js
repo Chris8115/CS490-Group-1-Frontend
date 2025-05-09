@@ -171,7 +171,8 @@ function PatientDashboard() {
             <DashboardItem itemName="Write a Review" itemDescription="Write out a review for your doctor." href="/patient/review" icon="doctor_icon" key="review" />
             <DashboardItem itemName="Book an Appointment" itemDescription="Schedule an appointment with your doctor." href="/patient/book-appointment" icon="appointment_icon" key="appointments" />   
             <DashboardItem itemName="View Progress" itemDescription="Detailed overview on weight loss thus far." href="/patient/progress" icon="graph_icon" key="progress" />   
-            <DashboardItem itemName="View Prescriptions" itemDescription="View currently assigned prescriptions." href="/patient/prescriptions" icon="pill_icon" key="prescriptions" />   
+            <DashboardItem itemName="View Prescriptions" itemDescription="View currently assigned prescriptions." href="/patient/prescriptions" icon="pill_icon" key="prescriptions" />
+            <DashboardItem itemName="View Transactions" itemDescription="View your past transactions." href="/patient/transactions" icon="trans_icon" key="transactions" />   
         </div>
         
         <br/>

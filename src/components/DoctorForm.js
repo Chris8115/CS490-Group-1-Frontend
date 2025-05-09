@@ -49,7 +49,8 @@ function DoctorForm() {
         license_number: '',
         specialization: '',
         profile: '',
-        office: ''
+        office: '',
+        rate: ''
     });
 
 
@@ -98,7 +99,7 @@ function DoctorForm() {
         if (formMeta.profileFile) {
             formData.append('profile_pic', formMeta.profileFile);
         }
-
+        
         try {
             const res = await fetch(`/api/betteru/users/doctor`, {
                 method: 'POST',
@@ -158,6 +159,9 @@ function DoctorForm() {
 
                     <label>Please enter your medical specialization(s) below.</label>
                     <input required className='form-input' type='text' name='specialization' value={doctorsData.specialization} onChange={e => handleChange(e, setDoctorsData)} />
+
+                    <label>Enter your appointment rate ($USD)</label>
+                    <input required className='form-input' type='text' name='rate' value={doctorsData.rate} onChange={e => handleChange(e, setDoctorsData)}></input>
 
                     <p className='step'>Step 2: Identification & Address</p>
 
