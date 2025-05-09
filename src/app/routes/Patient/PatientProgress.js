@@ -200,7 +200,7 @@ function PatientProgress() {
             
             const data = {
                 "weight_goal": Number(surveyForm.get("weightGoal")),
-                "notes": surveyForm.get("notes"),
+                "comments": surveyForm.get("notes"),
                 "patient_id": userInfo.user_id
             }
         
