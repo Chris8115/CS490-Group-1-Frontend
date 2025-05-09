@@ -57,7 +57,7 @@ function DoctorPatientInfo() {
                 const allPostsData = await allPostsRes.json();
 
                 setPatientName(userData.users[0].first_name + ' ' + userData.users[0].last_name);
-                setMedicalHistory(patientData.patients[0].medical_history);
+                setMedicalHistory(patientData.patients[0].medical_history || '');
                 setNotes(noteData.doctor_patient_relationship[0].notes || '');
                 setNewNotes(noteData.doctor_patient_relationship[0].notes || '');
 
