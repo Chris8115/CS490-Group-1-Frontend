@@ -8,6 +8,8 @@ import '../../../css/post_page.css';
 import SavePostButton from './SavePostButton';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { MDBContainer } from "mdb-react-ui-kit";
+
 
 function correctCommentTime(dateString) {
     const inputDate = new Date(dateString);
@@ -251,7 +253,7 @@ function PostPage() {
                 </div>
             )}
 
-            <main className="p-6 max-w-3xl mx-auto post-page">
+                <MDBContainer className="p-3 my-5 d-flex flex-column w-100">
                 <div className="post-header-buttons">
                     <BackToForumsButton />
                     {role === 'patient' && <SavePostButton userId={userId} postId={postId} />}
@@ -330,7 +332,7 @@ function PostPage() {
                         No comments yet. Be the first to comment!
                     </p>
                 )}
-            </main>
+            </MDBContainer>
 
             <Divider />
             <Footer />

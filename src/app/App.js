@@ -23,6 +23,7 @@ import PatientPrescriptions from "./routes/Patient/PatientPrescriptions.js"
 import DoctorDashboard from './routes/Doctor/DoctorDashboard.js';
 import DoctorPatientInfo from './routes/Doctor/DoctorPatientInfo.js';
 import DoctorPrescribe from './routes/Doctor/DoctorPrescribe.js';
+import '../css/custom.css';
 
 import PharmacyLayout from './routes/Pharmacy/PharmacyLayout.js';
 import PharmacyDashboard from './routes/Pharmacy/PharmacyDashboard.js';

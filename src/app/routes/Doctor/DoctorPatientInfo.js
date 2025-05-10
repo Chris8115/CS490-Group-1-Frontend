@@ -252,7 +252,7 @@ function DoctorPatientInfo() {
     }
 
     return (
-        <div className="patient-info-wrapper">
+        <>
             <h1>Patient: {patientName}</h1>
 
             <h2>Assigned Exercises</h2>
@@ -342,7 +342,7 @@ function DoctorPatientInfo() {
             </div>
 
             <h2>Previous Appointments</h2>
-            <div className="container border p-3 mb-4" style={{ maxHeight: '300px', overflowY: 'auto', backgroundColor: '#f8f9fa', borderRadius: '10px' }}>
+            <div className="container border p-4 mb-4" style={{ maxHeight: '300px', overflowY: 'auto', backgroundColor: '#f8f9fa', borderRadius: '10px' }}>
                 {appointments.length > 0 ? (
                     <ul className="list-unstyled">
                         {appointments.map((appt, i) => {
@@ -350,8 +350,8 @@ function DoctorPatientInfo() {
                             return (
                                 <li key={i} className="mb-3 p-2">
                                     <strong>{validDate}</strong> - <em>{appt.reason}</em>
-                                    <div><strong>Status:</strong> {appt.status || 'N/A'}</div>
-                                    <div><strong>Notes:</strong> {appt.notes || 'No notes'}</div>
+                                    <div><strong>Status:</strong> {appt.status.toUpperCase() || 'N/A'}</div>
+                                    <div><strong>Notes:</strong> {appt.notes || 'N/A'}</div>
                                 </li>
                             );
                         })}
@@ -362,8 +362,8 @@ function DoctorPatientInfo() {
             </div>
 
             <h2>Doctor Notes</h2>
-            <div className="container mt-4 d-flex justify-content-center">
-                <div className="notes-container">
+            <div className="container border mb-4 p-4" style={{ maxHeight: '300px', overflowY: 'auto', backgroundColor: '#f8f9fa', borderRadius: '10px' }}>
+                <div>
                     {editingNotes ? (
                         <>
                             <textarea className="notes-textarea" value={newNotes} onChange={(e) => setNewNotes(e.target.value)} />
@@ -458,7 +458,7 @@ function DoctorPatientInfo() {
                     </div>
                 </div>
             </div>)}
-        </div>
+        </>
     );
 }
 

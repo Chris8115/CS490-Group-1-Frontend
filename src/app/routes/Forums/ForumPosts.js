@@ -5,6 +5,7 @@ import '../../../css/forums.css';
 import Post from './Post.js';
 import AddPost from './AddPost';
 import SavedPosts from './SavedPosts.js';
+import { MDBContainer } from "mdb-react-ui-kit";
 
 function ForumPosts() {
   const [posts, setPosts] = useState([]);
@@ -94,7 +95,7 @@ function ForumPosts() {
 
   return (
     <>
-      <div className="content">
+      <MDBContainer className="p-3 my-5 d-flex flex-column w-100">
         <h1>Discussion Forums</h1>
 
         {/* Search/Filter */}
@@ -132,12 +133,12 @@ function ForumPosts() {
             <option value="Exercise Plan">Exercise Plan</option>
           </select>
         </div>
-      </div>
 
-      {role === 'doctor' ? <AddPost userId={userId} /> : <SavedPosts />}
-      <Divider />
-
-      {displayPosts()}
+        {role === 'doctor' ? <AddPost userId={userId} /> : <SavedPosts />}
+        <Divider />
+        {displayPosts()}
+        
+      </MDBContainer>
     </>
   );
 }

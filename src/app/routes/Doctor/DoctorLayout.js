@@ -5,16 +5,17 @@ import Divider from "../../../components/Divider";
 import Footer from "../../../components/Footer";
 import '../../../css/dashboard.css';
 import { Outlet } from "react-router-dom";
+import { MDBContainer } from "mdb-react-ui-kit";
 
 function DoctorLayout() {
     return <>
             <BetterUNavbar />
             
-            <div>
-                <div className="dashboard">
+            <MDBContainer className="p-3 my-5 d-flex flex-column w-100"> 
+                <div>
                     <Outlet />
                 </div>
-            </div>
+            </MDBContainer> 
 
             <Divider />
             <Footer />

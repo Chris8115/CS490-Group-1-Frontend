@@ -5,16 +5,17 @@ import '../../../css/dashboard.css';
 import { Outlet } from "react-router-dom";
 import PharmacyNavbar from "../../../components/PharmacyNavbar";
 import PharmacyFooter from '../../../components/PharmacyFooter';
+import { MDBContainer } from "mdb-react-ui-kit";
 
 function PharmacyLayout() {
     return <>
             <PharmacyNavbar />
             
-            <div className="patient_pages">
+            <MDBContainer className="p-3 my-5 d-flex flex-column w-100">
                 <div>
                     <Outlet /> {/* Renders the matching route */}
                 </div>
-            </div>
+            </MDBContainer>
 
             <Divider />
             <PharmacyFooter />
