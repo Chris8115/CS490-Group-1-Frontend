@@ -81,24 +81,23 @@ function PharmacyMedicationDetails(props) {
     }, [])
 
     return <>
-    
-    <div className="doctor-search">
-        <h3>{medication.medication_id}: {medication.name}</h3>
-        <p>{medication.description}</p>
-        <p>Stock: {inventory.stock}</p>
-        {Object.keys(medicationUsers).length > 0 && (
+
+    <tr>
+        <td>{medication.medication_id}</td>
+        <td>{medication.name}</td>
+        <td>{medication.description}</td>
+        <td>{medication.stock}</td>
+        <td>{Object.keys(medicationUsers).length > 0 && (
             <>
-                <p>Users:</p>
                 <ul>
                     {Object.entries(medicationUsers).map(([key, value]) => (
-                        <li key={key}>{key}: {value}</li>
+                        <li key={key}>{value}</li>
                     ))}
                 </ul>
             </>
-        )}
-    </div>
+        )}</td>
+    </tr>
     
-
     </>
 }
 export default PharmacyMedicationDetails;

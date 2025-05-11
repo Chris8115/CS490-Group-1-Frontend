@@ -33,12 +33,29 @@ function PharmacyProductRecords() {
         <>
         <h1>Products</h1>   
  
-            {medications.length > 0 && medications.map((medication, idx) => (
-                <PharmacyMedicationDetails medication={medication} key={medication.medication_id}/>
-            ))}
+        <table className="table table-hover table-bordered">
+            <thead className="thead-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Stock</th>
+                    <th>Users</th>
+                </tr>
+            </thead>
+            <tbody>
+                {medications.length > 0 && medications.map((medication, idx) => (
+                    <PharmacyMedicationDetails medication={medication} key={medication.medication_id}/>
+                ))}
+            </tbody>
+        </table>
+
 
         </>
     )
 }
 
+
+        //{medications.length > 0 && medications.map((medication, idx) => (
+        //))}
 export default PharmacyProductRecords;
