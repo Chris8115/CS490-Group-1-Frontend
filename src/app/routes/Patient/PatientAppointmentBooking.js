@@ -151,16 +151,17 @@ function PatientAppointmentBooking() {
             onChange={handleChange}
             required />
 
-            <label htmlFor="appointmentHour" className="form-label">Appointment Time</label>
+            <label htmlFor="appointmentTime" className="form-label">Appointment Time</label>
             <input
-            type="time"
-            name="time"
-            id="appointmentTime"
-            className="form-control"
-            step="3600"
-            min="00:00:00"
-            onChange={handleChange}
-            required />
+                type="time"
+                name="time"
+                id="appointmentTime"
+                className="form-control"
+                step="3600"
+                min="09:00"
+                max="19:00"
+                onChange={handleChange}
+                required />
         </div>
         
         <button type="button" className="btn btn-primary" onClick={() => setShowMessageAppointment(true)}>Request Appointment</button>

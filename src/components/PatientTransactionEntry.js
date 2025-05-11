@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import '../css/prescription-entry.css'
 import { user_info } from "../app/UserContext";
+import '../css/info_cards.css'
 
 function PatientTransactionEntry(props) {
     const transaction = props.transaction;
@@ -27,7 +28,7 @@ function PatientTransactionEntry(props) {
 
     return (
         <>
-            <div className="prescription-entry">
+            <div className="default-card">
                 <h3><strong>
                     Appointment with Dr. {doctorData.last_name}
                 </strong></h3>

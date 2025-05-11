@@ -11,12 +11,12 @@
 }
 
 .dashboard p {
-    font-size: 1.em;
+    font-size: 1.0em;
     margin: 20px 0 30px 0;
 }
 
 .dashboard-features {
-    margin: 20px 100px;
+    margin: 1.0rem 2.0rem;
 }
 
 .dashboard-features h2 {

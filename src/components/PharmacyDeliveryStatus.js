@@ -97,7 +97,7 @@ function PharmacyDeliveryStatus(props) {
         setStatus(status);
         switch (status) {
             case 'pending': 
-                setStatusColor('orange');
+                setStatusColor('DarkOrange');
                 break;
             
                 case 'canceled': 

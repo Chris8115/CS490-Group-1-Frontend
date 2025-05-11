@@ -279,7 +279,7 @@ function PostPage() {
                                 value={commentText}
                                 onChange={(e) => setCommentText(e.target.value)}
                             />
-                            <button onClick={handleSubmit} className="reply-button">Reply</button>
+                            <button onClick={handleSubmit} className="btn btn-success">Reply</button>
                         </div>
                     </article>
                 )}

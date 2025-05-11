@@ -4,7 +4,6 @@ import { refresh_user_info, user_info } from '../UserContext'
 
 function DashboardRedirect() {
   const navigate = useNavigate();
-  console.log(user_info);
 
   useEffect(() => {
     refresh_user_info();

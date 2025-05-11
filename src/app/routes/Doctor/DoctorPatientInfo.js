@@ -267,11 +267,11 @@ function DoctorPatientInfo() {
                           return (
                             <li key={i} style={{ marginBottom: '10px' }}>
                               <a href={`/post/${assignment.exercise_id}`}>
-                                {exerciseTitle} | {assignment.sets || 1} sets, {assignment.reps || 1} reps, {assignment.frequency_per_week || 1} times/week, 
+                                {exerciseTitle} | {assignment.sets || 1} sets, {assignment.reps || 1} reps, {assignment.frequency_per_week || 1} times/week
                               </a>
                               <button 
                                 onClick={() => handleDeleteExercise(assignment.assignment_id)} 
-                                style={{ marginLeft: '10px', color: 'red', background: 'none', border: 'none', cursor: 'pointer' }}
+                                className='btn btn-danger ms-2'
                               >
                                 Remove
                               </button>
@@ -284,8 +284,8 @@ function DoctorPatientInfo() {
                     )}
 
                     <div className="exercise-buttons-container">
-                        <button className="exercise-button" onClick={() => setShowAssignModal(true)}>Add Exercise</button>
-                        <button className="exercise-button" onClick={() => setShowCreateModal(true)}>Create Exercise</button>
+                        <button className="btn btn-primary" onClick={() => setShowAssignModal(true)}>Add Exercise</button>
+                        <button className="btn btn-success" onClick={() => setShowCreateModal(true)}>Create Exercise</button>
                     </div>
                 </div>
             </div>
@@ -305,9 +305,11 @@ function DoctorPatientInfo() {
                                 <input type="number" placeholder="Reps" value={exerciseReps} onChange={(e) => setExerciseReps(e.target.value)} className="modal-input" />
                                 <ul>
                                     {allExercisePlans.filter(post => post.title.toLowerCase().includes(searchExercise.toLowerCase())).map((post) => (
-                                        <li key={post.id} style={{ marginBottom: '10px' }}>
+                                        <li key={post.id} style={{ marginBottom: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center'  }}>
                                             {post.title}
-                                            <button style={{ marginLeft: '10px' }} onClick={() => handleAssignExercise(post.post_id)}>Assign</button>
+                                            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                                                <button onClick={() => handleAssignExercise(post.post_id)}>Assign</button>
+                                            </div>
                                         </li>
                                     ))}
                                 </ul>
@@ -341,17 +343,20 @@ function DoctorPatientInfo() {
                 </div>
             </div>
 
+            <br/>
+
             <h2>Previous Appointments</h2>
-            <div className="container border p-4 mb-4" style={{ maxHeight: '300px', overflowY: 'auto', backgroundColor: '#f8f9fa', borderRadius: '10px' }}>
+            <div className="container border p-3 m-4" style={{ maxHeight: '300px', overflowY: 'auto', backgroundColor: '#f8f9fa', borderRadius: '10px' }}>
                 {appointments.length > 0 ? (
                     <ul className="list-unstyled">
                         {appointments.map((appt, i) => {
                             const validDate = isNaN(Date.parse(appt.start_time)) ? 'Invalid date' : new Date(appt.start_time).toLocaleDateString();
                             return (
-                                <li key={i} className="mb-3 p-2">
+                                <li key={i} className="p-2">
                                     <strong>{validDate}</strong> - <em>{appt.reason}</em>
                                     <div><strong>Status:</strong> {appt.status.toUpperCase() || 'N/A'}</div>
                                     <div><strong>Notes:</strong> {appt.notes || 'N/A'}</div>
+                                    <hr />
                                 </li>
                             );
                         })}
@@ -362,17 +367,17 @@ function DoctorPatientInfo() {
             </div>
 
             <h2>Doctor Notes</h2>
-            <div className="container border mb-4 p-4" style={{ maxHeight: '300px', overflowY: 'auto', backgroundColor: '#f8f9fa', borderRadius: '10px' }}>
+            <div className="container border m-4 p-3" style={{ maxHeight: '300px', overflowY: 'auto', backgroundColor: '#f8f9fa', borderRadius: '10px' }}>
                 <div>
                     {editingNotes ? (
                         <>
                             <textarea className="notes-textarea" value={newNotes} onChange={(e) => setNewNotes(e.target.value)} />
-                            <button className="save-notes-button" onClick={handleSaveNotes}>Save</button>
+                            <button className="btn btn-primary" onClick={handleSaveNotes}>Save</button>
                         </>
                     ) : (
                         <>
                             <p>{notes || "No notes added."}</p>
-                            <button className="edit-notes-button" onClick={() => setEditingNotes(true)}>Edit Notes</button>
+                            <button className="btn btn-primary" onClick={() => setEditingNotes(true)}>Edit Notes</button>
                         </>
                     )}
                 </div>
@@ -389,7 +394,7 @@ function DoctorPatientInfo() {
             
 
             <h2>Daily Surveys</h2>
-            <div style={{ maxHeight: '300px', overflowY: 'auto', backgroundColor: '#f8f9fa', border: '1px solid #ccc', borderRadius: '8px', padding: '1rem', marginRight: '100px', marginLeft: '100px' }}>
+            <div className="container border m-4 p-3" style={{ maxHeight: '300px', overflowY: 'auto', backgroundColor: '#f8f9fa', borderRadius: '10px' }}>
                 {progressData.length > 0 ? (
                     <table className="table-daily-survey">
                         <thead>
@@ -417,7 +422,7 @@ function DoctorPatientInfo() {
             </div>
 
             <h2>Weekly Surveys</h2>
-            <div style={{ maxHeight: '300px', overflowY: 'auto', backgroundColor: '#f8f9fa', border: '1px solid #ccc', borderRadius: '8px', padding: '1rem', whiteSpace: 'pre-wrap', marginRight: '100px', marginLeft: '100px' }}>
+            <div className="container border m-4 p-3" style={{ maxHeight: '300px', overflowY: 'auto', backgroundColor: '#f8f9fa', borderRadius: '10px' }}>
                 {weeklySurveys.length > 0 ? (
                     weeklySurveys.map((survey, idx) => (
                         <div key={idx} style={{ marginBottom: '1rem' }}>
@@ -432,14 +437,12 @@ function DoctorPatientInfo() {
                 )}
             </div>
 
-            <button 
-                onClick={() => navigate(`/doctor/prescribe/${patient_id}`)} 
-                style={{ marginTop: "20px", padding: "10px 20px", backgroundColor: "#FF5354", color: "white", border: "none", borderRadius: "5px", cursor: "pointer", marginBottom: "50px", marginLeft: "100px", marginRight: "50px" }}
-            >
-                Prescribe Medication
-            </button>
+            <div style={{display: 'flex', flexDirection: 'row', gap: '0.5rem'}}>
+                <button onClick={() => navigate(`/doctor/prescribe/${patient_id}`)} className='btn btn-primary'>Prescribe Medication</button>
+                <button type="button" className="btn btn-success" onClick={() => setShowMessagePatientModal(true)}>Message Patient</button>
+            </div>
 
-            <button type="button" className="btn btn-success" style={{ padding: "10px 20px"}} onClick={() => setShowMessagePatientModal(true)}>Message Patient</button>
+
             {showMessagePatientModal && (<div className="modal" style={{ display: 'block', backgroundColor: 'rgba(0,0,0,0.5)' }}>
                 <div className="modal-dialog">
                     <div className="modal-content">

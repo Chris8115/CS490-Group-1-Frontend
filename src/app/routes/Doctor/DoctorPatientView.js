@@ -71,19 +71,36 @@ function DoctorPatientView() {
         if (loading) return <p>Loading patients...</p>;
         if (error) return <p>Error: {error}</p>;
 
+        
         const currentPatients = patients.slice(offset, offset + patientsPerPage);
-
+        
         return (
             <>
-                <div className="patients-container">
-                    {currentPatients.map((p) => (
-                        <div className='patient' key={p.patient_id}>
-                            <a className='patient-view-name' onClick={() => navigate(`/doctor/doctor_patient_info/${p.patient_id}`)}>
-                                <p>{patientNames[p.patient_id] || 'Loading...'}</p>
-                            </a>
-                        </div>
-                    ))}
-                </div>
+
+                <table className="table table-hover table-bordered">
+                    <thead className="thead-dark">
+                        <tr>
+                            <th>Patient</th>
+                            <th>Notes</th>
+                            <th>Date Assigned</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {currentPatients.map((p) => (
+                            <tr key={p.patient_id}>
+                                <td><a className='patient-view-name' onClick={() => navigate(`/doctor/doctor_patient_info/${p.patient_id}`)}>
+                                    {patientNames[p.patient_id] || 'Loading...'}
+                                    </a></td>
+                                <td>{p.notes}</td>
+                                <td>{p.date_assigned}</td>
+                            </tr>
+                        ))}
+
+                    </tbody>
+                </table>
+
+
 
                 <ReactPaginate
                     breakLabel="..."
@@ -110,9 +127,9 @@ function DoctorPatientView() {
 
     return (
         <div className='patient-view-display'>
-            <h1 style={{ margin: '50px 100px' }}>View Patients</h1>
+            <h1>View Patients</h1>
             <Divider />
-            <div className='patient-list'>
+            <div style={{padding: '20px'}}>
                 {displayPatients()}
             </div>
         </div>
