@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import '../css/doctor-search.css'
 import { use } from 'react';
+import '../css/info_cards.css'
 
 function PharmacyPatientSearchResult(props) {
     const [patientOrders, setPatientOrders] = useState([]);
@@ -36,7 +37,7 @@ function PharmacyPatientSearchResult(props) {
         });
 
         const data = await response.json();
-        console.log(data);
+        //console.log(data);
     }
 
     useEffect(() => {
@@ -46,14 +47,16 @@ function PharmacyPatientSearchResult(props) {
 
     return <>
     
-    <div className="doctor-search">
+    <div className="default-card">
         <h3>{patient.last_name}, {patient.first_name}</h3>
         {/*<h4 style={{color: '#696969'}} >{patientDetails.specialization}</h4>*/}
         <p>{patient.medical_history}</p>
         <h4>Orders</h4>
+        <ul>
             {patientOrders.map((order, idx) => (
-                <span key={order.order_id}><strong>{order.status.toUpperCase()} - {order.medication_id}: {order.name}</strong></span>
+                <li><span key={order.order_id}><strong>{order.status.toUpperCase()} - {order.medication_id}: {order.name}</strong></span></li>
             ))}
+        </ul>
         
         
     </div>

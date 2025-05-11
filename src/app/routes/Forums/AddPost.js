@@ -54,7 +54,7 @@ function AddPost({ userId }) {
         <>
             <button
                 onClick={() => setShowModal(true)}
-                className="create-post-button"
+                className="btn btn-success create-post-button"
             >
                 <span className="plus-icon">＋</span>
                 <span className="create-text">Create Post</span>
@@ -92,13 +92,13 @@ function AddPost({ userId }) {
                         <div className="modal-buttons">
                             <button
                                 onClick={() => setShowModal(false)}
-                                className="cancel-button"
+                                className="btn btn-danger"
                             >
                                 Cancel
                             </button>
                             <button
                                 onClick={handleSubmit}
-                                className="submit-button"
+                                className="btn btn-success"
                             >
                                 Submit Post
                             </button>

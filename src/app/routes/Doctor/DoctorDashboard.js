@@ -11,6 +11,7 @@ import Appointments from "./Appointments.js";
 import PendingAppointments from "./PendingAppointments.js";
 import '../../../css/appointments.css';
 import { user_info } from "../../UserContext.js";
+import '../../../css/dashboard.css';
 
 function DoctorDashboard() {
     const navigate = useNavigate();
@@ -107,7 +108,7 @@ const handleCancel = async (appointmentId) => {
     }, [user_info]);
 
     return (
-        <div>
+        <div className="dashboard">
             <h1>Dashboard</h1>
             <Divider />
 

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import '../../../css/pending_appointments.css';
+import { monthDayYear } from '../../../utils/DateFormatter';
 
 function formatTimeRange(start, end) {
     const format = (iso) =>
@@ -75,15 +76,24 @@ function PendingAppointments({ appointments, setAppointments }) {
                     return (
                         <div className="appointment-item" key={appt.appointment_id || index}>
                             <div className="appointment-header">
-                                <p className="patient-name">{fullName}</p>
-                                <p className="time">{formatTimeRange(appt.start_time, appt.end_time)}</p>
+                                <div>
+                                    
+                                <p className="patient-name">
+                                    {monthDayYear(appt.start_time)}
+                                </p>
+                                
+                                <a className="patient-name" href={`/doctor/doctor_patient_info/${appt.patient_id}`} style={{ textDecoration: 'underline', color: '#007bff' }}>
+                                    {fullName}
+                                </a>
+                                </div>
+                                <strong className="time">{formatTimeRange(appt.start_time, appt.end_time)}</strong>
                             </div>
                             <p className="patient-request">"{appt.reason}"</p>
                             <div className="appointment-actions">
-                                <button onClick={() => updateAppointmentStatus(appt.appointment_id, 'accepted')} className="confirm">
+                                <button onClick={() => updateAppointmentStatus(appt.appointment_id, 'accepted')} className="btn btn-success">
                                     Accept
                                 </button>
-                                <button onClick={() => updateAppointmentStatus(appt.appointment_id, 'rejected')} className="deny">
+                                <button onClick={() => updateAppointmentStatus(appt.appointment_id, 'rejected')} className="btn btn-danger">
                                     Reject
                                 </button>
                             </div>

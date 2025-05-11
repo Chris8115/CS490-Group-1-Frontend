@@ -7,16 +7,7 @@ function BackToForumsButton() {
     return (
         <button
             onClick={() => navigate('/forums')}
-            style={{
-                backgroundColor: '#F53D3E',
-                color: 'white',
-                padding: '0.5rem 1rem',
-                border: 'none',
-                borderRadius: '6px',
-                cursor: 'pointer',
-                fontWeight: 'bold',
-                marginBottom: '50px',
-            }}
+            className='btn btn-primary mb-4'
         >
             ← Back to Forums
         </button>

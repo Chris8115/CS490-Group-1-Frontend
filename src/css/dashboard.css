@@ -1,22 +1,22 @@
 .dashboard {
-    margin: 0px 50px;
+    margin: 0;
 }
 
 .dashboard h1 {
-    margin: 50px 100px 30px 100px;
+    margin: 0 0 30px 0;
 }
 
 .dashboard h2 {
-    margin: 20px 100px 30px 100px;
+    margin: 20px 0 30px 0;
 }
 
 .dashboard p {
-    font-size: 1.em;
-    margin: 20px 100px 30px 100px;
+    font-size: 1.0em;
+    margin: 20px 0 30px 0;
 }
 
 .dashboard-features {
-    margin: 20px 100px;
+    margin: 1.0rem 2.0rem;
 }
 
 .dashboard-features h2 {

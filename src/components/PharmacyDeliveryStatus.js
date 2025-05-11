@@ -29,7 +29,6 @@ function PharmacyDeliveryStatus(props) {
         });
 
         const data = await response.json();
-        console.log("Status: ", response.status);
         if (response.status === 200) {setStatus('rejected'); setStatusColor('red');}
     }
 
@@ -98,7 +97,7 @@ function PharmacyDeliveryStatus(props) {
         setStatus(status);
         switch (status) {
             case 'pending': 
-                setStatusColor('orange');
+                setStatusColor('DarkOrange');
                 break;
             
                 case 'canceled': 
@@ -120,23 +119,22 @@ function PharmacyDeliveryStatus(props) {
     }, [])
 
     return <>
-    
-    <div className="doctor-search">
-        <h3>Order #{order.order_id}</h3>
-        {/*<h4 style={{color: '#696969'}} >{patientDetails.specialization}</h4>*/}
-        <h4 style={{ color: statusColor }} ><strong>{status.toUpperCase()}</strong></h4>
-        <h5>Medication: {order.name}</h5>
-        <h5>Medication Recipient: {deliveryPatient.last_name}, {deliveryPatient.first_name}</h5>
-        <h5>Quantity Requested: {order.quantity}</h5>
-        <h5>Product Stock: {stock}</h5>
 
-        {status === 'pending' && (
-            <div style={{display: 'flex', flexDirection: 'row', gap: '1rem'}}>
+    <tr key={order.order_id}>
+        <td>{order.order_id}</td>
+        <td style={{ color: statusColor }}><strong>{status.toUpperCase()}</strong></td>
+        <td>{order.name}</td>
+        <td>{deliveryPatient.last_name}, {deliveryPatient.first_name}</td>
+        <td>{order.quantity}</td>
+        <td>{stock}</td>
+        <td>{status === 'pending' && (
+            <div style={{display: 'flex', flexDirection: 'column', gap: '0.5rem'}}>
                 <button className='btn btn-success' onClick={handleAccept} >Accept Order</button>
                 <button className='btn btn-danger' onClick={handleCancel} >Reject Order</button>
             </div>
-        )}
-    </div>
+        )}</td>
+
+    </tr>
 
     </>
 }

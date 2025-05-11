@@ -82,7 +82,7 @@ function Appointments({ appointments, refreshAppointments }) {
                                 {fullName}
                             </a>
                             </p>
-                            <p className="time">{formatTimeRange(appt.start_time, appt.end_time)}</p>
+                            <strong className="time">{formatTimeRange(appt.start_time, appt.end_time)}</strong>
                             </div>
                             <div className="appointment-reason-row">
                                 <p className="patient-request">"{appt.reason}"</p>
@@ -98,7 +98,7 @@ function Appointments({ appointments, refreshAppointments }) {
                                     Edit Appointment Notes
                                 </button>
                                 <button
-                                    className="cancel-button"
+                                    className="btn btn-danger"
                                     onClick={() => handleCancel(appt.appointment_id)}
                                 >
                                     Cancel

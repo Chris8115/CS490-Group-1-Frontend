@@ -1,36 +1,13 @@
 import { monthDayYear, hourMinute } from "../utils/DateFormatter";
 import '../css/pending_appointments.css';
+import { useNavigate } from 'react-router-dom';
 
 // itemName: The big bold text
 // itemDescription: The expanded text
 // icon: The asset in the ./assets/ folder used
 // href: The page the DashboardItem links to
 
-const handleCancel = async (appointmentId) => {
-    console.log(appointmentId);
-    try {
-        const response = await fetch(`/api/betteru/appointments/${appointmentId}`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            credentials: 'include',
-            body: JSON.stringify({
-                status: 'canceled'
-            })
-        });
 
-        const data = await response.json();
-        if (!response.ok) throw new Error("Failed to cancel appointment");
-
-        alert("Appointment canceled successfully.");
-        // You might want to refetch or filter out canceled ones here
-
-    } catch (err) {
-        console.error(err);
-        alert("Error canceling appointment.");
-    }
-};
 
 function formatTimeRange(start, end) {
     const format = (iso) =>
@@ -39,28 +16,56 @@ function formatTimeRange(start, end) {
 }
 
 function PatientAppointmentCard(props) {
+    const navigate = useNavigate();
     const appt = props.appointment;
+
+    const handleCancel = async (appointmentId) => {
+
+        try {
+            const response = await fetch(`/api/betteru/appointments/${appointmentId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify({
+                    status: 'canceled'
+                })
+            });
+    
+            const data = await response.json();
+            if (!response.ok) throw new Error("Failed to cancel appointment");
+    
+            alert("Appointment canceled successfully.");
+            navigate(0);
+    
+        } catch (err) {
+            console.error(err);
+            alert("Error canceling appointment.");
+        }
+    };
+
     return <>
         <div className="appointment-item" key={appt.appointment_id}>
             <div className="appointment-header">
-            <p className="patient-name">
-            {monthDayYear(appt.start_time)}
-            </p>
-            <p className="time">{formatTimeRange(appt.start_time, appt.end_time)}</p>
+                <p className="patient-name">
+                    {monthDayYear(appt.start_time)}
+                </p>
+                <strong className="time">{formatTimeRange(appt.start_time, appt.end_time)}</strong>
             </div>
 
             <div>
                 {appt.status === "pending" ? (
-                    <strong style={{ color: 'orange'}}>Pending</strong>
+                    <h4 style={{ color: 'DarkOrange'}}>Pending</h4>
                 ) : (
-                    <strong style={{ color: 'green'}}>Confirmed</strong>
+                    <h4 style={{ color: 'green'}}>Confirmed</h4>
                 )}
             </div>
 
             <div className="appointment-reason-row">
-                <p className="patient-request">"{appt.reason}"</p>
+                <p>"{appt.reason}"</p>
                 <button
-                    className="cancel-button"
+                    className="btn btn-danger"
                     onClick={() => handleCancel(appt.appointment_id)}
                 >
                     Cancel

@@ -8,10 +8,13 @@ import '../../../css/post_page.css';
 import SavePostButton from './SavePostButton';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { MDBContainer } from "mdb-react-ui-kit";
+
 
 function correctCommentTime(dateString) {
     const inputDate = new Date(dateString);
-    inputDate.setHours(inputDate.getHours() - 4);
+    // est correction is also on backend so no need
+    // inputDate.setHours(inputDate.getHours() - 4);
     return inputDate.toLocaleString();
 };
 
@@ -137,6 +140,8 @@ function PostPage() {
             const data = await res.json();
             const baseComments = data.forum_comments || [];
 
+            console.log(data);
+
             const updatedComments = await Promise.all(
                 baseComments.map(async (comment) => {
                     try {
@@ -153,6 +158,7 @@ function PostPage() {
             );
 
             setComments(updatedComments);
+            console.log(comments);
         } catch (err) {
             console.error(err);
         }
@@ -251,7 +257,7 @@ function PostPage() {
                 </div>
             )}
 
-            <main className="p-6 max-w-3xl mx-auto post-page">
+                <MDBContainer className="p-3 my-5 d-flex flex-column w-100">
                 <div className="post-header-buttons">
                     <BackToForumsButton />
                     {role === 'patient' && <SavePostButton userId={userId} postId={postId} />}
@@ -277,7 +283,7 @@ function PostPage() {
                                 value={commentText}
                                 onChange={(e) => setCommentText(e.target.value)}
                             />
-                            <button onClick={handleSubmit} className="reply-button">Reply</button>
+                            <button onClick={handleSubmit} className="btn btn-success">Reply</button>
                         </div>
                     </article>
                 )}
@@ -330,7 +336,7 @@ function PostPage() {
                         No comments yet. Be the first to comment!
                     </p>
                 )}
-            </main>
+            </MDBContainer>
 
             <Divider />
             <Footer />

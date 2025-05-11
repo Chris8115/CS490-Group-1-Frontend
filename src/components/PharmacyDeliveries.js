@@ -33,10 +33,28 @@ function PharmacyDeliveries({status}) {
     }, [])
 
     return (
-        <>         
+        <>
+
+        <table className="table table-hover table-bordered">
+            <thead className="thead-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Status</th>
+                    <th>Medication</th>
+                    <th>Recipient</th>
+                    <th>QTY</th>
+                    <th>Stock</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+
         {orders.length > 0 && orders.map((order, idx) => (
             <PharmacyDeliveryStatus order={order} key={order.order_id}/>
         ))}
+            </tbody>
+        </table>
+
     
         </>
     )

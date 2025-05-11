@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import '../css/prescription-entry.css'
+import '../css/info_cards.css'
 
 function PatientPrescriptionEntry(props) {
     const prescription = props.prescription;
@@ -52,7 +53,7 @@ function PatientPrescriptionEntry(props) {
 
     return (
         <>
-            <div className="prescription-entry">
+            <div className="default-card">
                 <h3><strong>
                     {medicationData.medications[0].name}
                 </strong></h3>

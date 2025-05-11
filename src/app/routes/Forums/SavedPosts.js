@@ -28,7 +28,7 @@ function SavedPosts() {
     return (
         <>
             <button
-                className="view-saved-posts-button"
+                className="btn btn-success view-saved-posts-button"
                 onClick={() => setShowModal(true)}
             >
                 View Saved Posts

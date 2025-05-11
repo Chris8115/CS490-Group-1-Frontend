@@ -198,43 +198,45 @@ function PatientDashboard() {
         </div>
         <br/>
         
-        <button type="button" className="btn btn-danger" onClick={() => setShowCancelDoctorModal(true)}>Switch Doctor</button>
-        {showCancelDoctorModal && (<div className="modal" style={{ display: 'block', backgroundColor: 'rgba(0,0,0,0.5)' }}>
-            <div className="modal-dialog">
-                <div className="modal-content">
-                    <div className="modal-header">
-                        <h5 className="modal-title">Confirm</h5>
-                        <button type="button" className="close" onClick={() => setShowCancelDoctorModal(false)}>&times;</button>
+        <div style={{display: 'flex', flexDirection: 'row', gap: '0.5rem'}}>
+            <button type="button" className="btn btn-danger" onClick={() => setShowCancelDoctorModal(true)}>Switch Doctor</button>
+            {showCancelDoctorModal && (<div className="modal" style={{ display: 'block', backgroundColor: 'rgba(0,0,0,0.5)' }}>
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title">Confirm</h5>
+                            <button type="button" className="close" onClick={() => setShowCancelDoctorModal(false)}>&times;</button>
+                            </div>
+                            <div className="modal-body">
+                            <p>Are you sure you want to switch your doctor?</p>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-success" onClick={() => setShowCancelDoctorModal(false)} >Close</button>
+                                <button type="button" className="btn btn-danger" onClick={changeDoctor} >Change Doctor</button>
+                            </div>
                         </div>
-                        <div className="modal-body">
-                        <p>Are you sure you want to switch your doctor?</p>
-                        <div className="modal-footer">
-                            <button type="button" className="btn btn-success" onClick={() => setShowCancelDoctorModal(false)} >Close</button>
-                            <button type="button" className="btn btn-danger" onClick={changeDoctor} >Change Doctor</button>
-                         </div>
                     </div>
                 </div>
-            </div>
-        </div>)}
-        <button type="button" className="btn btn-success" onClick={() => setShowMessageDoctorModal(true)}>Message Doctor</button>
-        {showMessageDoctorModal && (<div className="modal" style={{ display: 'block', backgroundColor: 'rgba(0,0,0,0.5)' }}>
-            <div className="modal-dialog">
-                <div className="modal-content">
-                    <div className="modal-header">
-                        <h5 className="modal-title">Message Doctor</h5>
-                        <button type="button" className="close" onClick={() => setShowMessageDoctorModal(false)}>&times;</button>
+            </div>)}
+            <button type="button" className="btn btn-success" onClick={() => setShowMessageDoctorModal(true)}>Message Doctor</button>
+            {showMessageDoctorModal && (<div className="modal" style={{ display: 'block', backgroundColor: 'rgba(0,0,0,0.5)' }}>
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title">Message Doctor</h5>
+                            <button type="button" className="close" onClick={() => setShowMessageDoctorModal(false)}>&times;</button>
+                            </div>
+                            <div className="modal-body">
+                            <p>Enter the message to your doctor below</p>
+                            <input type="text" onChange={(e)=>{setEmailMessage(e.target.value)}}></input>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-success" onClick={() => setShowMessageDoctorModal(false)} >Close</button>
+                                <button type="button" className="btn btn-success" onClick={sendMessage} >Send Message</button>
+                            </div>
                         </div>
-                        <div className="modal-body">
-                        <p>Enter the message to your doctor below</p>
-                        <input type="text" onChange={(e)=>{setEmailMessage(e.target.value)}}></input>
-                        <div className="modal-footer">
-                            <button type="button" className="btn btn-success" onClick={() => setShowMessageDoctorModal(false)} >Close</button>
-                            <button type="button" className="btn btn-success" onClick={sendMessage} >Send Message</button>
-                         </div>
                     </div>
                 </div>
-            </div>
-        </div>)}
+            </div>)}
+        </div>
     </>
 }
 
