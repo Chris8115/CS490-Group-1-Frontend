@@ -13,7 +13,8 @@ import { MDBContainer } from "mdb-react-ui-kit";
 
 function correctCommentTime(dateString) {
     const inputDate = new Date(dateString);
-    inputDate.setHours(inputDate.getHours() - 4);
+    // est correction is also on backend so no need
+    // inputDate.setHours(inputDate.getHours() - 4);
     return inputDate.toLocaleString();
 };
 
@@ -139,6 +140,8 @@ function PostPage() {
             const data = await res.json();
             const baseComments = data.forum_comments || [];
 
+            console.log(data);
+
             const updatedComments = await Promise.all(
                 baseComments.map(async (comment) => {
                     try {
@@ -155,6 +158,7 @@ function PostPage() {
             );
 
             setComments(updatedComments);
+            console.log(comments);
         } catch (err) {
             console.error(err);
         }
