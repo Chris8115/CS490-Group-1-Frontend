@@ -27,7 +27,7 @@ function PatientAppointmentBooking() {
 
     const [doctorName, setDoctorName] = useState("");
 
-    const handleSubmit = async (e) => {
+    const sendAppointmentRequest = async (e) => {
         e.preventDefault();
         try {
             const startTime = `${appointmentData.date} ${appointmentData.time}:00`;
@@ -67,6 +67,11 @@ function PatientAppointmentBooking() {
             ...prev,
             [name]: value
         }))
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setShowMessageAppointment(true);
     }
 
     const getTomorrow = () => {
@@ -164,7 +169,11 @@ function PatientAppointmentBooking() {
                 required />
         </div>
         
-        <button type="button" className="btn btn-primary" onClick={() => setShowMessageAppointment(true)}>Request Appointment</button>
+        <button type="submit" className="btn btn-primary">Request Appointment</button>
+
+
+    </form>
+
         {showMessageAppointment && (<div className="modal" style={{ display: 'block', backgroundColor: 'rgba(0,0,0,0.5)' }}>
             <div className="modal-dialog">
                 <div className="modal-content">
@@ -179,15 +188,12 @@ function PatientAppointmentBooking() {
                         <sup>Additional transaction breakdown can be viewed in the Transactions page on your Patient Dashboard</sup>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-success" onClick={() => setShowMessageAppointment(false)} >Close</button>
-                            <button type="button" className="btn btn-success" onClick={handleSubmit} >Confirm</button>
+                            <button type="button" className="btn btn-success" onClick={sendAppointmentRequest} >Confirm</button>
                          </div>
                     </div>
                 </div>
             </div>
         </div>)}
-
-    </form>
-
 
     </>
 }
