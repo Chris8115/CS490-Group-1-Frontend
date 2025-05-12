@@ -35,15 +35,15 @@ function PatientTransactionEntry(props) {
                 <table>
                     <tr>
                         <td><strong>Doctor's Fee: </strong></td>
-                        <td>{transaction.doctor_fee}</td>
+                        <td>{(transaction.doctor_fee.includes('$') ? "" : "$")}{transaction.doctor_fee}</td>
                     </tr>
                     <tr>
                         <td><strong>Service Fee: </strong></td>
-                        <td>{transaction.service_fee}</td>
+                        <td>{(transaction.service_fee.includes('$') ? "" : "$")}{transaction.service_fee}</td>
                     </tr>
                     <tr>
                         <td><strong>Subtotal: </strong></td>
-                        <td>{transaction.doctor_fee}</td>
+                        <td>{(transaction.subtotal.includes('$') ? "" : "$")}{transaction.subtotal}</td>
                     </tr>
                 </table>
                 <p>Charged to credit card ending in {creditcardEnding}</p>
