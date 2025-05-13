@@ -86,7 +86,7 @@ function PharmacyMedicationDetails(props) {
         <td>{medication.medication_id}</td>
         <td>{medication.name}</td>
         <td>{medication.description}</td>
-        <td>{medication.stock}</td>
+        <td>{inventory.stock}</td>
         <td>{Object.keys(medicationUsers).length > 0 && (
             <>
                 <ul>
@@ -98,6 +98,7 @@ function PharmacyMedicationDetails(props) {
         )}</td>
     </tr>
     
+
     </>
 }
 export default PharmacyMedicationDetails;
