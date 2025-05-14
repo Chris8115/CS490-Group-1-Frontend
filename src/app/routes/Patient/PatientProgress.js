@@ -91,8 +91,14 @@ function PatientProgress() {
                 setChartData(newChart);
                 setLoading(false);
 
-                setWeeklySurveySubmitted(weeklySurveyCheck(weeklyData.patient_weekly_surveys[0].submitted_at));
-                setDailySurveySubmitted(dailySurveyCheck(progress[0].date_logged));
+                if (weeklyData.patient_weekly_surveys[0]) {
+                    setWeeklySurveySubmitted(weeklySurveyCheck(weeklyData.patient_weekly_surveys[0].submitted_at));
+                }
+
+                
+                if (progress[0]) {
+                    setDailySurveySubmitted(dailySurveyCheck(progress[0].date_logged));
+                }
 
                 
             } catch (e) {
@@ -117,6 +123,9 @@ function PatientProgress() {
                 
 
                 const assignments = data.patient_exercise_assignments;
+
+                //console.log(assignments);
+
                 setExerciseAssignments(assignments);
                 await getExercises(assignments);
 
@@ -172,7 +181,7 @@ function PatientProgress() {
                 "patient_id": userInfo.user_id
             }
         
-            console.log("Submitting: ", data);
+            //console.log("Submitting: ", data);
         
             const res = await fetch('/api/betteru/patient_progress', {
                 method: 'POST',
@@ -184,7 +193,6 @@ function PatientProgress() {
             });
 
             const result = await res.json();
-            console.log(result);
             setDailySurveySubmitted(true);
             
         } catch (err) {
@@ -214,7 +222,7 @@ function PatientProgress() {
             });
 
             const result = await res.json();
-            console.log(result);
+            //console.log(result);
             setWeeklySurveySubmitted(true);
             
         } catch (err) {
@@ -262,6 +270,8 @@ function PatientProgress() {
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Name</th>
+                        <th scope="col">Sets</th>
+                        <th scope="col">Reps</th>
                         <th scope="col">Description</th>
                     </tr>
                 </thead>
@@ -271,6 +281,8 @@ function PatientProgress() {
                     <tr key={idx}>
                         <th scope="row">{idx+1}</th>
                         <td><a href={`/post/${exercises[idx].post_id}`} style={{ textDecoration: 'underline', color: '#007bff' }} >{exercises[idx].title}</a></td>
+                        <td>{exerciseAssignments[idx].sets}</td>
+                        <td>{exerciseAssignments[idx].reps}</td>
                         <td>{exercises[idx].content}</td>
                     </tr>
                     ))}
@@ -329,18 +341,18 @@ function PatientProgress() {
 
 const dailySurveyCheck = (dateString) => {
     const inputDate = new Date(dateString);
-    inputDate.setHours(inputDate.getHours() - 4);
+    inputDate.setHours(inputDate.getHours());
     const now = new Date();
   
-    const oneDayAgo = new Date();
-    oneDayAgo.setDate(now.getDate() - 1);
-  
-    return inputDate >= oneDayAgo && inputDate <= now;
+    const oneDayAfter = new Date(dateString);
+    oneDayAfter.setDate(oneDayAfter.getDate() + 1);
+
+    return inputDate <= oneDayAfter;
 };
 
 const weeklySurveyCheck = (dateString) => {
     const inputDate = new Date(dateString);
-    inputDate.setHours(inputDate.getHours() - 4);
+    inputDate.setHours(inputDate.getHours());
     const now = new Date();
   
     const oneWeekAgo = new Date();

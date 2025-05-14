@@ -77,7 +77,7 @@ function ResetPasswordForm() {
 
         {error && <div className="text-danger mb-3">{error}</div>}
 
-        <MDBBtn type="submit" className="w-100 register-btn">Submit</MDBBtn>
+        <button className="w-100 login-btn">Reset Password</button>
       </form>
     </MDBContainer>
   );
